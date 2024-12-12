@@ -181,20 +181,10 @@ Mesmerizing, isn't it? The chaos and apparent randomness of all these colors. Up
 I've found out about time-tracking and decided to give it a try. Some thought were given to the number of categories (what to track) and the frequency of tracking (how to track). With 13 categories that sufficiently capture my life and 72 20-minute intervals I was set up to track some time.
 
 ```{r}
-# Create a data frame from the activity_colors vector
-df <- data.frame(Category = names(activity_colors), 
-                 Color = unname(activity_colors))
 
-# Function to colorize cells
-colorize_cells <- function(data, column_name) {
-  css_colors <- sprintf("background-color: %s;", data[[column_name]])
-  css_column <- sprintf("<span style='%s'>%s</span>", css_colors, data[[column_name]])
-  return(css_column)
-}
-
-df$Color <- colorize_cells(df, "Color")
-
-df$Description <- c(
+df <- data.frame(
+  Activity = names(activity_colors),
+  Description = c(
   "Sleeping, taking a nap, or resting",
   "Talking to people, texting, or social media",
   "Physical activity, exercise, or sports",
@@ -205,12 +195,34 @@ df$Description <- c(
   "Wasting time, procrastinating",
   "Journaling, reflecting, planning",
   "Commute and travel",
-  "Other activities not covered by the other categories")
+  "Other activities not covered by the other categories"),
+  stringsAsFactors = FALSE
+)
 
 
-# Display the table without row names and with minimal spacing between rows
-datatable(df, escape = FALSE, rownames = FALSE, options = list(autoWidth = FALSE, searching = FALSE, paging = FALSE, info = FALSE)) %>%
-  formatStyle(names(df), padding = "2px 4px")
+apply_highlighting <- function(activity, color_mapping) {
+  highlight_css <- sprintf(
+    "background-color: %s; color: white; font-weight: bold; padding: 4px; border-radius: 4px;",
+    color_mapping[activity]
+  )
+  sprintf("<span style='%s'>%s</span>", highlight_css, activity)
+}
+
+# Apply the highlighting to the Activity column
+df$Activity <- mapply(apply_highlighting, df$Activity, MoreArgs = list(activity_colors))
+
+datatable(
+  df,
+  escape = FALSE, # Allows HTML in the table cells
+  rownames = FALSE, # Remove row names
+  options = list(
+    autoWidth = FALSE,
+    searching = FALSE,
+    paging = FALSE,
+    info = FALSE
+  )
+) %>%
+  formatStyle(columns = names(df), padding = "4px 6px")
 ```
 
 ## Lessons {#lessons}

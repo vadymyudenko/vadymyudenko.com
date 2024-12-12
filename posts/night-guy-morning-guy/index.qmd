@@ -4,7 +4,7 @@ description: |
   Visual comparison of two life-periods.
 author: 
  - name: Vadym Yudenko
-date: 2024-12-01
+date: 2024-12-12
 categories:
   - Timetracking
   - Reflection
@@ -280,9 +280,6 @@ approach and categories (activities) were the same, except now instead of [<b>Ja
 [^1]: This deserves a post of it's own.
 
 ```{r}
-#| column: page
-
-
 df <- data.frame(
   Activity = names(activity_colors),
   Description = c(
@@ -742,7 +739,7 @@ fig
 
 In 2022-2023 I have been much lazier and it would take me much longer to
 wake up. See the heatmap for 2023 and how inconsistent my [<b>sleeping</b>]{style="color:#3B4CC0;"}
-schedule was, add to that that I've not been getting enough [<b>sleep</b>]{style="color:#3B4CC0;"} on
+schedule was, add to that that a lack of [<b>sleep</b>]{style="color:#3B4CC0;"} on
 most days and that's a recipe for a bad morning.
 
 ```{r morning routine 2023}
