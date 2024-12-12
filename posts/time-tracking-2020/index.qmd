@@ -1,7 +1,7 @@
 ---
-title: "Time Tracking 2020"
+title: "Time Tracking: Retrospective Look"
 description: |
-  Looking back on my time tracking experience 
+  Looking back on my time tracking experience in 2020.
 author: 
  - name: Vadym Yudenko
 date: 2024-11-22
@@ -22,13 +22,9 @@ library(zoo)
 library(ggExtra)
 library(ggtext)
 library(ggthemes)
-library(gganimate)
-library(ggnewscale)
 library(showtext)
 library(grid)
 library(transformr)
-library(corrr)
-library(corrplot)
 library(lubridate)
 library(reshape2)
 library(plotly)
@@ -40,9 +36,6 @@ library(fontawesome)
 library(RColorBrewer)
 library(DT)
 library(patchwork)
-library(ggHoriPlot) 
-
-
 ```
 
 ```{r theme}
@@ -80,40 +73,34 @@ data_long <- read.csv("data/data.csv") %>%
       TRUE ~ "Night"
     ),
     time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
-    category5 = case_when(
-      activity %in% c("Sleep", "Sport", "Communication", "Japanese") ~ activity,
-      activity %in% c("Study", "Work", "TM", "Planning", "Reading") ~ "Study/Work",
-      activity %in% c("Transportation", "Misc", "Waste", "Food") ~ "Rest"
-    ),
+    activity = case_when(
+     tolower(activity) %in% c("misc", "mic") ~ "Miscellaneous",
+     activity %in% c("Transport", "Transportation") ~ "Going Somewhere",
+     activity == "Communication" ~ "Social Life",
+     activity == "TM" ~ "Toastmasters",
+     TRUE ~ activity),
     hour = hour(datetime),
     day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
     month = month(datetime, label = TRUE, abbr = FALSE),
     date_char = as.character(datetime))
 
 activity_colors <- c(
-  "Sleep" = "#1E90FF",  # DodgerBlue
-  "Sport" = "#32CD32",  # LimeGreen
-  "Study" = "#DAA520",  # Goldenrod
-  "Communication" = "#87CEEB",  # SkyBlue
-  "Food" = "#FFD700",  # Gold
-  "Waste" = "black",
-  "Reading" = "#FFA07A",  # LightSalmon
-  "Japanese" = "#FF69B4",  # HotPink
-  "Misc" = "#8FBC8F",  # DarkSeaGreen
-  "TM" = "#9370DB",  # MediumPurple
-  "Transportation" = "#A9A9A9"  # DarkGray
+   "Sleep" = "#3B4CC0",  # Deep Blue (Night)
+   "Social Life" = "#87CEEB",  # SkyBlue
+   "Sport" = "#1D8E3A",  # Forest Green (Active)
+   #"Work" = "#C0392B",  # Red (Energy)
+   "Reading" = "#F39C12",  # Golden Orange (Focus)
+   "Japanese" = "#FF69B4",  # HotPink
+   "Study" = "#FFD700",  # Gold
+   "Food" = "#99CC99",  # Soft Green
+   "Waste" = "#333333",  # Dark Charcoal
+   #"Piano" = "purple",  # HotPink
+   #"TM" = "#8E44AD",  # Deep Purple (Creative)
+   "Planning" = "#FF6347",  # Tomato
+   "Going Somewhere" = "#95A5A6",  # Urban Gray
+   "Miscellaneous" = "#27AE60"  # Fresh Green
 )
 
-time_ticks06 <- c(
-    "06:00", "06:20", "06:40", "07:00", "07:20", "07:40", "08:00", "08:20", "08:40", "09:00",
-    "09:20", "09:40", "10:00", "10:20", "10:40", "11:00", "11:20", "11:40", "12:00", "12:20",
-    "12:40", "13:00", "13:20", "13:40", "14:00", "14:20", "14:40", "15:00", "15:20", "15:40",
-    "16:00", "16:20", "16:40", "17:00", "17:20", "17:40", "18:00", "18:20", "18:40", "19:00",
-    "19:20", "19:40", "20:00", "20:20", "20:40", "21:00", "21:20", "21:40", "22:00", "22:20",
-    "22:40", "23:00", "23:20", "23:40", "00:00", "00:20", "00:40", "01:00", "01:20", "01:40",
-    "02:00", "02:20", "02:40", "03:00", "03:20", "03:40", "04:00", "04:20", "04:40", "05:00",
-    "05:20", "05:40"
-)
 ```
 
 ## 2020 {#main_plot}
@@ -134,15 +121,15 @@ p <- data_long %>%
                    expand = c(0, 0),
                    date_breaks = "1 month",  # Display every month on the x-axis
                    date_labels = "%B") +  # Format the date labels as "Month Year"
-  labs(x = NULL, y = NULL) +
+  labs(title = NULL, x = NULL, y = NULL) +
   theme_minimal() +
   theme(
     legend.position = "none",
     panel.grid = element_blank(),
-    plot.title = element_text(face = "bold", size = 14),
+    plot.title = element_blank(),
     axis.text.x = element_text(angle = 0, size = 10),
-    axis.text.y = element_text(hjust = 0.5, size = 6)
-    )
+    axis.text.y = element_text(hjust = 0.5, size = 5)
+    ) 
 
 ggplotly(p, tooltip = "text") %>%
   layout(
@@ -193,7 +180,40 @@ Mesmerizing, isn't it? The chaos and apparent randomness of all these colors. Up
 
 I've found out about time-tracking and decided to give it a try. Some thought were given to the number of categories (what to track) and the frequency of tracking (how to track). With 13 categories that sufficiently capture my life and 72 20-minute intervals I was set up to track some time.
 
-## Lessons
+```{r}
+# Create a data frame from the activity_colors vector
+df <- data.frame(Category = names(activity_colors), 
+                 Color = unname(activity_colors))
+
+# Function to colorize cells
+colorize_cells <- function(data, column_name) {
+  css_colors <- sprintf("background-color: %s;", data[[column_name]])
+  css_column <- sprintf("<span style='%s'>%s</span>", css_colors, data[[column_name]])
+  return(css_column)
+}
+
+df$Color <- colorize_cells(df, "Color")
+
+df$Description <- c(
+  "Sleeping, taking a nap, or resting",
+  "Talking to people, texting, or social media",
+  "Physical activity, exercise, or sports",
+  "Reading for pleasure",
+  "Studying Japanese (reading, listening, writing...)",
+  "University studies, extra courses",
+  "Eating and drinking",
+  "Wasting time, procrastinating",
+  "Journaling, reflecting, planning",
+  "Commute and travel",
+  "Other activities not covered by the other categories")
+
+
+# Display the table without row names and with minimal spacing between rows
+datatable(df, escape = FALSE, rownames = FALSE, options = list(autoWidth = FALSE, searching = FALSE, paging = FALSE, info = FALSE)) %>%
+  formatStyle(names(df), padding = "2px 4px")
+```
+
+## Lessons {#lessons}
 
 ### You have only 16 hours in a day
 
@@ -201,9 +221,9 @@ I've found out about time-tracking and decided to give it a try. Some thought we
 
 [Sorry, Arnold](https://www.goodreads.com/quotes/11854412-you-have-24-hours-use-them), but you don't have 24 hours to use. While I appreciate the premise of the quote and it's catchy, motivating nature, it is false and I know just by how much!
 
-My younger self was easily swayed by such simple and inspiring quotes, they made me wanna get out there and do great things! When I started time tracking, I set goals on how much hours I wanted to spend per each category. For example, I needed to spend 1000 hours learning <span style="color:#FF69B4;"><b>Japanese</b></span> by December 2020, clock at least 5 hours/week of Sports to stay fit, accumulate no less than 10 hours/week of socializing before I go crazy.
+My younger self was easily swayed by such simple and inspiring quotes, they made me wanna get out there and do great things! When I started time tracking, I set goals on how much hours I wanted to spend per each category. For example, I needed to spend 1000 hours learning [<b>Japanese</b>]{style="color:#FF69B4;"} by December 2020, clock at least 5 hours/week of Sports to stay fit, accumulate no less than 10 hours/week of socializing before I go crazy.
 
-After a couple of weeks I was behind on many of my goals. Upon closer inspection I realized that I failed to account for <span style="color:#1E90FF;"><b>sleep</b></span>.
+After a couple of weeks I was behind on many of my goals. Upon closer inspection I realized that I failed to account for [<b>sleep</b>]{style="color:#3B4CC0;"}.
 
 ```{r}
 df_activity_hours <- data_long %>%    
@@ -233,7 +253,7 @@ df_filtered_jap <- df_activity_hours %>%
   mutate(rolling_mean = round(zoo::rollmean(hours, k = 7, fill = NA, align = "right"), digits = 1))  
 
 df_filtered_misc <- df_activity_hours %>%   
-  filter(activity %in% "Misc") %>%  
+  filter(activity %in% "Miscellaneous") %>%  
   arrange(date) %>%  
   slice(2:(n()-1)) %>%  
   mutate(rolling_mean = round(zoo::rollmean(hours, k = 7, fill = NA, align = "right"), digits = 1))  
@@ -270,7 +290,7 @@ plot_ly() %>%
     mode = 'lines',
     name = 'Sleeping Hours',
     line = list(width = 1), # Thin line for original data
-    color = I("#1E90FF"), # Set marker color to black
+    color = I("#3B4CC0"), # Set marker color to black
     opacity = 0.5 # Make original data semi-transparent
   ) %>%
   add_trace(
@@ -280,8 +300,8 @@ plot_ly() %>%
     type = 'scatter',
     mode = 'lines',
     name = 'Average',
-    color = I("#1E90FF"), # Set marker color to black
-    line = list(width = 4, dash = 'solid') # Bold, solid line for rolling mean
+    color = I("#3B4CC0"),
+    line = list(width = 4, dash = 'solid') 
   ) %>%
   layout(
     font = list(
@@ -291,7 +311,7 @@ plot_ly() %>%
     ),
     xaxis = list(
       title = "",
-      range = c("2022-10-01", NA), # Start x-axis from 2022-10-01
+      range = c("2022-10-01", NA),
       tickformat = "%B" # Display full month name
     ),
     yaxis = list(
@@ -305,7 +325,39 @@ plot_ly() %>%
       xanchor = "center", # Align legend at its center
       yanchor = "bottom"  # Align legend at its bottom
     ),
-    hovermode = "x unified"
+    hovermode = "x unified",
+        annotations = list(
+      # Text annotation "2019"
+      list(
+        x = "2019-12-20", y = -0.09, text = "2019",
+        showarrow = FALSE, xref = "x", yref = "paper",
+        font = list(size = 12, color = "gray77")
+      ),
+      # Text annotation "2020"
+      list(
+        x = "2020-01-14", y = -0.09, text = "2020",
+        showarrow = FALSE, xref = "x", yref = "paper",
+        font = list(size = 12, color = "gray77")
+      ),
+      # Right arrow
+      list(
+        x = "2020-01-22", y = -0.0925, ax = -30, ay = 0, text = "",
+        xref = "x", yref = "paper", axref = "pixel", ayref = "pixel",
+        arrowhead = 2, arrowsize = 1, arrowwidth = 1, arrowcolor = "gray77"
+      ),
+      # Left arrow
+      list(
+        x = "2019-12-12", y = -0.0925, ax = 30, ay = 0, text = "",
+        xref = "x", yref = "paper", axref = "pixel", ayref = "pixel",
+        arrowhead = 2, arrowsize = 1, arrowwidth = 1, arrowcolor = "gray77"
+      ),
+      # Short vertical line
+      list(
+        x = "2020-01-01", y = -0.09, ax = 0, ay = -20, text = "",
+        xref = "x", yref = "paper", axref = "pixel", ayref = "pixel",
+        arrowhead = 0, arrowwidth = 1, arrowcolor = "gray77"
+      )
+    )
   ) %>%
   plotly::config(
     displayModeBar = TRUE,
@@ -335,14 +387,14 @@ p1 <- data_long %>%
                    expand = c(0, 0),
                    date_breaks = "1 month",  # Display every month on the x-axis
                    date_labels = "%B") +  # Format the date labels as "Month Year"
-  labs(x = NULL, y = NULL) +
+  labs(title = NULL, x = NULL, y = NULL) +
   theme_minimal() +
   theme(
     legend.position = "none",
     panel.grid = element_blank(),
-    plot.title = element_text(face = "bold", size = 14),
+    plot.title = element_blank(),
     axis.text.x = element_text(angle = 0, size = 10),
-    axis.text.y = element_text(hjust = 0.5, size = 4)
+    axis.text.y = element_text(hjust = 0.5, size = 5)
     )
 
 
@@ -390,14 +442,14 @@ ggplotly(p1, tooltip = "text") %>%
 
 ### You don't even have 16 hours in a day
 
-Yes! Not only sleep was taking too much time for my liking, but <span style="color:#8FBC8F;"><b>Miscellaneous</b></span>—an umbrella category for non-productive, but necessary parts of life. Brushing teeth and taking a shower, doing groceries and laundry, cleaning your room and ironing your shirt, doing a medical check-up, waiting in a queue (!) are some of the activities that happen daily and there are no escaping them. Watching YouTube, reading social media and other such activities were not given a category of their own, they, too, fall under <span style="color:#8FBC8F;"><b>Miscellaneous</b></span>[^1].
+Yes! Not only sleep was taking too much time, but also [<b>miscellaneous</b>]{style="color:#27AE60;"}—an umbrella category for non-productive, but necessary parts of life. Brushing teeth and taking a shower, doing groceries and laundry, cleaning a room and ironing a shirt, doing a medical check-up, waiting in a queue (!) are some of the activities that happen daily and there are no escaping them. Watching YouTube, reading social media and other such activities were not given a category of their own, they, too, fall under [<b>miscellaneous</b>]{style="color:#27AE60;"}[^1].
 
 [^1]: [Aster Hu's blog](https://www.asterhu.com/post/2023-09-18-time-tracking-analysis/) on tracking of spare time has a great descriptions of what comprises this category.
 
 ::: column-screen
 ```{r}
 plot1 <- data_long %>%
-  filter(activity == "Misc") %>%
+  filter(activity == "Miscellaneous") %>%
   ggplot(aes(datetime, time_column, fill = activity)) +
   geom_bin2d(bins = c(367, 72),  
       aes(text = str_replace_all(paste0(
@@ -410,14 +462,14 @@ plot1 <- data_long %>%
                    expand = c(0, 0),
                    date_breaks = "1 month",  # Display every month on the x-axis
                    date_labels = "%B") +  # Format the date labels as "Month Year"
-  labs(x = NULL, y = NULL) +
+  labs(title = NULL, x = NULL, y = NULL) +
   theme_minimal() +
   theme(
     legend.position = "none",
     panel.grid = element_blank(),
-    plot.title = element_text(face = "bold", size = 14),
+    plot.title = element_blank(),
     axis.text.x = element_text(angle = 0, size = 10),
-    axis.text.y = element_text(hjust = 0.5, size = 6)
+    axis.text.y = element_text(hjust = 0.5, size = 5)
     )
 
 ggplotly(plot1, tooltip = "text") %>%
@@ -464,15 +516,15 @@ ggplotly(plot1, tooltip = "text") %>%
 ```
 :::
 
-There is no structure to it, it is chaotic and permeates every day. So much of my 2020 was occupied with <span style="color:#8FBC8F;"><b>miscellaneous</b></span> things it is scary—almost 6 hours of my day went towards this category! I didn't think I spent too much time on social media and YouTube, but looking back I absolutely did.
+There is no structure to it, it is chaotic and permeates every day. So much of my 2020 was occupied with [<b>miscellaneous</b>]{style="color:#27AE60;"} things it is scary—almost 6 hours of my day went towards this category! I didn't think I spent too much time on social media and YouTube, but looking back I absolutely did!
 
 ### Time is not found, it is made
 
-If you considering to learn a new skill, be ready to sacrifice the time needed to learn this skill from some other activity you've been doing.
+If you considering learning a new skill, be ready to sacrifice the time needed to learn this skill from some other activity you've been doing.
 
-In my case, I've sacrificed my <span style="color:#DAA520;"><b> university studies</b></span> to acquire <span style="color:#FF69B4;"><b>Japanese</b></span>.
+In my case, I've sacrificed my [<b> university studies</b>]{style="color:#FFD700;"} to acquire [<b>Japanese</b>]{style="color:#FF69B4;"}.
 
-In Ukraine lockdown was official starting from March 20, 2020 (source). Interestingly how with it my diligent <span style="color:#DAA520;"><b>studying</b></span> ended—average hours spent studying never came back to pre-pandemic level.
+In Ukraine an emergency lockdown [was declared](https://en.wikipedia.org/wiki/COVID-19_pandemic_in_Ukraine#:~:text=An%20emergency%20was%20declared%20on%2020%20March%202020%20in%20Kyiv%20Oblast%2C%20Chernivtsi%20Oblast%2C%20Zhytomyr%20Oblast%2C%20Dnipropetrovsk%20Oblast%2C%20Ivano%2DFrankivsk%20Oblast%2C%20and%20the%20city%20of%20Kyiv.) on March 20, 2020. Interestingly how with it my diligent [<b>studying</b>]{style="color:#FFD700;"} ended—average hours spent studying never came back to pre-pandemic level.
 
 ```{r}
 plot_ly() %>%  
@@ -484,7 +536,7 @@ plot_ly() %>%
     mode = 'lines',  
     name = 'Study Hours',  
     line = list(width = 1), # Thin line for original data    
-    color = I("#DAA520"), # Set marker color to black  
+    color = I("#FFD700"), # Set marker color to black  
     opacity = 0.5, # Make original data semi-transparent  
     hoverinfo = "none"  # Remove tooltip   
     ) %>%   add_trace(  
@@ -494,8 +546,8 @@ plot_ly() %>%
       type = 'scatter',    
       mode = 'lines',  
       name = 'Average',   
-      color = I("#DAA520"), # Set marker color to black     
-      line = list(width = 4, dash = 'solid') # Bold, solid line for rolling mean   
+      color = I("#FFD700"), # Set marker color to black     
+      line = list(width = 4, dash = 'solid') # Bold, solid line for rolling mean
       ) %>%   layout(
         font = list(    
           family = "Fira Sans", # Set font to Fira Sans    
@@ -518,7 +570,39 @@ plot_ly() %>%
           yanchor = "bottom"  # Align legend at its bottom    
           ),  
         hovermode = "x unified",   
-        hoversubplots = "axis" 
+        hoversubplots = "axis",
+    annotations = list(
+      # Text annotation "2019"
+      list(
+        x = "2019-12-20", y = -0.09, text = "2019",
+        showarrow = FALSE, xref = "x", yref = "paper",
+        font = list(size = 12, color = "gray77")
+      ),
+      # Text annotation "2020"
+      list(
+        x = "2020-01-14", y = -0.09, text = "2020",
+        showarrow = FALSE, xref = "x", yref = "paper",
+        font = list(size = 12, color = "gray77")
+      ),
+      # Right arrow
+      list(
+        x = "2020-01-22", y = -0.095, ax = -30, ay = 0, text = "",
+        xref = "x", yref = "paper", axref = "pixel", ayref = "pixel",
+        arrowhead = 2, arrowsize = 1, arrowwidth = 1, arrowcolor = "gray77"
+      ),
+      # Left arrow
+      list(
+        x = "2019-12-12", y = -0.095, ax = 30, ay = 0, text = "",
+        xref = "x", yref = "paper", axref = "pixel", ayref = "pixel",
+        arrowhead = 2, arrowsize = 1, arrowwidth = 1, arrowcolor = "gray77"
+      ),
+      # Short vertical line
+      list(
+        x = "2020-01-01", y = -0.09, ax = 0, ay = -20, text = "",
+        xref = "x", yref = "paper", axref = "pixel", ayref = "pixel",
+        arrowhead = 0, arrowwidth = 1, arrowcolor = "gray77"
+      )
+    )
         ) %>%   
   plotly::config(  
     displayModeBar = TRUE,  
@@ -546,14 +630,14 @@ p2 <- data_long %>%
                    expand = c(0, 0),
                    date_breaks = "1 month",  # Display every month on the x-axis
                    date_labels = "%B") +  # Format the date labels as "Month Year"
-  labs(x = NULL, y = NULL) +
+  labs(title = NULL, x = NULL, y = NULL) +
   theme_minimal() +
   theme(
     legend.position = "none",
     panel.grid = element_blank(),
-    plot.title = element_text(face = "bold", size = 14),
+    plot.title = element_blank(),
     axis.text.x = element_text(angle = 0, size = 10),
-    axis.text.y = element_text(hjust = 0.5, size = 4)
+    axis.text.y = element_text(hjust = 0.5, size = 5)
     )
 
 ggplotly(p2, tooltip = "text") %>%
@@ -599,7 +683,7 @@ ggplotly(p2, tooltip = "text") %>%
 ```
 :::
 
-Of course, Covid played a role—suddenly there was no need to commute to and fro university, be present and active during online classes—but I've already been steadily increasing my time with the target language. By that time I've already obtained N4 and knew that to reach N3 and above, much more hours had to be spent with the language. For <span style="color:#FF69B4;"><b>Japanese</b></span> I needed at least 1000 hours to pass N3 in December 2020. To get these 1000 hours I have sacrificed my main <span style="color:#DAA520;"><b>studies</b></span> in the university.
+Of course, Covid played a role—suddenly there was no need to commute to and fro university, be present and active during online classes—but I've already been steadily increasing my time with the target language. By that time I've already obtained [N4](https://en.wikipedia.org/wiki/Japanese-Language_Proficiency_Test) (A2) and knew that to reach [N3](https://en.wikipedia.org/wiki/Japanese-Language_Proficiency_Test) and above (B1+), much more hours had to be spent with the language. For [<b>Japanese</b>]{style="color:#FF69B4;"} I [needed at least 1000](https://en.wikibooks.org/wiki/JLPT_Guide/About_JLPT#cite_note-JLEC-1:~:text=Estimated%20Study%20Time) hours to pass N3 in December 2020. To get these 1000 hours I have sacrificed my main [<b>studies</b>]{style="color:#FFD700;"} in the university.
 
 ```{r}
 plot_ly() %>%   # Add original data for Japanese activity  
@@ -632,7 +716,7 @@ plot_ly() %>%   # Add original data for Japanese activity
     mode = 'lines',  
     name = 'Study',  
     line = list(width = 1),  
-    color = I("#DAA520"),   
+    color = I("#FFD700"),   
     opacity = 0.5,   
     hoverinfo = "none"  # Remove tooltip   
   ) %>%   # Add rolling mean for Study activity   
@@ -643,7 +727,7 @@ plot_ly() %>%   # Add original data for Japanese activity
     type = 'scatter',   
     mode = 'lines',   
     name = 'Average Study',  
-    line = list(width = 4, color = "#DAA520")  
+    line = list(width = 4, color = "#FFD700")  
   ) %>%   # Layout adjustments  
   layout(
     font = list(   
@@ -682,7 +766,38 @@ plot_ly() %>%   # Add original data for Japanese activity
           )   
         )    
     ),     annotations = list(   
-          list(x = "2020-03-20", y = 1, text = "Lockdown", showarrow = FALSE, xref = "x", yref = "paper", align = "right")),   
+          list(x = "2020-03-20", y = 1, text = "Lockdown", showarrow = FALSE, xref = "x", yref = "paper", align = "right"),
+                # Text annotation "2019"
+      list(
+        x = "2019-12-23", y = -0.09, text = "2019",
+        showarrow = FALSE, xref = "x", yref = "paper",
+        font = list(size = 12, color = "gray77")
+      ),
+      # Text annotation "2020"
+      list(
+        x = "2020-01-19", y = -0.09, text = "2020",
+        showarrow = FALSE, xref = "x", yref = "paper",
+        font = list(size = 12, color = "gray77")
+      ),
+      # Right arrow
+      list(
+        x = "2020-01-27", y = -0.0925, ax = -30, ay = 0, text = "",
+        xref = "x", yref = "paper", axref = "pixel", ayref = "pixel",
+        arrowhead = 2, arrowsize = 1, arrowwidth = 1, arrowcolor = "gray77"
+      ),
+      # Left arrow
+      list(
+        x = "2019-12-15", y = -0.0925, ax = 30, ay = 0, text = "",
+        xref = "x", yref = "paper", axref = "pixel", ayref = "pixel",
+        arrowhead = 2, arrowsize = 1, arrowwidth = 1, arrowcolor = "gray77"
+      ),
+      # Short vertical line
+      list(
+        x = "2020-01-06", y = -0.09, ax = 0, ay = -20, text = "",
+        xref = "x", yref = "paper", axref = "pixel", ayref = "pixel",
+        arrowhead = 0, arrowwidth = 1, arrowcolor = "gray77"
+      )
+          ),   
     hovermode = "x unified"   
   ) %>%   # Add customizations for interactivity and appearance  
   plotly::config(    
@@ -711,14 +826,14 @@ p3 <- data_long %>%
                    expand = c(0, 0),
                    date_breaks = "1 month",  # Display every month on the x-axis
                    date_labels = "%B") +  # Format the date labels as "Month Year"
-  labs(x = NULL, y = NULL) +
+  labs(title = NULL, x = NULL, y = NULL) +
   theme_minimal() +
   theme(
     legend.position = "none",
     panel.grid = element_blank(),
-    plot.title = element_text(face = "bold", size = 14),
+    plot.title = element_blank(),
     axis.text.x = element_text(angle = 0, size = 10),
-    axis.text.y = element_text(hjust = 0.5, size = 4)
+    axis.text.y = element_text(hjust = 0.5, size = 5)
     )
 
 ggplotly(p3, tooltip = "text") %>%
@@ -765,9 +880,9 @@ ggplotly(p3, tooltip = "text") %>%
 
 ## Hindsight 20/20
 
-Could I have still gotten these 1000 hours without sacrificing arguably important part of life? Absolutely! I could spend every waking hour working/studying, have food brought to me, replace social life with daily meetings—what a wicked though—and never see the light of day! But what a miserable life that would be!
+Could I have still gotten these 1000 hours without sacrificing arguably important part of life? Absolutely! I could spend every waking hour working/studying, have food brought to me, replace social life with daily work meetings—what a wicked thought—and never see the light of day! But what a miserable life that would be!
 
-Looking back, I could have spent less time scrolling feed in the morning and before bed, watching videos after school, and instead spend more time with friends and family, doing sports and studying <span style="color:#FF69B4;"><b>Japanese</b></span>.
+Looking back, I could have spent less time scrolling feed in the morning and before bed, watching videos after school, and instead spend more time with friends and family, doing sports and studying [<b>Japanese</b>]{style="color:#FF69B4;"}.
 
 ```{r}
 plot_ly() %>%
@@ -801,7 +916,7 @@ plot_ly() %>%
     mode = 'lines',
     name = 'Study',
     line = list(width = 1),
-    color = I("#DAA520"),
+    color = I("#FFD700"),
     opacity = 0.5,
     hoverinfo = "none"  # Remove tooltip
   ) %>%
@@ -812,28 +927,28 @@ plot_ly() %>%
     type = 'scatter',
     mode = 'lines',
     name = 'Average Study',
-    line = list(width = 4, color = "#DAA520")
+    line = list(width = 4, color = "#FFD700")
   ) %>%
   add_trace(
-    data = df_combined %>% filter(activity_type == "Misc"),
+    data = df_combined %>% filter(activity_type == "Miscellaneous"),
     x = ~date,
     y = ~hours,
     type = 'scatter',
     mode = 'lines',
-    name = 'Misc',
+    name = 'Miscellaneous',
     line = list(width = 1),
-    color = I("#8FBC8F"),
+    color = I("#27AE60"),
     opacity = 0.5,
     hoverinfo = "none"  # Remove tooltip
   ) %>%
   add_trace(
-    data = df_combined %>% filter(activity_type == "Misc"),
+    data = df_combined %>% filter(activity_type == "Miscellaneous"),
     x = ~date,
     y = ~rolling_mean,
     type = 'scatter',
     mode = 'lines',
-    name = 'Average Misc',
-    line = list(width = 4, color = "#8FBC8F")
+    name = 'Average Miscellaneous',
+    line = list(width = 4, color = "#27AE60")
   ) %>%
   # Layout adjustments
   layout(
@@ -874,7 +989,37 @@ plot_ly() %>%
       )
     ),
     annotations = list(
-      list(x = "2020-03-20", y = 1, text = "Lockdown", showarrow = FALSE, xref = "x", yref = "paper", align = "right")),
+      list(x = "2020-03-20", y = 1, text = "Lockdown", showarrow = FALSE, xref = "x", yref = "paper", align = "right"),
+                # Text annotation "2019"
+      list(
+        x = "2019-12-23", y = -0.09, text = "2019",
+        showarrow = FALSE, xref = "x", yref = "paper",
+        font = list(size = 12, color = "gray77")
+      ),
+      # Text annotation "2020"
+      list(
+        x = "2020-01-19", y = -0.09, text = "2020",
+        showarrow = FALSE, xref = "x", yref = "paper",
+        font = list(size = 12, color = "gray77")
+      ),
+      # Right arrow
+      list(
+        x = "2020-01-27", y = -0.0925, ax = -30, ay = 0, text = "",
+        xref = "x", yref = "paper", axref = "pixel", ayref = "pixel",
+        arrowhead = 2, arrowsize = 1, arrowwidth = 1, arrowcolor = "gray77"
+      ),
+      # Left arrow
+      list(
+        x = "2019-12-15", y = -0.0925, ax = 30, ay = 0, text = "",
+        xref = "x", yref = "paper", axref = "pixel", ayref = "pixel",
+        arrowhead = 2, arrowsize = 1, arrowwidth = 1, arrowcolor = "gray77"
+      ),
+      # Short vertical line
+      list(
+        x = "2020-01-06", y = -0.09, ax = 0, ay = -20, text = "",
+        xref = "x", yref = "paper", axref = "pixel", ayref = "pixel",
+        arrowhead = 0, arrowwidth = 1, arrowcolor = "gray77"
+      )),
     hovermode = "x unified"
   ) %>%
   # Add customizations for interactivity and appearance
@@ -894,7 +1039,7 @@ plot_ly() %>%
 ```{r}
 p4 <- data_long %>% 
   mutate(date = as.Date(datetime)) %>%
-  filter(activity %in% c("Study", "Japanese", "Misc")) %>%
+  filter(activity %in% c("Study", "Japanese", "Miscellaneous")) %>%
   ggplot(aes(datetime, time_column, fill = activity)) +
   geom_bin2d(bins = c(367, 72),  
       aes(text = str_replace_all(paste0(
@@ -907,14 +1052,14 @@ p4 <- data_long %>%
                    expand = c(0, 0),
                    date_breaks = "1 month",  # Display every month on the x-axis
                    date_labels = "%B") +  # Format the date labels as "Month Year"
-  labs(x = NULL, y = NULL) +
+  labs(title = NULL, x = NULL, y = NULL) +
   theme(
     legend.position = "none",
     panel.grid.major = element_blank(),
-     panel.grid.minor = element_blank(),
-    plot.title = element_text(face = "bold", size = 14),
+    panel.grid.minor = element_blank(),
+    plot.title = element_blank(),
     axis.text.x = element_text(angle = 0, size = 10),
-    axis.text.y = element_text(hjust = 0.5, size = 4)
+    axis.text.y = element_text(hjust = 0.5, size = 5)
     )
 
 ggplotly(p4, tooltip = "text") %>%
@@ -962,11 +1107,12 @@ ggplotly(p4, tooltip = "text") %>%
 
 ## Goals
 
-By the end of 2020 reached 1000 hours, but the exam was cancelled due to Covid. I have spent $\approx5.5$ hours/week doing sports (more than I planned). And most importantly became more conscious of how I spend my time.
+By the end of 2020 reached 1000 hours, but the exam was cancelled due to Covid. I have spent $\approx5.5$ hours/week doing [<b> sports</b>]{style="color:#1D8E3A;"} (more than I planned). By 2020's standard my Social Life blossoming! I have set—yes, I was thinking in term of hours here, too—a target of 10 hours/week for Social Life
 
-**I was happy with the result, but even happier to finally be done with this!**
+And most importantly became more conscious of how I spend my time.
 
-```{r}
+```{r plot total hours}
+#| classes: preview-image
 activity_hours_total <- data_long %>%
   group_by(activity) %>%
   summarise(count_observations = n(), .groups = "drop") %>%
@@ -1006,90 +1152,16 @@ activity_hours_total %>%
 
 We dream in ideas, concepts. To make them real requires putting them in words, and then actions. Actions can be measured. For example, if you dream about running a marathon you have to hit the track and run, and run a lot. Your colleague tells you about this marathon in 5 months and you decide to finally make your dream come true and sign up. So far, you've been running sub-5k runs every once in a while and a marathon seems daunting. How do you plan your next runs so that when the day comes you finish the run?
 
-You can think in terms of mileage
+You can think [in terms of mileage]{.underline}
 
-> X km/week and increase this number each week until you reach the marathon week.
+> X km/week and increase this number each week until you reach the marathon week
 
-or in terms of your best runs, which is a variation of the above.
+or [in terms of your best runs]{.underline}, which is a variation of the above.
 
-> Each week I'll be running +X km.
+Or, you can think [in terms of hours]{.underline}! Essentially it is the same, but from different perspective. Tracking hours really puts your goals in direct comparison with other parts of your life and you can easily spot things that prevent you from achieving your goals—if this is the case. Time tracking takes focus from something far and sometimes unreachable to something you have full control over—your time!
 
-Time tracking showed me that it is possible to set your goals in terms of hours. It takes focus from something far and sometimes unreachable to something you have full control over—your time.
-
-```{r archive}
-# plot2 <- data_long %>%
-#   filter(activity == "Misc") %>%
-#   ggplot(aes(x = datetime, y = time_column)) +
-#   geom_bin2d(bins = c(184, 72)) +
-#   scale_fill_viridis_c() +
-#   scale_x_datetime(
-#     limits = c(min(data_long$datetime), max(data_long$datetime)),
-#     expand = c(0, 0),
-#     date_breaks = "1 month",
-#     date_labels = "%B"
-#   ) +
-#   theme_minimal() +
-#   labs(x = NULL, y = NULL) +
-#   theme(axis.text.y = element_text(hjust = 0.5, size = 4),
-#         legend.position = "none",
-#         panel.grid.major = element_blank(),
-#         panel.grid.minor = element_blank())
-# 
-# plot2 <- ggplotly(plot2) %>% 
-#   style(hoverinfo = "none")
-# 
-# plot3 <- data_long %>%
-#   filter(activity == "Misc") %>%
-#   ggplot(aes(x = datetime, y = time_column)) +
-#   geom_bin2d(bins = c(92, 72)) +
-#   scale_fill_viridis_c() +
-#   scale_x_datetime(
-#     limits = c(min(data_long$datetime), max(data_long$datetime)),
-#     expand = c(0, 0),
-#     date_breaks = "1 month",
-#     date_labels = "%B"
-#   ) +
-#   theme_minimal() +
-#   labs(x = NULL, y = NULL) +
-#   theme(axis.text.y = element_text(hjust = 0.5, size = 4),
-#         legend.position = "none",
-#         panel.grid.major = element_blank(),
-#         panel.grid.minor = element_blank())
-# 
-# plot3 <- ggplotly(plot3) %>% 
-#   style(hoverinfo = "none")
-# 
-# plot4 <- data_long %>%
-#   filter(activity == "Misc") %>%
-#   ggplot(aes(x = datetime, y = time_column)) +
-#   geom_bin2d(bins = c(46, 72)) +
-#   scale_fill_viridis_c() +
-#   scale_x_datetime(
-#     limits = c(min(data_long$datetime), max(data_long$datetime)),
-#     expand = c(0, 0),
-#     date_breaks = "1 month",
-#     date_labels = "%B"
-#   ) +
-#   theme_minimal() +
-#   labs(x = NULL, y = NULL) +
-#   theme(axis.text.y = element_text(hjust = 0.5, size = 4),
-#         legend.position = "none",
-#         panel.grid.major = element_blank(),
-#         panel.grid.minor = element_blank())
-# 
-# plot4 <- ggplotly(plot4) %>% 
-#   style(hoverinfo = "none")
-# 
-# subplot(plot2, plot3, plot4, nrows = 3, shareX = TRUE, shareY = TRUE) %>%
-#   layout(hovermode = "x unified, y unified",
-#          hoversubplots = "axis") %>%
-#   plotly::config(
-#     displayModeBar = TRUE,
-#     displaylogo = FALSE,
-#     modeBarButtonsToRemove = c("zoom2d", "pan2d", "zoomIn2d", "zoomOut2d",
-#                                "autoScale2d", "toggleSpikelines", "hoverClosestCartesian",
-#                                "hoverCompareCartesian", "toImage", "select2d", "lasso2d"),
-#     staticPlot = FALSE,
-#     height = 800
-#   )
+::: {.callout-tip title="Session info" collapse="true" icon="false"}
+```{r}
+sessionInfo()
 ```
+:::

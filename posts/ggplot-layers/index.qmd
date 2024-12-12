@@ -1,0 +1,16 @@
+---
+title: "Ggplot layers"
+description: |
+  Visual comparison of two life-periods.
+author: 
+ - name: Vadym Yudenko
+date: 2024-12-01
+draft: true 
+categories:
+  - ggplot2
+  - Visualization
+---
+
+
+
+ggplot layers are plotted in the order they are written, with the first layer being rendered at the back and the last one being rendered at the front.

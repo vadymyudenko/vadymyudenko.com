@@ -40,9 +40,10 @@ div.quarto-post .metadata {
   }
   
 div.quarto-post .thumbnail {
-    flex-basis: 50%;
+    flex-basis: 20%;
 }
 ```
+
 
 ::: {#front-list}
 :::

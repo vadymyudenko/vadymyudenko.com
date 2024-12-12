@@ -1,0 +1,14 @@
+{
+  "hash": "642180c4d2f6b22711a42f4371a51f9c",
+  "result": {
+    "markdown": "---\ntitle: \"Sunrise\"\nauthor: \n - name: Vadym Yudenko\ndate: 2024-12-01\ndraft: true \ncategories:\n  - Timetracking\n  - Dataviz\neditor: \n  markdown: \n    wrap: 72\n---\n\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

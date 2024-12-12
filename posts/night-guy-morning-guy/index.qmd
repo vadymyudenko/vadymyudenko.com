@@ -1,0 +1,1418 @@
+---
+title: "Night Guy and Morning Guy"
+description: |
+  Visual comparison of two life-periods.
+author: 
+ - name: Vadym Yudenko
+date: 2024-12-01
+categories:
+  - Timetracking
+  - Reflection
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.showtext=TRUE)
+```
+
+```{r libraries}
+library(stargazer)
+library(gt)
+library(tidyverse)
+library(ggExtra)
+library(ggtext)
+library(ggthemes)
+library(gganimate)
+library(ggnewscale)
+library(showtext)
+library(grid)
+library(transformr)
+library(lubridate)
+library(reshape2)
+library(plotly)
+library(scales)
+library(ggiraph)
+library(glue)
+library(knitr)
+library(fontawesome)
+library(RColorBrewer)
+library(DT)
+library(patchwork)
+```
+
+```{r theme}
+font_add_google("Fira Sans", "firasans")
+
+#showtext::showtext_auto()
+Sys.setenv(TZ = "GMT+3")
+
+blog_theme <-
+   theme_minimal(18, base_family = "Fira Sans") +
+   theme(
+     plot.background = element_rect(fill = "white", color = NA),
+     plot.title.position = "plot",
+     plot.title = element_text(size = 24, margin = margin(b = 1, unit = "line")),
+     legend.position = c(0, 1),
+     legend.direction = "horizontal",
+     legend.justification = c(0, 1),
+     legend.title.align = 1,
+     axis.title.y = element_text(hjust = 0, size = 10),
+     axis.title.x = element_text(hjust = 0, size = 10),
+     panel.grid.major = element_line(color = "#d3d9db"),
+     panel.grid.minor = element_blank()
+   )
+ 
+theme_set(blog_theme)
+```
+
+```{r data}
+data_long20 <- read.csv("data/data_2020.csv") %>%
+  mutate(
+    datetime = as.POSIXct(datetime, format="%m/%d/%Y %H:%M"),
+    day_of_week = weekdays(datetime),
+    time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
+    hour = hour(datetime),
+    day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
+    month = month(datetime, label = TRUE, abbr = FALSE),
+    activity = case_when(
+     tolower(activity) %in% c("misc", "mic") ~ "Miscellaneous",
+     activity %in% c("Transport", "Transportation") ~ "Going Somewhere",
+     activity == "Communication" ~ "Social Life",
+     activity == "TM" ~ "Toastmasters",
+     TRUE ~ activity))
+
+data23 <- read_delim("data/KSE_life_2.csv", 
+    delim = ";", escape_double = FALSE, col_types = cols(Column1 = col_time(format = "%H:%M")), 
+    trim_ws = TRUE)
+
+data_long2023 <- gather(data23, day, activity, -Column1) %>% 
+  na.omit() %>% 
+  mutate(day = ifelse(day == "9/30/2022", "10/1/2022", day))
+
+
+data_long2023$datetime <- as.POSIXct(paste(data_long2023$day, data_long2023$Column1), format="%m/%d/%Y %H:%M:%S", tz="GMT+3")
+
+data_long2023 <- data_long2023 %>%
+   mutate(
+     day_of_week = weekdays(datetime),
+   time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
+   activity = case_when(
+     tolower(activity) %in% c("misc", "mic") ~ "Miscellaneous",
+     activity %in% c("Transport", "Transportation") ~ "Going Somewhere",
+     activity == "Communication" ~ "Social Life",
+     TRUE ~ activity),
+     hour = hour(datetime),
+     #day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
+     month = month(datetime, label = TRUE, abbr = FALSE)
+   )
+
+activity_colors <- c(
+   "Sleep" = "#3B4CC0",  # Deep Blue (Night)
+   "Social Life" = "#87CEEB",  # SkyBlue
+   "Sport" = "#1D8E3A",  # Forest Green (Active)
+   "Work" = "#C0392B",  # Red (Energy)
+   "Reading" = "#F39C12",  # Golden Orange (Focus)
+   "Japanese" = "#FF69B4",  # HotPink
+   "Study" = "#FFD700",  # Gold
+   "Food" = "#99CC99",  # Soft Green
+   "Waste" = "#333333",  # Dark Charcoal
+   "Piano" = "purple",  # HotPink
+   "Planning" = "#FF6347",  # Tomato
+   "Toastmasters" = "#8E44AD",  # Deep Purple (Creative)
+   "Going Somewhere" = "#95A5A6",  # Urban Gray
+   "Miscellaneous" = "#27AE60"  # Fresh Green
+)
+
+```
+
+## 2019-2020 {#plot_2019_2020}
+
+::: column-screen
+```{r main plot 2020}
+p <- data_long20 %>%
+  ggplot(aes(datetime, time_column, fill = activity)) +
+  geom_bin2d(bins = c(367, 72),  
+      aes(text = str_replace_all(paste0(
+        "<b>", time_column, "</b><br>",
+        activity, "<br>"), "NA", "missing")
+      )
+    ) +
+  scale_fill_manual(values = activity_colors) +
+  scale_x_datetime(limits = c(min(data_long20$datetime), max(data_long20$datetime)), 
+                    expand = c(0, 0),
+                    date_breaks = "1 month",  # Display every month on the x-axis
+                    date_labels = "%B") +  # Format the date labels as "Month Year"
+  labs(title = NULL, x = NULL, y = NULL) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    panel.grid = element_blank(),
+    plot.title = element_blank(),
+    axis.text.x = element_text(angle = 0, size = 10, face = "bold"),
+    axis.text.y = element_text(hjust = 0.5, size = 5, face = "bold")
+    )
+
+ggplotly(p, tooltip = "text") %>%
+  layout(
+    dragmode = "zoom",  # Enable rectangular zooming
+    yaxis = list(  
+      tickangle = 0,  
+      tickvals = seq(1, 72, by = 1) # Specify all 72 values
+    ),
+    xaxis = list(),  # Remove fixedrange = TRUE to allow zooming in x direction
+    font = list(family = "Fira Sans"),
+    hoverlabel = list(font = list(family = "Fira Sans"), align = "left"),
+    yaxis2 = list(  # Adjust yaxis2 settings
+      overlaying = "y",
+      side = "left"
+    ),
+    margin = list(l = 50, r = 50, t = 20, b = 50),
+    updatemenus = list(
+      list(
+        type = "buttons",
+        showactive = FALSE
+        # buttons = list(
+        #   list(
+        #     step = "all",
+        #     label = "Reset",
+        #     method = "relayout",
+        #     args = list("yaxis.range", list(NULL, NULL))
+        #   )
+        # )
+      )
+    )
+  ) %>%
+  plotly::config(
+    displayModeBar = TRUE,
+    displaylogo = FALSE,
+    modeBarButtonsToRemove = c("zoom2d", "pan2d", "zoomIn2d", "zoomOut2d",
+                               "autoScale2d", "toggleSpikelines", "hoverClosestCartesian",
+                               "hoverCompareCartesian", "toImage"),
+    staticPlot = FALSE,
+    height = 2000  # Adjust the height of the plot
+  )
+```
+:::
+
+In 2020 was my first attempt at time tracking. I have made some
+observations from that experience at the time. Then, as I have gained
+data analysis and visualization skills, I, again, have revisited my data
+in 2023 and came to some other conclusions ([read about it
+here](https://vadymyudenko.com/posts/time-tracking-2020/)). In late
+2024, I find myself revisiting the data yet again... because there is
+more data!
+
+## 2022-2024 {#plot_2022_2024}
+
+::: column-screen
+```{r main plot 2023}
+p23 <- data_long2023 %>%
+   ggplot(aes(datetime, time_column, fill = activity)) +
+   geom_bin2d(bins = c(487, 72),  
+       aes(text = str_replace_all(paste0(
+         "<b>", time_column, "</b><br>",
+         activity, "<br>"), "NA", "missing")
+       )
+     ) +
+   scale_fill_manual(values = activity_colors) +
+   scale_x_datetime(limits = c(min(data_long2023$datetime), max(data_long2023$datetime)), 
+                    expand = c(0, 0),
+                    date_breaks = "1 month",  # Display every month on the x-axis
+                    date_labels = "%B") +  # Format the date labels as "Month Year"
+   labs(title = NULL, x = NULL, y = NULL) +
+   theme_minimal() +
+   theme(
+     legend.position = "none",
+     panel.grid = element_blank(),
+     plot.title = element_blank(),
+     axis.text.x = element_text(angle = 0, size = 10, face = "bold"),
+     axis.text.y = element_text(hjust = 0.5, size = 5, face = "bold")
+     )
+
+ggplotly(p23, tooltip = "text") %>%
+   layout(
+   dragmode = "zoom",  # Enable rectangular zooming
+     yaxis = list(  
+       tickangle = 0,  
+       tickvals = seq(1, 72, by = 1) # Specify all 72 values
+     ),
+     xaxis = list(),  # Remove fixedrange = TRUE to allow zooming in x direction
+     font = list(family = "Fira Sans"),
+     hoverlabel = list(font = list(family = "Fira Sans"), align = "left"),
+     yaxis2 = list(  # Adjust yaxis2 settings
+       overlaying = "y",
+       side = "right"
+     ),
+     margin = list(l = 50, r = 50, t = 20, b = 50),
+     updatemenus = list(
+       list(
+         type = "buttons",
+         showactive = FALSE
+         # buttons = list(
+         #   list(
+         #     step = "all",
+         #     label = "Reset",
+         #     method = "relayout",
+         #     args = list("yaxis.range", list(NULL, NULL))
+         #   )
+         # )
+       )
+     )
+   ) %>%
+   plotly::config(
+     displayModeBar = TRUE,
+     displaylogo = FALSE,
+     modeBarButtonsToRemove = c("zoom2d", "pan2d", "zoomIn2d", "zoomOut2d",
+                                "autoScale2d", "toggleSpikelines", "hoverClosestCartesian",
+                                "hoverCompareCartesian", "toImage"),
+     staticPlot = FALSE,
+     height = 800  # Adjust the height of the plot
+   )
+
+```
+:::
+
+After a year-long hiatus, I have resumed tracking my time in 2022. This time there were no goals as to how much time has to be spent on any activity, but rather I used it as a tool for reflection[^1]. Overall the
+approach and categories (activities) were the same, except now instead of [<b>Japanese</b>]{style="color:#FF69B4;"} there were even more [<b>studying</b>]{style="color:#FFD700;"}, and new categories [<b>Toastmasters</b>]{style="color:#8E44AD;"}, [<b>Work</b>]{style="color:#C0392B;"} and [<b>Piano</b>]{style="color:purple;"}.
+
+[^1]: This deserves a post of it's own.
+
+```{r}
+#| column: page
+
+
+df <- data.frame(
+  Activity = names(activity_colors),
+  Description = c(
+    "Sleeping, taking a nap, or resting",
+    "Talking to people, texting, or social media",
+    "Physical activity, exercise, or sports",
+    "Work and internship",
+    "Reading for pleasure",
+    "Studying Japanese (reading, listening, writing...)",
+    "University studies, extra courses",
+    "Eating and drinking",
+    "Wasting time, procrastinating",
+    "Playing the piano, practicing",
+    "Journaling, reflecting, planning",
+    "Attending or preparing to Toastmasters meetings",
+    "Commute and travel",
+    "Other activities not covered by the other categories"
+  ),
+  stringsAsFactors = FALSE
+)
+
+apply_highlighting <- function(activity, color_mapping) {
+  highlight_css <- sprintf(
+    "background-color: %s; color: white; font-weight: bold; padding: 4px; border-radius: 4px;",
+    color_mapping[activity]
+  )
+  sprintf("<span style='%s'>%s</span>", highlight_css, activity)
+}
+
+# Apply the highlighting to the Activity column
+df$Activity <- mapply(apply_highlighting, df$Activity, MoreArgs = list(activity_colors))
+
+
+df$Description <- c(
+  "Sleeping, taking a nap, or resting",
+  "Talking to people, texting, or social media",
+  "Physical activity, exercise, or sports",
+  "Work and internship",
+  "Reading for pleasure",
+  "Studying Japanese (reading, listening, writing...)",
+  "University studies, extra courses",
+  "Eating and drinking",
+  "Wasting time, procrastinating",
+  "Playing the piano, practicing",
+  "Journaling, reflecting, planning",
+  "Attending or preparing to Toastmasters meetings",
+  "Commute and travel",
+  "Other activities not covered by the other categories")
+
+datatable(
+  df,
+  escape = FALSE, # Allows HTML in the table cells
+  rownames = FALSE, # Remove row names
+  options = list(
+    autoWidth = FALSE,
+    searching = FALSE,
+    paging = FALSE,
+    info = FALSE
+  )
+) %>%
+  formatStyle(columns = names(df), padding = "4px 6px")
+```
+
+## 2020 vs 2023 {#comparison}
+
+```{r data trans}
+data1 <- data_long20 %>%
+  select(datetime, activity) %>%
+  mutate(index = row_number())
+
+# Select relevant columns from the second dataset and add an index
+data2 <- data_long2023 %>%
+  select(datetime, activity) %>%
+  mutate(index = row_number())
+
+# Combine the two datasets
+combined_data <- bind_rows(data1, data2, .id = "source") %>%
+  select(index, datetime, activity) %>% 
+  mutate(
+   time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
+   activity = ifelse(tolower(activity) %in% c("misc", "mic"), "Misc", activity),
+   activity = ifelse(activity == "Transport", "Transportation", activity),
+   hour = hour(datetime),
+   day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
+   period = case_when(
+     year(datetime) %in% 2019:2020 ~ "2019-2020",
+     year(datetime) %in% 2022:2024 ~ "2022-2024",
+     TRUE ~ NA_character_  # Exclude other years
+     ))
+
+df_activity_hours <- combined_data %>%    
+  mutate(date = as.Date(datetime)) %>%    
+  group_by(date, activity) %>%    
+  summarise(hours = round(n() * (20/60),1)) %>%   
+  ungroup()  # Filter the data for "Sleep" activity and remove the first and last rows 
+```
+
+::: column-screen
+```{r}
+p100 <- combined_data %>%
+  mutate(date = as.Date(datetime),
+         time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
+          period = case_when(
+                            year(datetime) %in% 2019:2020 ~ "2019-2020",
+                            year(datetime) %in% 2022:2024 ~ "2022-2024",
+                            TRUE ~ NA_character_  # Exclude other years
+                            )) %>%
+  filter(!is.na(period)) %>%  # Keep only the defined periods) 
+  ggplot(aes(datetime, time_column, fill = activity)) +
+  geom_bin2d(bins = c(367, 72),
+             aes(text = str_replace_all(paste0(
+               "<b>", time_column, "</b><br>",
+               activity, "<br>"), "NA", "missing"))) +
+  scale_fill_manual(values = activity_colors) +
+  scale_x_datetime(expand = c(0, 0),
+                   date_breaks = "2 months",
+                   date_labels = "%b %Y") +
+  facet_wrap(~ period, scales = "free_x") +  # Separate panels for custom periods
+  labs(title = NULL, x = NULL, y = NULL, fill = NULL) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",  # Position legend at the bottom
+    panel.grid = element_blank(),
+    plot.title = element_blank(),
+    axis.text.x = element_text(angle = 0, size = 10),
+    axis.text.y = element_text(hjust = 0.5, size = 5),
+    legend.title = element_blank()
+  )
+
+# Convert to interactive Plotly plot
+ggplotly(p100, tooltip = "text") %>%
+  layout(
+    dragmode = "zoom",
+    yaxis = list(
+      tickangle = 0,
+      tickvals = seq(1, 72, by = 1)
+    ),
+    font = list(family = "Fira Sans"),
+    hoverlabel = list(font = list(family = "Fira Sans"), align = "left"),
+    margin = list(l = 50, r = 50, t = 20, b = 50)
+  ) %>%
+  plotly::config(
+    displayModeBar = TRUE,
+    displaylogo = FALSE,
+    modeBarButtonsToRemove = c("zoom2d", "pan2d", "zoomIn2d", "zoomOut2d",
+                               "autoScale2d", "toggleSpikelines", "hoverClosestCartesian",
+                               "hoverCompareCartesian", "toImage"),
+    staticPlot = FALSE,
+    height = 800
+  )
+```
+:::
+
+Despite a 2 year difference, these look almost the same—lotsa [<b>sleeping</b>]{style="color:#3B4CC0;"},
+studying and everything else. In 2020 there were days when I went to bed
+super late, in 2022-2023 they became habitual. Also, hours of [<b>sleep</b>]{style="color:#3B4CC0;"} are
+visibly lower on the right, than on the left. In 2020 I [<b>socialized</b>]{style="color:#87CEEB;"}
+throughout the day, whereas in 2022-2023 it is concentrated in the
+evening—[<b>studies</b>]{style="color:#FFD700;"} and [<b>work</b>]{style="color:#C0392B;"} have ousted them.
+
+2022-2024 was an extremely stressful and rewarding year. I have learned and achieved in this year more than in 4 years combined, I'd wake up and [<b>study</b>]{style="color:#FFD700;"}, then rest a bit, then [<b>study</b>]{style="color:#FFD700;"} again. There were burnouts, and added pressure because of power outages and war in general. Yet, when you look at the percentages... my life hasn't changed much.
+
+If you add [<b> Japanese</b>]{style="color:#FF69B4;"} and [<b>university study</b>]{style="color:#FFD700;"} time from 2019-2020, you'd have roughly the same average as in 2023. Had a more active [<b>social life </b>]{style="color:#87CEEB;"}, but
+did less [<b> sports</b>]{style="color:#1D8E3A;"} in 2023. But the most striking difference is with [<b>sleep</b>]{style="color:#3B4CC0;"}, or lack thereof, in 2023.
+
+```{r}
+activity_percentage <- combined_data %>%
+  mutate(period = case_when(
+                            year(datetime) %in% 2019:2020 ~ "2019-2020",
+                            year(datetime) %in% 2022:2024 ~ "2022-2024",
+                            TRUE ~ NA_character_  # Exclude other years
+                            )) %>%
+  group_by(period, activity) %>%
+  summarise(count_observations = n(), .groups = "drop") %>%
+  group_by(period) %>%
+  mutate(total_observations = sum(count_observations),
+         percentage = round(100 * count_observations / total_observations, 1)) %>%
+  ungroup()
+
+activity_percentage %>%
+  plot_ly(
+    x = ~percentage,
+    y = ~reorder(activity, percentage),
+    type = 'bar',
+    color = ~period,
+    colors = c("2019-2020" = "navy", "2022-2024" = "#FFCC33"),
+    text = ~sprintf("%.1f%%", percentage),
+    textposition = "outside",  # Position data labels outside bars
+    textfont = list(
+      family = "Fira Sans", 
+      size = 14, 
+      color = "black", 
+      weight = "bold"
+    ),
+    marker = list(line = list(color = "black", width = 0.5)),  # Optional: Bar border
+    hoverinfo = "none"  # Disable tooltips
+  ) %>%
+  layout(
+    font = list(family = "Fira Sans", size = 14, color = "black"),
+    title = "",
+    xaxis = list(title = "Percentage"),
+    yaxis = list(title = ""),
+    barmode = "group",  # Stacked layout
+    showlegend = TRUE
+  ) %>%
+  # Add customizations for interactivity and appearance
+  plotly::config(
+    displayModeBar = TRUE,
+    displaylogo = FALSE,
+    modeBarButtonsToRemove = c("zoom2d", "pan2d", "zoomIn2d", "zoomOut2d",
+                               "autoScale2d", "toggleSpikelines", "hoverClosestCartesian",
+                               "hoverCompareCartesian", "toImage", "select2d", "lasso2d"),
+    staticPlot = FALSE,
+    height = 800
+  )
+
+
+```
+
+::: column-screen
+```{r}
+p_sleep <- combined_data %>%
+  filter(activity == c("Sleep")) %>% 
+  mutate(date = as.Date(datetime),
+         time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
+          period = case_when(
+                            year(datetime) %in% 2019:2020 ~ "2019-2020",
+                            year(datetime) %in% 2022:2024 ~ "2022-2024",
+                            TRUE ~ NA_character_  # Exclude other years
+                            )) %>%
+  filter(!is.na(period)) %>%  # Keep only the defined periods) 
+  ggplot(aes(datetime, time_column, fill = activity)) +
+  geom_bin2d(bins = c(367, 72),
+             aes(text = str_replace_all(paste0(
+               "<b>", time_column, "</b><br>",
+               activity, "<br>"), "NA", "missing"))) +
+  scale_fill_manual(values = activity_colors) +
+  scale_x_datetime(expand = c(0, 0),
+                   date_breaks = "2 months",
+                   date_labels = "%b %Y") +
+  facet_wrap(~ period, scales = "free_x") +  # Separate panels for custom periods
+  labs(title = NULL, x = NULL, y = NULL, fill = NULL) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",  # Position legend at the bottom
+    panel.grid = element_blank(),
+    plot.title = element_blank(),
+    axis.text.x = element_text(angle = 0, size = 10),
+    axis.text.y = element_text(hjust = 0.5, size = 5),
+    legend.title = element_blank()
+  )
+
+ggplotly(p_sleep, tooltip = "text") %>%
+  layout(
+    dragmode = "zoom",
+    yaxis = list(
+      tickangle = 0,
+      tickvals = seq(1, 72, by = 1)
+    ),
+    font = list(family = "Fira Sans"),
+    hoverlabel = list(font = list(family = "Fira Sans"), align = "left"),
+    margin = list(l = 50, r = 50, t = 20, b = 50)
+  ) %>%
+  plotly::config(
+    displayModeBar = TRUE,
+    displaylogo = FALSE,
+    modeBarButtonsToRemove = c("zoom2d", "pan2d", "zoomIn2d", "zoomOut2d",
+                               "autoScale2d", "toggleSpikelines", "hoverClosestCartesian",
+                               "hoverCompareCartesian", "toImage"),
+    staticPlot = FALSE,
+    height = 800
+  )
+```
+:::
+
+## Morning guy {#morning-guy}
+
+Way back in 2020 one of the goals with time tracking was to get better
+at mornings. I would spent hours on my phone and not get anything done.
+As you can see from the sankey plot, I've been quite successful!
+
+The worst scenario is [<b>Sleep</b>]{style="color:#3B4CC0;"} -> [<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b>Miscellaneous</b>]{style="color:#27AE60;"} ⟶
+[<b>Miscellaneous</b>]{style="color:#27AE60;"} , which is probably me laying in bed, engaging in
+[brain-rot](https://corp.oup.com/news/brain-rot-named-oxford-word-of-the-year-2024/)
+activity. [<b>Sleep</b>]{style="color:#3B4CC0;"} -> [<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b>Food</b>]{style="color:#99CC99;"} is better, and
+[<b>Sleep</b>]{style="color:#3B4CC0;"} -> [<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b>Food</b>]{style="color:#99CC99;"} is much better. There are days when I'd go
+for a morning run or do morning exercises ([<b>Sleep</b>]{style="color:#3B4CC0;"} -> [<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b> Sport</b>]{style="color:#1D8E3A;"}
+and [<b>Sleep</b>]{style="color:#3B4CC0;"} -> [<b> Sport</b>]{style="color:#1D8E3A;"}). Looking at it makes me proud of my younger self, and
+displeased with older self.
+
+```{r morning routine 2020}
+sankey_data <- data_long20 %>%
+  select(datetime, hour, activity, time_column) %>%
+  mutate(
+    time_of_day = case_when(
+      hour > 4 & hour <= 12 ~ "Morning",
+      hour < 18 ~ "Afternoon",
+      TRUE ~ "Evening"
+    ),
+    lead1_activity = lead(activity, 1),
+    lead2_activity = lead(activity, 2),
+    lead3_activity = lead(activity, 3),
+    wake_up_raw  = case_when(
+      lead1_activity != "Sleep" & lead2_activity != "Sleep" & lead3_activity != "Sleep" ~ "Wake up",
+      TRUE ~ NA_character_
+    )) 
+
+# Initialize the wake_up column with NA
+sankey_data$wake_up <- NA
+
+# Extract unique dates from the data
+unique_dates <- unique(as.Date(sankey_data$datetime))
+
+# Loop through each date
+for (date in unique_dates) {
+  # Subset the data for the current date
+  daily_data <- sankey_data[as.Date(sankey_data$datetime) == date, ]
+  
+  # Find the first occurrence of "Wake up" logic
+  for (i in 1:(nrow(daily_data) - 2)) {
+    if (
+      daily_data$activity[i] == "Sleep" &&
+      daily_data$activity[i + 1] != "Sleep" &&
+      daily_data$activity[i + 2] != "Sleep"
+    ) {
+      sankey_data$wake_up[which(as.Date(sankey_data$datetime) == date)[i]] <- "Wake up"
+      break 
+    }
+  }
+}
+
+sankey_data <- sankey_data %>% 
+  select(-wake_up_raw) %>% 
+  filter(!is.na(wake_up)) %>% 
+  mutate(lead_1 = paste0(as.character(lead1_activity), "_1"),
+         lead_2 = paste0(as.character(lead2_activity), "_2"),
+         lead_3 = paste0(as.character(lead3_activity), "_3"))
+
+# Prepare the data for multi-stage links
+sankey_flows <- sankey_data %>%
+  select(activity, lead_1, lead_2, lead_3) %>%
+  mutate(
+    stage_1 = activity,
+    stage_2 = lead_1,
+    stage_3 = lead_2,
+    stage_4 = lead_3
+  )
+
+# Create unique nodes
+nodes <- sankey_flows %>%
+  pivot_longer(cols = starts_with("stage"), names_to = "stage", values_to = "label") %>%
+  distinct(label) %>%
+  mutate(node_id = row_number() - 1,
+         # Strip the suffix (_1, _2, _3) from labels
+         base_label = gsub("_\\d$", "", label),
+         # Match the base label to activity_colors
+         color = ifelse(base_label %in% names(activity_colors),
+                        activity_colors[base_label], 
+                        "#D3D3D3"))
+
+# Create links for each stage
+links_stage_1 <- sankey_flows %>%
+  select(stage_1, stage_2) %>%
+  rename(source = stage_1, target = stage_2) %>%
+  group_by(source, target) %>%
+  summarise(value = n(), .groups = "drop")
+
+links_stage_2 <- sankey_flows %>%
+  select(stage_2, stage_3) %>%
+  rename(source = stage_2, target = stage_3) %>%
+  group_by(source, target) %>%
+  summarise(value = n(), .groups = "drop")
+
+links_stage_3 <- sankey_flows %>%
+  select(stage_3, stage_4) %>%
+  rename(source = stage_3, target = stage_4) %>%
+  group_by(source, target) %>%
+  summarise(value = n(), .groups = "drop")
+
+# Combine all links
+links <- bind_rows(links_stage_1, links_stage_2, links_stage_3) %>%
+  left_join(nodes, by = c("source" = "label")) %>%
+  rename(source_id = node_id) %>%
+  left_join(nodes, by = c("target" = "label")) %>%
+  rename(target_id = node_id) %>% 
+  left_join(nodes, by = c("source_id" = "node_id")) %>%
+  rename(source_label = label, source_color = color) %>%
+  mutate(link_color = source_color)  
+
+# Prepare the Sankey diagram
+fig <- plot_ly(
+  type = "sankey",
+  orientation = "h",
+  node = list(
+    label = nodes$base_label,
+    color = nodes$color,  # Apply custom colors
+    pad = 15,
+    thickness = 20,
+    line = list(color = "black", width = 0.5),
+    hoverinfo = "none",
+    font = list(size = 14)
+  ),
+  link = list(
+    source = as.numeric(links$source_id),
+    target = as.numeric(links$target_id),
+    value = as.numeric(links$value),
+    color = links$link_color,  # Apply custom colors to links
+    hoverinfo = "none"        # Use text for tooltip
+  )) %>% 
+  layout(
+  title = "Morning routine 2020",
+  font = list(size = 10, family = "Fira Sans"),
+  annotations = list(
+      list(
+        x = -0.01,  # Adjust the x-position for each stage
+        y = 0.95,  # Slightly above the nodes
+        text = "Wake up",  # Label text
+        showarrow = FALSE,
+        font = list(size = 10, family = "Fira Sans")
+      ),
+      list(
+        x = 0.31,
+        y = 0.97,
+        text = "+ 20 mins",
+        showarrow = FALSE,
+        font = list(size = 10, family = "Fira Sans")
+      ),
+      list(
+        x = 0.69,
+        y = 1,
+        text = "+ 40 mins",
+        showarrow = FALSE,
+        font = list(size = 10, family = "Fira Sans")
+      ),
+      list(
+        x = 1.015,
+        y = 1.035,
+        text = "+ hour",
+        showarrow = FALSE,
+        font = list(size = 10, family = "Fira Sans")
+      ))
+  ) %>%
+  
+  # Add customizations for interactivity and appearance
+  plotly::config(
+    displayModeBar = TRUE,
+    displaylogo = FALSE,
+    modeBarButtonsToRemove = c("zoom2d", "pan2d", "zoomIn2d", "zoomOut2d",
+                               "autoScale2d", "toggleSpikelines", "hoverClosestCartesian",
+                               "hoverCompareCartesian", "toImage", "select2d", "lasso2d"),
+    staticPlot = TRUE,
+    height = 800
+  )
+
+fig
+```
+
+In 2022-2023 I have been much lazier and it would take me much longer to
+wake up. See the heatmap for 2023 and how inconsistent my [<b>sleeping</b>]{style="color:#3B4CC0;"}
+schedule was, add to that that I've not been getting enough [<b>sleep</b>]{style="color:#3B4CC0;"} on
+most days and that's a recipe for a bad morning.
+
+```{r morning routine 2023}
+sankey_data23 <- data_long2023 %>%
+  select(datetime, hour, activity, time_column) %>%
+  mutate(
+    time_of_day = case_when(
+      hour > 4 & hour <= 12 ~ "Morning",
+      hour < 18 ~ "Afternoon",
+      TRUE ~ "Evening"
+    ),
+    lead1_activity = lead(activity, 1),
+    lead2_activity = lead(activity, 2),
+    lead3_activity = lead(activity, 3),
+    wake_up_raw  = case_when(
+      lead1_activity != "Sleep" & lead2_activity != "Sleep" & lead3_activity != "Sleep" ~ "Wake up",
+      TRUE ~ NA_character_
+    )) 
+
+# Initialize the wake_up column with NA
+sankey_data23$wake_up <- NA
+
+# Extract unique dates from the data
+unique_dates23 <- unique(as.Date(sankey_data23$datetime))
+
+for (date in unique_dates23) {
+  # Subset the data for the current date
+  daily_data <- sankey_data23[as.Date(sankey_data23$datetime) == date, ]
+  
+  # Find the first occurrence of "Wake up" logic
+  for (i in 1:(nrow(daily_data) - 3)) {
+    if (
+      daily_data$activity[i] == "Sleep" &&  # Current activity is "Sleep"
+      daily_data$activity[i + 1] != "Sleep" &&  # Next activity is not "Sleep"
+      daily_data$activity[i + 2] != "Sleep" &&  # The second lead activity is not "Sleep"
+      daily_data$activity[i + 3] != "Sleep"    # The third lead activity is not "Sleep"
+    ) {
+      # Mark the first occurrence of "Wake up" for this date
+      sankey_data23$wake_up[which(as.Date(sankey_data23$datetime) == date)[i]] <- "Wake up"
+      break # Exit the loop after the first valid "Wake up" is found
+    }
+  }
+}
+
+sankey_data23 <- sankey_data23 %>% 
+  select(-wake_up_raw) %>% 
+  filter(!is.na(wake_up)) %>% 
+  mutate(lead_1 = paste0(as.character(lead1_activity), "_1"),
+         lead_2 = paste0(as.character(lead2_activity), "_2"),
+         lead_3 = paste0(as.character(lead3_activity), "_3"))
+
+# Prepare the data for multi-stage links
+sankey_flows23 <- sankey_data23 %>%
+  filter(activity == "Sleep") %>% 
+  select(activity, lead_1, lead_2, lead_3) %>%
+  mutate(
+    stage_1 = activity,
+    stage_2 = lead_1,
+    stage_3 = lead_2,
+    stage_4 = lead_3
+  )
+
+# Create unique nodes
+nodes23 <- sankey_flows23 %>%
+  pivot_longer(cols = starts_with("stage"), names_to = "stage", values_to = "label") %>%
+  distinct(label) %>%
+  mutate(node_id = row_number() - 1,
+         # Strip the suffix (_1, _2, _3) from labels
+         base_label = gsub("_\\d$", "", label),
+         # Match the base label to activity_colors
+         color = ifelse(base_label %in% names(activity_colors),
+                        activity_colors[base_label], 
+                        "#D3D3D3"))
+
+# Create links for each stage
+links_stage23_1 <- sankey_flows23 %>%
+  select(stage_1, stage_2) %>%
+  rename(source = stage_1, target = stage_2) %>%
+  group_by(source, target) %>%
+  summarise(value = n(), .groups = "drop")
+
+links_stage23_2 <- sankey_flows23 %>%
+  select(stage_2, stage_3) %>%
+  rename(source = stage_2, target = stage_3) %>%
+  group_by(source, target) %>%
+  summarise(value = n(), .groups = "drop")
+
+links_stage23_3 <- sankey_flows23 %>%
+  select(stage_3, stage_4) %>%
+  rename(source = stage_3, target = stage_4) %>%
+  group_by(source, target) %>%
+  summarise(value = n(), .groups = "drop")
+
+# Combine all links
+links23 <- bind_rows(links_stage23_1, links_stage23_2, links_stage23_3) %>%
+  left_join(nodes23, by = c("source" = "label")) %>%
+  rename(source_id = node_id) %>%
+  left_join(nodes23, by = c("target" = "label")) %>%
+  rename(target_id = node_id) %>% 
+  left_join(nodes23, by = c("source_id" = "node_id")) %>%
+  rename(source_label = label, source_color = color) %>%
+  mutate(link_color = source_color)  
+
+# Prepare the Sankey diagram
+fig23 <- plot_ly(
+  type = "sankey",
+  orientation = "h",
+  node = list(
+    label = nodes23$base_label,
+    color = nodes23$color,  # Apply custom colors
+    pad = 15,
+    thickness = 20,
+    line = list(color = "black", width = 0.5),
+    hoverinfo = "none",
+    font = list(size = 24)
+  ),
+  link = list(
+    source = as.numeric(links23$source_id),
+    target = as.numeric(links23$target_id),
+    value = as.numeric(links23$value),
+    color = links23$link_color,  # Apply custom colors to links
+    hoverinfo = "none"        # Use text for tooltip
+  )) %>% 
+  layout(
+  title = "Morning routine 2023",
+  font = list(size = 10, family = "Fira Sans"),
+  annotations = list(
+      list(
+        x = -0.01,  # Adjust the x-position for each stage
+        y = 0.96,  # Slightly above the nodes
+        text = "Wake up",  # Label text
+        showarrow = FALSE,
+        font = list(size = 10, family = "Fira Sans")
+      ),
+      list(
+        x = 0.3,
+        y = 0.96,
+        text = "+ 20 mins",
+        showarrow = FALSE,
+        font = list(size = 10, family = "Fira Sans")
+      ),
+      list(
+        x = 0.7,
+        y = 0.97,
+        text = "+ 40 mins",
+        showarrow = FALSE,
+        font = list(size = 10, family = "Fira Sans")
+      ),
+      list(
+        x = 1.015,
+        y = 1.037,
+        text = "+ hour",
+        showarrow = FALSE,
+        font = list(size = 10, family = "Fira Sans")
+      ))) %>%
+  
+  # Add customizations for interactivity and appearance
+  plotly::config(
+    displayModeBar = TRUE,
+    displaylogo = FALSE,
+    modeBarButtonsToRemove = c("zoom2d", "pan2d", "zoomIn2d", "zoomOut2d",
+                               "autoScale2d", "toggleSpikelines", "hoverClosestCartesian",
+                               "hoverCompareCartesian", "toImage", "select2d", "lasso2d"),
+    staticPlot = TRUE,
+    height = 800
+  )
+
+fig23
+```
+
+Don't think that this [<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b>Miscellaneous</b>]{style="color:#27AE60;"} is
+only me procrastinating in bed. It is very likely this is what I've been
+doing, but because [<b>Miscellaneous</b>]{style="color:#27AE60;"} is such a broad category. Many things
+like taking a shower, packing stuff, ironing clothes, cleaning the flat,
+or preping breakfast[^2], which I started doing more often in this
+period.
+
+[^2]: Don't confuse with eating breakfast, which comes under [<b>Food</b>]{style="color:#99CC99;"}
+    category :)
+
+There is one person who is to blame for lazy morning, and it is...
+
+## Night guy {#night-guy}
+
+> “I never get enough sleep. I stay up late at night, cause I’m Night
+> Guy. Night Guy wants to stay up late. ‘What about getting up after
+> five hours sleep?’ ‘Oh that’s Morning Guy’s problem. That’s not my
+> problem, I’m Night Guy. I stay up as late as I want.’ So you get up in
+> the morning, you’re exhausted, groggy… ‘oooh I hate that Night Guy!’
+> See, Night Guy always \[messes up\] Morning Guy. There’s nothing
+> Morning Guy can do. The only thing Morning Guy can do is try and
+> oversleep often enough so that Day Guy loses his job and Night Guy has
+> no money to go out anymore.”
+>
+> – Jerry Seinfeld
+
+The one messing up morning guy, the one partying (supposedly), the
+carefree one. In 2020 he knew his place, he was tame. Either chilling
+before going to bed ([<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b>Sleep</b>]{style="color:#3B4CC0;"}) or [<b>studying</b>]{style="color:#FFD700;"},
+preparing and going to bed ([<b> Japanese</b>]{style="color:#FF69B4;"} ->  [<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b>Sleep</b>]{style="color:#3B4CC0;"}). Sometimes he'd [<b>waste</b>]{style="color:#333333;"} some time, but only for 20 minutes before realizing it is
+time to stop.
+
+
+```{r}
+combined_data_1 <- combined_data %>% 
+  mutate(bedtime = if_else(activity == "Sleep" & 
+                       lag(activity) != "Sleep", 
+                     "Bedtime", NA_character_),
+   lag_1 = if_else(bedtime == "Bedtime", lag(activity, 1), NA_character_),
+   lag_2 = if_else(bedtime == "Bedtime", lag(activity, 2), NA_character_),
+   lag_3 = if_else(bedtime == "Bedtime", lag(activity, 3), NA_character_)
+   ) %>% 
+  filter((hour >= 0 & hour <= 8) | hour >= 22) %>%
+  filter(!is.na(bedtime)) %>% 
+  filter(period == "2019-2020") %>% 
+  mutate(lag_1 = paste0(as.character(lag_1), "_1"),
+         lag_2 = paste0(as.character(lag_2), "_2"),
+         lag_3 = paste0(as.character(lag_3), "_3")) %>% 
+  select(activity, lag_1, lag_2, lag_3) %>%
+  mutate(
+    stage_1 = lag_3,
+    stage_2 = lag_2,
+    stage_3 = lag_1,
+    stage_4 = activity
+  )
+
+nodes_evn20 <- combined_data_1 %>%
+  pivot_longer(cols = starts_with("stage"), names_to = "stage", values_to = "label") %>%
+  distinct(label) %>%
+  mutate(node_id = row_number() - 1,
+         # Strip the suffix (_1, _2, _3) from labels
+         base_label = gsub("_\\d$", "", label),
+         # Match the base label to activity_colors
+         color = ifelse(base_label %in% names(activity_colors),
+                        activity_colors[base_label], 
+                        "#D3D3D3"))
+
+# Create links for each stage
+links_stage_evn20_1 <- combined_data_1 %>%
+  select(stage_1, stage_2) %>%
+  rename(source = stage_1, target = stage_2) %>%
+  group_by(source, target) %>%
+  summarise(value = n(), .groups = "drop")
+
+links_stage_evn20_2 <- combined_data_1 %>%
+  select(stage_2, stage_3) %>%
+  rename(source = stage_2, target = stage_3) %>%
+  group_by(source, target) %>%
+  summarise(value = n(), .groups = "drop")
+
+links_stage_evn20_3 <- combined_data_1 %>%
+  select(stage_3, stage_4) %>%
+  rename(source = stage_3, target = stage_4) %>%
+  group_by(source, target) %>%
+  summarise(value = n(), .groups = "drop")
+
+# Combine all links
+links_evn20 <- bind_rows(links_stage_evn20_1, links_stage_evn20_2, links_stage_evn20_3) %>%
+  left_join(nodes_evn20, by = c("source" = "label")) %>%
+  rename(source_id = node_id) %>%
+  left_join(nodes_evn20, by = c("target" = "label")) %>%
+  rename(target_id = node_id) %>% 
+  left_join(nodes_evn20, by = c("source_id" = "node_id")) %>%
+  rename(source_label = label, source_color = color) %>%
+  mutate(link_color = source_color)  
+
+
+fig_evn20 <- plot_ly(
+  type = "sankey",
+  orientation = "h",
+  node = list(
+    label = nodes_evn20$base_label,
+    color = nodes_evn20$color,  # Apply custom colors
+    pad = 15,
+    thickness = 20,
+    line = list(color = "black", width = 0.5),
+    hoverinfo = "none",
+    font = list(size = 14)
+  ),
+  link = list(
+    source = as.numeric(links_evn20$source_id),
+    target = as.numeric(links_evn20$target_id),
+    value = as.numeric(links_evn20$value),
+    color = links_evn20$link_color,  # Apply custom colors to links
+    hoverinfo = "none"        # Use text for tooltip
+  )) %>% 
+  layout(
+  title = "Evening routine 2020",
+  font = list(size = 10, family = "Fira Sans"),
+  annotations = list(
+      list(
+        x = -0.01,  # Adjust the x-position for each stage
+        y = 1.045,  # Slightly above the nodes
+        text = "- hour",  # Label text
+        showarrow = FALSE,
+        font = list(size = 10, family = "Fira Sans")
+      ),
+      list(
+        x = 0.31,
+        y = 1.04,
+        text = "- 40 mins",
+        showarrow = FALSE,
+        font = list(size = 10, family = "Fira Sans")
+      ),
+      list(
+        x = 0.69,
+        y = 1,
+        text = "- 20 mins",
+        showarrow = FALSE,
+        font = list(size = 10, family = "Fira Sans")
+      ),
+      list(
+        x = 1.01,
+        y = 0.97,
+        text = "Bedtime",
+        showarrow = FALSE,
+        font = list(size = 10, family = "Fira Sans")
+      ))) %>%
+  
+  # Add customizations for interactivity and appearance
+  plotly::config(
+    displayModeBar = TRUE,
+    displaylogo = FALSE,
+    modeBarButtonsToRemove = c("zoom2d", "pan2d", "zoomIn2d", "zoomOut2d",
+                               "autoScale2d", "toggleSpikelines", "hoverClosestCartesian",
+                               "hoverCompareCartesian", "toImage", "select2d", "lasso2d"),
+    staticPlot = TRUE,
+    height = 800
+  )
+
+fig_evn20
+```
+
+Night guy of 2023 realized that wasting time is better in a good
+company. See how the share of [<b>social</b>]{style="color:#87CEEB;"} increased right before [<b>going to bed</b>]{style="color:#3B4CC0;"}. In reality partying was mostly late-night conversations with fellow
+students about life, studies and stuff. Other than that Night guy of
+2023 has been [<b>studying</b>]{style="color:#FFD700;"} and chilling before [<b>sleep</b>]{style="color:#3B4CC0;"}, much like the younger
+version of himself.
+
+```{r}
+#| classes: preview-image
+combined_data_2 <- combined_data %>% 
+  mutate(bedtime = if_else(activity == "Sleep" & 
+                       lag(activity) != "Sleep", 
+                     "Bedtime", NA_character_),
+   lag_1 = if_else(bedtime == "Bedtime", lag(activity, 1), NA_character_),
+   lag_2 = if_else(bedtime == "Bedtime", lag(activity, 2), NA_character_),
+   lag_3 = if_else(bedtime == "Bedtime", lag(activity, 3), NA_character_)
+   ) %>% 
+  filter((hour >= 0 & hour <= 8) | hour >= 22) %>%
+  filter(!is.na(bedtime)) %>% 
+  filter(period == "2022-2024") %>% 
+  mutate(lag_1 = paste0(as.character(lag_1), "_1"),
+         lag_2 = paste0(as.character(lag_2), "_2"),
+         lag_3 = paste0(as.character(lag_3), "_3")) %>% 
+  select(activity, lag_1, lag_2, lag_3) %>%
+  mutate(
+    stage_1 = lag_3,
+    stage_2 = lag_2,
+    stage_3 = lag_1,
+    stage_4 = activity
+  )
+
+nodes_evn23 <- combined_data_2 %>%
+  pivot_longer(cols = starts_with("stage"), names_to = "stage", values_to = "label") %>%
+  distinct(label) %>%
+  mutate(node_id = row_number() - 1,
+         # Strip the suffix (_1, _2, _3) from labels
+         base_label = gsub("_\\d$", "", label),
+         # Match the base label to activity_colors
+         color = ifelse(base_label %in% names(activity_colors),
+                        activity_colors[base_label], 
+                        "#D3D3D3"))
+
+# Create links for each stage
+links_stage_evn23_1 <- combined_data_2 %>%
+  select(stage_1, stage_2) %>%
+  rename(source = stage_1, target = stage_2) %>%
+  group_by(source, target) %>%
+  summarise(value = n(), .groups = "drop")
+
+links_stage_evn23_2 <- combined_data_2 %>%
+  select(stage_2, stage_3) %>%
+  rename(source = stage_2, target = stage_3) %>%
+  group_by(source, target) %>%
+  summarise(value = n(), .groups = "drop")
+
+links_stage_evn23_3 <- combined_data_2 %>%
+  select(stage_3, stage_4) %>%
+  rename(source = stage_3, target = stage_4) %>%
+  group_by(source, target) %>%
+  summarise(value = n(), .groups = "drop")
+
+# Combine all links
+links_evn23 <- bind_rows(links_stage_evn23_1, links_stage_evn23_2, links_stage_evn23_3) %>%
+  left_join(nodes_evn23, by = c("source" = "label")) %>%
+  rename(source_id = node_id) %>%
+  left_join(nodes_evn23, by = c("target" = "label")) %>%
+  rename(target_id = node_id) %>% 
+  left_join(nodes_evn23, by = c("source_id" = "node_id")) %>%
+  rename(source_label = label, source_color = color) %>%
+  mutate(link_color = source_color)  
+
+
+fig_evn23 <- plot_ly(
+  type = "sankey",
+  orientation = "h",
+  node = list(
+    label = nodes_evn23$base_label,
+    color = nodes_evn23$color,  # Apply custom colors
+    pad = 15,
+    thickness = 20,
+    line = list(color = "black", width = 0.5),
+    hoverinfo = "none",
+    font = list(size = 14)
+  ),
+  link = list(
+    source = as.numeric(links_evn23$source_id),
+    target = as.numeric(links_evn23$target_id),
+    value = as.numeric(links_evn23$value),
+    color = links_evn23$link_color,  # Apply custom colors to links
+    hoverinfo = "none"        # Use text for tooltip
+  )) %>% 
+  layout(
+  title = "Evening routine 2023",
+  font = list(size = 10, family = "Fira Sans"),
+    annotations = list(
+      list(
+        x = -0.01,  # Adjust the x-position for each stage
+        y = 1.045,  # Slightly above the nodes
+        text = "- hour",  # Label text
+        showarrow = FALSE,
+        font = list(size = 10, family = "Fira Sans")
+      ),
+      list(
+        x = 0.31,
+        y = 1.01,
+        text = "- 40 mins",
+        showarrow = FALSE,
+        font = list(size = 10, family = "Fira Sans")
+      ),
+      list(
+        x = 0.69,
+        y = 0.96,
+        text = "- 20 mins",
+        showarrow = FALSE,
+        font = list(size = 10, family = "Fira Sans")
+      ),
+      list(
+        x = 1.01,
+        y = 0.95,
+        text = "Bedtime",
+        showarrow = FALSE,
+        font = list(size = 10, family = "Fira Sans")
+      ))) %>%
+  
+  # Add customizations for interactivity and appearance
+  plotly::config(
+    displayModeBar = TRUE,
+    displaylogo = FALSE,
+    modeBarButtonsToRemove = c("zoom2d", "pan2d", "zoomIn2d", "zoomOut2d",
+                               "autoScale2d", "toggleSpikelines", "hoverClosestCartesian",
+                               "hoverCompareCartesian", "toImage", "select2d", "lasso2d"),
+    staticPlot = TRUE,
+    height = 800
+  )
+
+fig_evn23
+```
+
+```{r}
+hist_wake_up <- sankey_data %>%   
+  rbind(sankey_data23) %>%  
+  mutate(period = case_when(     
+    year(datetime) %in% 2019:2020 ~ "2019-2020",    
+    year(datetime) %in% 2022:2024 ~ "2022-2024",     
+    TRUE ~ NA_character_  # Exclude other years       
+    )) %>% 
+  filter(hour < 12 & hour > 3) %>% 
+  group_by(time_column, period) %>% 
+  summarise(n = n(), .groups = "drop") %>%
+  group_by(period) %>% 
+  mutate(percentage = round(n / sum(n) * 100, 1)) %>%
+  select(time_column, period, percentage)
+
+ggplot(hist_wake_up, aes(x = percentage, y = time_column, fill = period)) +
+  geom_bar(stat = "identity", position = "dodge") +  # Side-by-side bars
+  scale_fill_manual(values = c("navy", "#FFCC33")) +  # Custom colors
+  scale_x_continuous(expand = c(0, 0)) +  # Remove padding
+  labs(
+    title = NULL,
+    x = "Percentage",
+    y = NULL,
+    fill = NULL
+  ) +
+    theme_minimal() +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(hjust = 0.5),
+    axis.text.x = element_text(size = 9),
+    axis.text.y = element_text(size = 9),
+    panel.grid.major.y = element_blank(),
+    panel.grid.major.x = element_line(color = "gray66", size = 0.5),
+    panel.grid.minor = element_blank()
+  ) +
+  geom_curve(aes(x = 9.5, y = "04:20", xend = 2.5, yend = "04:40"),
+    arrow = arrow(length = unit(0.15, "cm"), type = "closed"),
+    color = "black",
+    size = 0.5,
+    curvature = -0.3
+  ) +
+    geom_curve(aes(x = 22, y = "07:00", xend = 18, yend = "07:40"),
+    arrow = arrow(length = unit(0.15, "cm"), type = "closed"),
+    color = "black",
+    size = 0.5,
+    curvature = 0.1
+  ) +
+      geom_curve(aes(x = 15, y = "05:20", xend = 24, yend = "06:00"),
+    arrow = arrow(length = unit(0.15, "cm"), type = "closed"),
+    color = "black",
+    size = 0.5,
+    curvature = -0.2
+  ) +
+  geom_richtext(
+    aes(x = 8, 
+        y = "04:40", 
+        label = "<span style='color:navy'><strong>...early to rise.</strong></span>"),
+    label.color = NA,
+    fill = NA,
+    hjust = 0,
+    vjust = 0.5,
+    label.padding = unit(0.1, "lines"),
+    size = 4
+  ) +
+    geom_richtext(
+    aes(x = 11, 
+        y = "05:00", 
+        label = "<span style='color:navy'><strong>Early to bed...</strong></span>"),
+    label.color = NA,
+    fill = NA,
+    hjust = 0,
+    vjust = 0.5,
+    label.padding = unit(0.1, "lines"),
+    size = 4
+  ) +
+  geom_richtext(
+    aes(x = 16, y = "06:40", label = "Wonder what my alarm clock <br> is set to in <span style='color:#FFCC33'><strong>2023</strong></span>?"),
+    label.color = NA,
+    fill = NA,
+    hjust = 0,
+    vjust = 0.5,
+    label.padding = unit(0.1, "lines"),
+    size = 4
+  ) +
+    geom_richtext(
+    aes(x = 4, 
+        y = "11:20", 
+        label = "Bedtime and mornings in <span style='color:navy'><strong>2020</strong></span> are normal(ish)."),
+    label.color = NA,
+    fill = NA,
+    hjust = 0,
+    vjust = 0.5,
+    label.padding = unit(0.1, "lines"),
+    size = 6
+  ) +
+      geom_richtext(
+    aes(x = 4, 
+        y = "11:00", 
+        label = "Stable sleep schedule has left the chat in <span style='color:#FFCC33'><strong>2023</strong></span>"),
+    label.color = NA,
+    fill = NA,
+    hjust = 0,
+    vjust = 0.5,
+    label.padding = unit(0.1, "lines"),
+    size = 6
+  )-> fig_wake_up
+```
+
+Okay, we have seen WHAT were these 2 guys doing. Now about WHEN they
+were doing it. The plot below shows percentage of wake up (left) and
+bedtime (right) times for 2 periods. It is clear that going to bed
+earlier is (at least visually) associated with earlier wake-up time.
+
+Would be curious to look into a how variation in bedtime affect the
+variation in wake-up time. Notice how in [<b>2023</b>]{style="color:#FFCC33;"} wake-up times are heavily
+centered around 08:00, while bedtime is all over the place from 00:00 to
+04:00! And the opposite for [<b>2020</b>]{style="color:navy;"}, bedtime is centered around 00:00, and
+wake-up time has a bigger spread from as early as 04:00 to 10:00.
+
+```{r}
+custom_order <- c("22:00", "22:20", "22:40", "23:00", "23:20", "23:40",
+                  "00:00", "00:20", "00:40", "01:00", "01:20", "01:40", "02:00", "02:20", "02:40", "03:00",
+                  "03:20", "03:40", "04:00", "04:20", "04:40", "05:00", "05:20", "05:40", "06:00", "06:20",
+                  "06:40")
+
+hist_bedtime <- combined_data %>%
+  mutate(period = case_when(
+    year(datetime) %in% 2019:2020 ~ "2019-2020",
+    year(datetime) %in% 2022:2024 ~ "2022-2024",
+    TRUE ~ NA_character_  # Exclude other years
+    ),
+    bedtime = if_else(activity == "Sleep" & 
+                        lag(activity) != "Sleep",
+                      "Bedtime", NA_character_),
+    lag_1 = if_else(bedtime == "Bedtime", 
+                    lag(activity, 1),
+                    NA_character_),
+    lag_2 = if_else(bedtime == "Bedtime", 
+                    lag(activity, 2), 
+                    NA_character_),
+    lag_3 = if_else(bedtime == "Bedtime",
+                    lag(activity, 3), 
+                    NA_character_)) %>%
+  filter(hour %in% c(0:6, 22:23), !is.na(bedtime)) %>%
+  group_by(time_column, period) %>% 
+  summarise(n = n(), .groups = "drop") %>% 
+  group_by(period) %>% 
+  mutate(percentage = round(n / sum(n) * 100, 1)) %>%
+  select(time_column, period, percentage)
+
+
+ggplot(hist_bedtime, aes(x = -percentage, y = time_column, fill = period)) +
+  geom_bar(stat = "identity", position = "dodge") +  # Side-by-side bars
+  scale_fill_manual(values = c("navy", "#FFCC33")) +  # Custom colors
+  scale_x_continuous(expand = c(0, 0), labels = abs) +  # Remove padding
+  scale_y_discrete(limits = custom_order, position = "right") +
+  labs(
+    title = NULL,
+    x = "Percentage",
+    y = NULL,
+    fill = NULL
+  ) +
+    theme_minimal() +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(hjust = 0.5),
+    axis.text.x = element_text(size = 9),
+    axis.text.y = element_text(size = 9),
+    panel.grid.major.y = element_blank(),
+    panel.grid.major.x = element_line(color = "gray66", size = 0.5),
+    panel.grid.minor = element_blank()
+  ) +
+    geom_richtext(
+    aes(x = -23, 
+        y = "05:00", 
+        label = ""),
+    label.color = NA,
+    fill = NA,
+    hjust = 0,
+    vjust = 0.5,
+    label.padding = unit(0.1, "lines"),
+    size = 6
+  ) -> fig_hist_bedtime
+```
+
+```{r}
+fig_wake_up + fig_hist_bedtime + plot_layout(axes = "collect")
+  
+```
+
+## Instead of conclusion {#conclusion}
+
+Deep inside I expected to see a different picture. To see how better my
+time management skill got, how I've been more active, and more socially
+engaged. I have become more active, socially, too! This came at a cost
+of, among other things, healthy sleeping schedule and a reduced physical
+activity. Sounds like a typical student life. 
+
+::: {.callout-tip title="Session info" collapse="true" icon="false"}
+```{r}
+sessionInfo()
+```
+:::

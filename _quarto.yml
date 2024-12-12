@@ -5,6 +5,7 @@ project:
 website:
   title: "Vadym Yudenko"
   site-url: https://vadymyudenko.com
+  description: "Vadym Yudenko blog about data and research"
   repo-url: https://github.com/vadymyudenko/vadymyudenko.com
   favicon: speech-bubble.png
   open-graph: true
@@ -12,10 +13,10 @@ website:
     right:
       - href: posts/index.qmd
         text: Blog
+      - href: data-viz/index.qmd
+        text: Data Viz
       - href: essays/index.qmd
         text: Essays 
-      - href: til/index.qmd
-        text: TIL
       - href: about/index.qmd
         text: About
       - icon: github
@@ -46,7 +47,7 @@ format:
     reference-location: margin
     footnotes-hover: true
     fontsize: 14px
-    mainfont: Fira Mono
+    mainfont: Fira Sans
     highlight-style: monokai
     include-in-header: 
       - html/progress-bar.html

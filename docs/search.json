@@ -1,68 +1,5 @@
 [
   {
-    "objectID": "til/qalmri/index.html",
-    "href": "til/qalmri/index.html",
-    "title": "QALMRI",
-    "section": "",
-    "text": "When you have found an interesting article. How do you read it? Do you try to understand every word and sentence? The language used in academic writing is often very complex and jargon-heavy! Not only do you want to read it, you want to understand and do something with the results, methodology, and conclusions. Either to guide your further search, or to use it in your own research. Being able to succinctly summarize an article is thus a very important skill.\nQALMRI stands for Question, Alternatives, Logic, Method, Results, and Inference."
-  },
-  {
-    "objectID": "til/qalmri/index.html#question",
-    "href": "til/qalmri/index.html#question",
-    "title": "QALMRI",
-    "section": "Question",
-    "text": "Question\n\nWhat are the questions the author is trying to answer?\nWhat is the main point of the article?\n\n\nQuestions may be specific or broad. Broad questions are typically too general to be answered by any single experiment and provide an overview of the general topic of interest (e.g., “What is the influence of playing video games on our daily behavior?”). Specific questions, on the other hand, can be addressed by a single experiment or set of experiments (e.g., “Does playing violent video games cause children to engage in more violent behavior?”). Answering one or more specific questions should be considered steps made toward addressing a broad question.\nNicholaus Brosowsky and Olga Parshina"
-  },
-  {
-    "objectID": "til/qalmri/index.html#alternatives",
-    "href": "til/qalmri/index.html#alternatives",
-    "title": "QALMRI",
-    "section": "Alternatives",
-    "text": "Alternatives\n\nWhat is the main hypotheses?\nWhat alternative hypothesis can you think about?"
-  },
-  {
-    "objectID": "til/qalmri/index.html#logic",
-    "href": "til/qalmri/index.html#logic",
-    "title": "QALMRI",
-    "section": "Logic",
-    "text": "Logic\nLogic is the the general idea of how alternatives will be differentiated. “If hypothesis 1 is true, then something-something…”, “If hypothesis 2 is true, then something-something and something-something-else…”"
-  },
-  {
-    "objectID": "til/qalmri/index.html#methods",
-    "href": "til/qalmri/index.html#methods",
-    "title": "QALMRI",
-    "section": "Methods",
-    "text": "Methods\n\nWhat is the study design?\nWhat are the variables?\nWhat is the procedure?"
-  },
-  {
-    "objectID": "til/qalmri/index.html#results",
-    "href": "til/qalmri/index.html#results",
-    "title": "QALMRI",
-    "section": "Results",
-    "text": "Results\n\nWhat are the most important results?\nAre they what you expected?"
-  },
-  {
-    "objectID": "til/qalmri/index.html#inference",
-    "href": "til/qalmri/index.html#inference",
-    "title": "QALMRI",
-    "section": "Inference",
-    "text": "Inference\n\nWhat do authors conclude?\nAre results consistent with the hypothesis?\nWhat questions are left unanswered?\nWhat are the implications of the results?\nWhat are the limitations of the study?\n\n\n\n\nQALMRI\nWhere to find\n\n\nQuestion\nAbstract, Introduction\n\n\nAlternatives\nAbstract, Introduction\n\n\nLogic\nIntroduction, Methodology\n\n\nMethod\nMethodology\n\n\nResults\nResults\n\n\nInference\nDiscussion"
-  },
-  {
-    "objectID": "til/qalmri/index.html#sources",
-    "href": "til/qalmri/index.html#sources",
-    "title": "QALMRI",
-    "section": "Sources",
-    "text": "Sources\n\nCrumpLab’s Research Methods Lab\nLearning To Read Scientific Journal Articles\nBrosowsky, N.P., Parshina, O., Locicero, A., & Crump, M.J.C. (2020, June 1), Teaching undergraduate students to read empirical articles: An evaluation and revision of the QALMRI method. https://doi.org/10.31234/osf.io/p39sc."
-  },
-  {
-    "objectID": "til/qalmri/index.html#further-reading",
-    "href": "til/qalmri/index.html#further-reading",
-    "title": "QALMRI",
-    "section": "Further reading",
-    "text": "Further reading\n\nHow to read and understand a scientific paper: a guide for non-scientists\nHow to read a paper\nHow to (seriously) read a scientific paper\nSynthesizing different bodies of work in your literature review: The Conceptual Synthesis Excel Dump (CSED) technique"
-  },
-  {
     "objectID": "posts/toastmasters-time/index.html#introduction",
     "href": "posts/toastmasters-time/index.html#introduction",
     "title": "All the time in the world…",
@@ -112,18 +49,102 @@
     "text": "Before you go…\nIf you like this project and feel like you can contribute with data and/or advise, please send me an EMAIL 😊"
   },
   {
+    "objectID": "posts/qalmri/index.html",
+    "href": "posts/qalmri/index.html",
+    "title": "QALMRI",
+    "section": "",
+    "text": "When you have found an interesting article. How do you read it? Do you try to understand every word and sentence? The language used in academic writing is often very complex and jargon-heavy! Not only do you want to read it, you want to understand and do something with the results, methodology, and conclusions. Either to guide your further search, or to use it in your own research. Being able to succinctly summarize an article is thus a very important skill.\nQALMRI stands for Question, Alternatives, Logic, Method, Results, and Inference."
+  },
+  {
+    "objectID": "posts/qalmri/index.html#question",
+    "href": "posts/qalmri/index.html#question",
+    "title": "QALMRI",
+    "section": "Question",
+    "text": "Question\n\nWhat are the questions the author is trying to answer?\nWhat is the main point of the article?\n\n\nQuestions may be specific or broad. Broad questions are typically too general to be answered by any single experiment and provide an overview of the general topic of interest (e.g., “What is the influence of playing video games on our daily behavior?”). Specific questions, on the other hand, can be addressed by a single experiment or set of experiments (e.g., “Does playing violent video games cause children to engage in more violent behavior?”). Answering one or more specific questions should be considered steps made toward addressing a broad question.\nNicholaus Brosowsky and Olga Parshina"
+  },
+  {
+    "objectID": "posts/qalmri/index.html#alternatives",
+    "href": "posts/qalmri/index.html#alternatives",
+    "title": "QALMRI",
+    "section": "Alternatives",
+    "text": "Alternatives\n\nWhat is the main hypotheses?\nWhat alternative hypothesis can you think about?"
+  },
+  {
+    "objectID": "posts/qalmri/index.html#logic",
+    "href": "posts/qalmri/index.html#logic",
+    "title": "QALMRI",
+    "section": "Logic",
+    "text": "Logic\nLogic is the the general idea of how alternatives will be differentiated. “If hypothesis 1 is true, then something-something…”, “If hypothesis 2 is true, then something-something and something-something-else…”"
+  },
+  {
+    "objectID": "posts/qalmri/index.html#methods",
+    "href": "posts/qalmri/index.html#methods",
+    "title": "QALMRI",
+    "section": "Methods",
+    "text": "Methods\n\nWhat is the study design?\nWhat are the variables?\nWhat is the procedure?"
+  },
+  {
+    "objectID": "posts/qalmri/index.html#results",
+    "href": "posts/qalmri/index.html#results",
+    "title": "QALMRI",
+    "section": "Results",
+    "text": "Results\n\nWhat are the most important results?\nAre they what you expected?"
+  },
+  {
+    "objectID": "posts/qalmri/index.html#inference",
+    "href": "posts/qalmri/index.html#inference",
+    "title": "QALMRI",
+    "section": "Inference",
+    "text": "Inference\n\nWhat do authors conclude?\nAre results consistent with the hypothesis?\nWhat questions are left unanswered?\nWhat are the implications of the results?\nWhat are the limitations of the study?\n\n\n\n\nQALMRI\nWhere to find\n\n\nQuestion\nAbstract, Introduction\n\n\nAlternatives\nAbstract, Introduction\n\n\nLogic\nIntroduction, Methodology\n\n\nMethod\nMethodology\n\n\nResults\nResults\n\n\nInference\nDiscussion"
+  },
+  {
+    "objectID": "posts/qalmri/index.html#sources",
+    "href": "posts/qalmri/index.html#sources",
+    "title": "QALMRI",
+    "section": "Sources",
+    "text": "Sources\n\nCrumpLab’s Research Methods Lab\nLearning To Read Scientific Journal Articles\nBrosowsky, N.P., Parshina, O., Locicero, A., & Crump, M.J.C. (2020, June 1), Teaching undergraduate students to read empirical articles: An evaluation and revision of the QALMRI method. https://doi.org/10.31234/osf.io/p39sc."
+  },
+  {
+    "objectID": "posts/qalmri/index.html#further-reading",
+    "href": "posts/qalmri/index.html#further-reading",
+    "title": "QALMRI",
+    "section": "Further reading",
+    "text": "Further reading\n\nHow to read and understand a scientific paper: a guide for non-scientists\nHow to read a paper\nHow to (seriously) read a scientific paper\nSynthesizing different bodies of work in your literature review: The Conceptual Synthesis Excel Dump (CSED) technique"
+  },
+  {
     "objectID": "posts/index.html",
     "href": "posts/index.html",
     "title": "Blog",
     "section": "",
-    "text": "Time Tracking 2020\n\n\n\n\n\nLooking back on my time tracking experience\n\n\n\n\n\n\nNov 22, 2024\n\n\n48 min\n\n\n\n\n\n\n  \n\n\n\n\nAll the time in the world…\n\n\n\n\n\nMeasuring the effect time has on delivering a great speech using data from Toastmasters\n\n\n\n\n\n\nAug 4, 2023\n\n\n42 min\n\n\n\n\n\n\nNo matching items"
+    "text": "Night Guy and Morning Guy\n\n\n\n\n\nVisual comparison of two life-periods.\n\n\n\n\n\n\nDec 1, 2024\n\n\n54 min\n\n\n\n\n\n\n  \n\n\n\n\nTime Tracking: Retrospective Look\n\n\n\n\n\nLooking back on my time tracking experience in 2020.\n\n\n\n\n\n\nNov 22, 2024\n\n\n53 min\n\n\n\n\n\n\n  \n\n\n\n\nQALMRI\n\n\n\n\n\nHow to read an article\n\n\n\n\n\n\nDec 7, 2023\n\n\n3 min\n\n\n\n\n\n\n  \n\n\n\n\nAll the time in the world…\n\n\n\n\n\nMeasuring the effect time has on delivering a great speech using data from Toastmasters\n\n\n\n\n\n\nAug 4, 2023\n\n\n42 min\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "essays/weloveyou/index.html",
-    "href": "essays/weloveyou/index.html",
-    "title": "We all love you, and so does Putin",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Vadym Yudenko",
     "section": "",
-    "text": "A woman of 70. Born 200 km away from Moscow, she came to Ukraine with her husband and their small child in 1976 as they got a job at a car works. She looked after the kid and husband was providing for the family. In ten years, the Soviet Union collapsed and their life… didn’t change much. Her husband was still an engineer and she took an accountant position at a local military unit. In the late nineties their firstborn went to study in Moscow and Saint Petersburg, before coming home and settling. Nothing changed in the next ten years, the Orange Revolution, the 2008 crisis went past them. All the while they kept close ties with their family back in Russia. Visiting each other once a year or two. Sending family photos, letters and post cards.\nThen came the annexation of Crimea and occupation of Donbas, but conversations didn’t change much, only visiting each other was harder because of increased border checks. Life continued as normal until the 24th of February, 2022. On THE DAY there was no call, week passed by — still nothing. So she took initiative and gave them a call.\n“Aлло”, familiar voice answers the phone. “How are you?” “Good and you?” “Okay…”, they exchange a few civilities until the woman can’t contain herself anymore. She is not okay! She told about how russian soldiers are bombing our cities, about the sirens and the mall. They were not impressed and, as all respectable followers of the word of putin, repeated what their TV-scriptures say word for word. Denazification, Banderovites, “we don’t bomb civilians”, “those are fakes”… Her attempts to speak sense into them were futile. Distressed, she says goodbye and as she hangs the phone, it echoes…\n\n“…We all love you, and so does Putin” (Ми все вас любим, и Путин тоже)\n\n\nUkrainians now have a terrible time speaking with relatives in russia. Having to prove the REALITY of our suffering is infuriating. HOW COULD IT POSSIBLY BE NOT TRUE?! WHAT IS MORE REAL THAN PAIN? But these are the questions you unconsciously ask yourself after conversations with your, now very distant, relatives. One intercepted call that terrified me was of a Ukrainian woman calling her male relative, a militant of the so-called DNR, whose unit then/is still stationed in Kherson region.\nW: You explained to me about Banderites, I believed you. I hated them. Now, who should I hate? … Why are they like this, Seryozha? What are they raping children for? What is this?\nM: Who told you? Do you know this for sure? Or are these just rumors?\nW: I know for sure. *crying* I’m not telling anything more.\n\nYou can most certainly feel despair in her voice, when the man questions the REALITY of her experience. This conversation is emblematic of conversations Ukrainians have with their RU relatives. Any appeals to reason are met with ready-made answers (NATO, nazis, biolabs), facts are met with “fakes!” and emotions with “understanding and love”. After all they consider us their brothers…at least used to.\nUkrainians and russians are not brothers. For centuries Ukraine has been under Moscow’s rule. In Soviet times, especially, all things Ukrainian were persecuted. Horrible atrocities were committed to bring (not only) Ukrainian population under control — Holodomor, Dekulakization, Executed Renaissance. Those who weren’t killed, were sent to Siberia, spared lived under constant threat of being next.\nUsing wrong words or criticizing the official line was unacceptable. Despite that, there was freedom of speech in the Soviet Union, but no freedom after speech. Snitching on one’s neighbor was prevalent, so people learned to keep to themselves and live in silence. Now, in putinist russia narratives of decaying West, strong and mighty russia and of foreign agents reiterate those of Soviet era. And snitching is coming back.\n\nFear of punishment is not the only factor preventing relatives in russia from speaking out and protesting. Understanding that nothing is going to change, I-am-just-a-small-person mentality are also on the list. But the main reason is hands down — russian propaganda.\nIn a carefully constructed putinist worldview there is no room for logic and reason. It’s a constant stream of repetitive, often contradictory narratives, multiplied and spread in big volumes. This propaganda boils down to 2 things. 1st is that without putin russia can’t do. And 2nd — all the rest are wretched and corrupt (especially the West and America). The later is best exemplified in Navalny’s investigation of International Sawmill show (HERE, first 10 mins, has funny captions), where foreign leaders are made fun of and putin is the boss. All other things russian propaganda can sell to its audience. Look no further then “the gesture of goodwill” by russian army from Snake Island and negative emersion of Moskva flagship. Blasting people with conspiracy theories and half-baked news, at a rate they can’t keep up with, earned it a name — Firehose of Falsehood. And not only russians are susceptible to it.\nMany Ukrainians also fell victims to the propaganda and still believe in what it spews. One close friend of mine recounts conversations with their relatives who, after 24th of February, stayed in Kharkiv, in the city’s most shelled area — Northern Saltivka. There, under constant shelling, they continued to believe in the brave new russian world.\nLike any functioning society Ukraine has issues and problems. There are people who don’t need propaganda to be anti-ua and pro-ru and they have their reasons. Again, Ukraine has many problems we, Ukrainians, must solve. Nazis and rusophobia — two main justifications for full-scale war on Ukraine — are not them. Those who say otherwise are delusional, they’ve lost touch with reality and play into the hands of invaders. Of course, there are people who take a more radical stance on issues, just like everywhere in the world, but they are a minuscule minority, who have little to no effect on the country’s agenda. If you have a relative or a colleague who believes in persecution of all things russian before 2014, ask them why has russia invaded and razed to the ground the most pro-russian regions and cities? Plant the seed of doubt in their infertile soil.\nIn the 50 years that my grandma has been in Ukraine no one has said a word about her nationality (кацапка), her mother tongue, no one forced her to learn and speak Ukrainian. Yet, this is what our relatives in russia and some simple-minded compatriots are led to believe.\nGrandma is 71 now. Sitting on her armchair in the empty living room, she turns on TV to watch russian channels — old habits die hard. She still carries her cellphone in case THEY call, although she admits there is nothing to talk about anymore. On the table next to the remote there is a crossword magazine in Ukrainian — it’s hard, but she is trying. She is russian, was and will be, but above all things, she wants her grandchildren to be Ukrainian. To live in a free and peaceful country, to find their way, to marry (soon, grandma) and lead a fulfilling life.\n2 months into the war she, whose mother tongue is russian, who never learned Ukrainian, who was never forced to learn it and forget russian, wished me a happy birthday in Nightingalian*.\n*Ukrainians refer to Ukrainian as Nightingalian (Солов’їна)"
+    "text": "Blog\n\n\n\n\n\nMiscellaneous articles on data analysis and visualization.\n\n\n\n\n \n\n\n\n\n  \n\n\n\n\nEssays\n\n\n\n\n\nEssays on life during wartime and personal thoughts…\n\n\n\n\n \n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "essays/index.html",
+    "href": "essays/index.html",
+    "title": "Essays",
+    "section": "",
+    "text": "Back to normal\n\n\n\n\n\nRemembering Amstor Mall Airstrike\n\n\n\n\n\n\nJul 28, 2022\n\n\n5 min\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "about/index.html",
+    "href": "about/index.html",
+    "title": "Vadym Yudenko",
+    "section": "",
+    "text": "Hello! I’m a junior researcher at Institute for Behavioral Studies at American University Kyiv.\nWhat started as a existential questions in a teenage brain, has since transformed into a career path. Fueled by curiosity, I’m passionate about understanding human behavior and decision-making. Sometimes this curiosity make me do things, you can read about them here!"
+  },
+  {
+    "objectID": "data-viz/index.html",
+    "href": "data-viz/index.html",
+    "title": "DataViz",
+    "section": "",
+    "text": "Page under construction\n\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "essays/backtonormal/index.html",
@@ -133,80 +154,80 @@
     "text": "On June 27th I was dinning out when at 15:44 sirens echoed through the downtown. Again… we had a siren just an hour ago… I think to myself waiting for my order. People around seemed not to notice a siren at all. A family of 4, probably well-off refugees from Kharkiv, immersing themselves in a friendly chatter, business lady in front struggling with a new QR-code menu and teenage girls snickering behind… what siren? Oh! You mean this annoying distracting sound? Well, we pretend not to notice it, we filter out, WE DON’T LISTEN. It is normal… now.\nYesterday was 1 month since the heinous terroristic act shocked my hometown to the core. In Ukraine, as a custom, we commemorate those who fell victims to the crimes of russia at 9AM with a minute of silence…\nAt 15:51 was a BIG BOOM — building shook lightly. It took some seconds before we realized what happened. NOW WE WERE LISTENING. 2nd explosion followed and we leaving everything behind rushed to a basement. It must be the bridge, surely, a man was saying to gasps of people nearby.\nThere was no connection. Call to check on your parents — no signal. Viber, WhatsApp — nothing. I’m not staying here, I need to make sure they’re okay. As I leave the shelter — smoke was in the air. It must’ve been somewhere close. When I came to Amstor 30 mins after the strike the building was on fire. Hundreds of people treading on shattered glass to see what happened to the place — air alert was off — there was nothing to destroy anymore…\nThere were hundreds in there! What if they stayed… like me? I stood there feeling the gravity like never before. Eyes fixed on the fire.\nAs sickening as it sounds, luckily only 20 were lost in the airstrike with 58 injured. Some left when they heard a siren, small shop owners went on a coffee break, while many stayed… Hundreds of kilometers away from a frontline you don’t expect an air strike on a civilian object in the center of your city. You just don’t!\nIhad to leave town for two weeks on the day of the attack on the mall, when I came back, without seeing the place, I could sense it’s presence. It is the smell… that multiplies russian propaganda about alleged storage of NATO supplied ammunition by zero. The smell of death, sorrow and pain of every Kremenchuk citizen. The smell of rotting products — meat, fish, veggies and fruits. Mall housed many both small and big shops including a supermarket. Now hundreds of tons of products that haven’t melted in the fire rot away under the rubble. One month after the strike, the smell is still there.\nPeople walk past the empty shell throwing glances at what was the mall. When you’re in the city you don’t feel the smell anymore, it is when you leave and come back is when you are reminded of the horrors of 27th. With the airstrike came a grim realization that nowhere is safe (except a shelter). Living under constant threat is our new normal.\nSince the onset of war there was no doubt Kremenchuk would eventually be targeted. The city, industrial center of Poltava region, is a hometown to Ukrtatnafta oil refinery (the largest in Ukraine), Kremenchuk Carbon Black Plant (the largest producer of carbon black in Ukraine), Kryukiv Railway Car Building Works (one of the largest in Ukraine and of strategic importance), Kremenchuk Automobile Assembly Plant, Kremenchuk Wheel Plant and the bridge which is a key railway junction across Dnipro river.\nAfter living with sirens for one month, Kremenchuk had it’s first ‘прильот’ (air strike) on the2nd of April — oil refinery was hit. The following strikes kept on hitting only the oil refinery, gradually destroying the giant. Still, citizens felt relative safety as the strikes were outside the city. That is, until…\nMy family owns an office in the center by a maternity hospital some 600 meters away from Amstor. In the building we have an actual bomb shelter and throughout April — June it has seen little interest from public. The first wave was in the first days of war, then, over time, people became habituated to the sirens. They became a daily reminder of a war happening somewhere not in this world. Right after strikes on Ukrtatnafta more people decided not to trust their luck and come to the shelter, but only for a day or two. This is best captured by a local Telegram channels with pictures of cats as residents of Kremenchuk.\n\n\n\n\n\nVerbatim: denizens in the hall during air raid alert at night\n\n\n\n\n\n\n\nVerbatim: denizens in the hall during air raid alert\n\n\n\n\nAmstor airstrike, horrific as it is, hasn’t and couldn’t have changed this trend. People can’t hide all the time, can’t always put life on hold… Except they do, seconds after another прильот, when the blast and shockwave tells you to run for dear life. Air strikes become a natural part of life… It is like on the morning radio they tell you a weather forecast… Dear citizens, today Kremenchuk is expecting a summery weather, comfy temperature and azure sky. Winds blow westward and the risk of ‘precipitation’ is PERMANENT. Have a great day, don’t ignore sirens and everything will be Ukraine!\n\n\n\nPeople gather around burning Amstor"
   },
   {
-    "objectID": "about/index.html#experience",
-    "href": "about/index.html#experience",
-    "title": "Vadym Yudenko",
-    "section": "Experience",
-    "text": "Experience\n\n\n\n\nInstitute of Behavioral Studies at American University Kyiv\nJunior Researcher\nAug 2023 - present\n\n\n\n\n\n\n\n\n\nAUK projects\n\n\n\n\n\n\nEvaluating USAID AGRO programmes success from a behavioral perspective (work in progress)\nMeasuring the effects of mental health issues on productivity of workers (work in progress)"
+    "objectID": "posts/night-guy-morning-guy/index.html#plot_2019_2020",
+    "href": "posts/night-guy-morning-guy/index.html#plot_2019_2020",
+    "title": "Night Guy and Morning Guy",
+    "section": "2019-2020",
+    "text": "2019-2020\n\n\n\n\n\n\n\n\nIn 2020 was my first attempt at time tracking. I have made some observations from that experience at the time. Then, as I have gained data analysis and visualization skills, I, again, have revisited my data in 2023 and came to some other conclusions (read about it here). In late 2024, I find myself revisiting the data yet again… because there is more data!"
   },
   {
-    "objectID": "about/index.html#education",
-    "href": "about/index.html#education",
-    "title": "Vadym Yudenko",
-    "section": "Education",
-    "text": "Education\n\n\n\n\nKyiv School of Economics\nMSc of Economics\nSep 2022 - Jan 2024\n\n\n\n\n\n\n\n\n\nKSE\n\n\n\n\n\nThesis:\nTurbulent Times: Investigating Temporal Choices In Wartime\nCourses:\n\nStatistics & Econometrics:\n\nHypothesis testing, data cleaning, data visualization with R and Tableau\nPanel, cross-sectional data and difference in differences\nTime series analysis and forecasting\n\nBehavioral Economics:\n\nResearched the effects of framing on the financial decision-making of students\nStudied seminal papers and latest finding of the field (Prospect Theory, Heuristics)\n\nTracking Warzone Economic Activity in Ukraine (with Duke University):\n\nUsed GoogleTrends & Nightlight data to estimate economic activity in Ukraine\nUsed machine learning algorithms to predict regional GDP of Ukraine Economics"
+    "objectID": "posts/night-guy-morning-guy/index.html#plot_2022_2024",
+    "href": "posts/night-guy-morning-guy/index.html#plot_2022_2024",
+    "title": "Night Guy and Morning Guy",
+    "section": "2022-2024",
+    "text": "2022-2024\n\n\n\n\n\n\n\n\nAfter a year-long hiatus, I have resumed tracking my time in 2022. This time there were no goals as to how much time has to be spent on any activity, but rather I used it as a tool for reflection1. Overall the approach and categories (activities) were the same, except now instead of Japanese there were even more studying, and new categories Toastmasters, Work and Piano.1 This deserves a post of it’s own."
   },
   {
-    "objectID": "about/index.html#inspiration",
-    "href": "about/index.html#inspiration",
-    "title": "Vadym Yudenko",
-    "section": "Inspiration",
-    "text": "Inspiration\nThis blog would have never been developed if not for the active community of Quarto-website aficionados, whose open-source websites helped me build one myself. If you’re looking for inspiration, ideas for your website check out these awesome pages!\n\n\n\n\n\n\nBlogs\n\n\n\n\n\n\nKazuharu Yanagimoto  Westchester Covid-19 Tracking by Matt Herman  Mickaël CANOUIL  Marvin Schmitt  Danielle Navarro  Taras Kaduk  werk.statt.codes  Gwern Branwen  crumplab  Andrew Heiss  Emil Hvitfeldt  Albert Rapp"
+    "objectID": "posts/night-guy-morning-guy/index.html#comparison",
+    "href": "posts/night-guy-morning-guy/index.html#comparison",
+    "title": "Night Guy and Morning Guy",
+    "section": "2020 vs 2023",
+    "text": "2020 vs 2023\n\n\n\n\n\n\n\n\n\n\n\nDespite a 2 year difference, these look almost the same—lotsa sleeping, studying and everything else. In 2020 there were days when I went to bed super late, in 2022-2023 they became habitual. Also, hours of sleep are visibly lower on the right, than on the left. In 2020 I socialized throughout the day, whereas in 2022-2023 it is concentrated in the evening—studies and work have ousted them.\n2022-2024 was an extremely stressful and rewarding year. I have learned and achieved in this year more than in 4 years combined, I’d wake up and study, then rest a bit, then study again. There were burnouts, and added pressure because of power outages and war in general. Yet, when you look at the percentages… my life hasn’t changed much.\nIf you add  Japanese and university study time from 2019-2020, you’d have roughly the same average as in 2023. Had a more active social life , but did less  sports in 2023. But the most striking difference is with sleep, or lack thereof, in 2023."
   },
   {
-    "objectID": "essays/index.html",
-    "href": "essays/index.html",
-    "title": "Essays",
-    "section": "",
-    "text": "We all love you, and so does Putin\n\n\n\n\n\n\n\n\n\n\n\n\nAug 10, 2022\n\n\n7 min\n\n\n\n\n\n\n  \n\n\n\n\nBack to normal\n\n\n\n\n\nRemembering Amstor Mall Airstrike\n\n\n\n\n\n\nJul 28, 2022\n\n\n5 min\n\n\n\n\n\n\nNo matching items"
+    "objectID": "posts/night-guy-morning-guy/index.html#morning-guy",
+    "href": "posts/night-guy-morning-guy/index.html#morning-guy",
+    "title": "Night Guy and Morning Guy",
+    "section": "Morning guy",
+    "text": "Morning guy\nWay back in 2020 one of the goals with time tracking was to get better at mornings. I would spent hours on my phone and not get anything done. As you can see from the sankey plot, I’ve been quite successful!\nThe worst scenario is Sleep -&gt; Miscellaneous -&gt; Miscellaneous ⟶ Miscellaneous , which is probably me laying in bed, engaging in brain-rot activity. Sleep -&gt; Miscellaneous -&gt; Miscellaneous -&gt; Food is better, and Sleep -&gt; Miscellaneous -&gt; Food is much better. There are days when I’d go for a morning run or do morning exercises (Sleep -&gt; Miscellaneous -&gt;  Sport and Sleep -&gt;  Sport). Looking at it makes me proud of my younger self, and displeased with older self.\n\n\n\n\n\n\nIn 2022-2023 I have been much lazier and it would take me much longer to wake up. See the heatmap for 2023 and how inconsistent my sleeping schedule was, add to that that I’ve not been getting enough sleep on most days and that’s a recipe for a bad morning.\n\n\n\n\n\n\nDon’t think that this Miscellaneous -&gt; Miscellaneous -&gt; Miscellaneous is only me procrastinating in bed. It is very likely this is what I’ve been doing, but because Miscellaneous is such a broad category. Many things like taking a shower, packing stuff, ironing clothes, cleaning the flat, or preping breakfast2, which I started doing more often in this period.2 Don’t confuse with eating breakfast, which comes under Food category :)\nThere is one person who is to blame for lazy morning, and it is…"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Vadym Yudenko",
-    "section": "",
-    "text": "Blog\n\n\n\n\n\nMiscellaneous articles on data analysis and visualization.\n\n\n\n\n \n\n\n\n\n  \n\n\n\n\nEssays\n\n\n\n\n\nEssays on life during wartime and personal thoughts on life…\n\n\n\n\n \n\n\n\n\nNo matching items"
+    "objectID": "posts/night-guy-morning-guy/index.html#night-guy",
+    "href": "posts/night-guy-morning-guy/index.html#night-guy",
+    "title": "Night Guy and Morning Guy",
+    "section": "Night guy",
+    "text": "Night guy\n\n“I never get enough sleep. I stay up late at night, cause I’m Night Guy. Night Guy wants to stay up late. ‘What about getting up after five hours sleep?’ ‘Oh that’s Morning Guy’s problem. That’s not my problem, I’m Night Guy. I stay up as late as I want.’ So you get up in the morning, you’re exhausted, groggy… ‘oooh I hate that Night Guy!’ See, Night Guy always [messes up] Morning Guy. There’s nothing Morning Guy can do. The only thing Morning Guy can do is try and oversleep often enough so that Day Guy loses his job and Night Guy has no money to go out anymore.”\n– Jerry Seinfeld\n\nThe one messing up morning guy, the one partying (supposedly), the carefree one. In 2020 he knew his place, he was tame. Either chilling before going to bed (Miscellaneous -&gt; Miscellaneous -&gt; Sleep) or studying, preparing and going to bed ( Japanese -&gt; Miscellaneous -&gt; Sleep). Sometimes he’d waste some time, but only for 20 minutes before realizing it is time to stop.\n\n\n\n\n\n\nNight guy of 2023 realized that wasting time is better in a good company. See how the share of social increased right before going to bed. In reality partying was mostly late-night conversations with fellow students about life, studies and stuff. Other than that Night guy of 2023 has been studying and chilling before sleep, much like the younger version of himself.\n\n\n\n\n\n\n\n\n\nOkay, we have seen WHAT were these 2 guys doing. Now about WHEN they were doing it. The plot below shows percentage of wake up (left) and bedtime (right) times for 2 periods. It is clear that going to bed earlier is (at least visually) associated with earlier wake-up time.\nWould be curious to look into a how variation in bedtime affect the variation in wake-up time. Notice how in 2023 wake-up times are heavily centered around 08:00, while bedtime is all over the place from 00:00 to 04:00! And the opposite for 2020, bedtime is centered around 00:00, and wake-up time has a bigger spread from as early as 04:00 to 10:00."
+  },
+  {
+    "objectID": "posts/night-guy-morning-guy/index.html#conclusion",
+    "href": "posts/night-guy-morning-guy/index.html#conclusion",
+    "title": "Night Guy and Morning Guy",
+    "section": "Instead of conclusion",
+    "text": "Instead of conclusion\nDeep inside I expected to see a different picture. To see how better my time management skill got, how I’ve been more active, and more socially engaged. I have become more active, socially, too! This came at a cost of, among other things, healthy sleeping schedule and a reduced physical activity. Sounds like a typical student life.\n\n\n\n\n\n\nSession info\n\n\n\n\n\n\n\nR version 4.3.0 (2023-04-21 ucrt)\nPlatform: x86_64-w64-mingw32/x64 (64-bit)\nRunning under: Windows 11 x64 (build 22631)\n\nMatrix products: default\n\n\nlocale:\n[1] LC_COLLATE=English_United States.utf8 \n[2] LC_CTYPE=English_United States.utf8   \n[3] LC_MONETARY=English_United States.utf8\n[4] LC_NUMERIC=C                          \n[5] LC_TIME=English_United States.utf8    \n\ntime zone: GMT+3\ntzcode source: internal\n\nattached base packages:\n[1] grid      stats     graphics  grDevices utils     datasets  methods  \n[8] base     \n\nother attached packages:\n [1] patchwork_1.2.0    DT_0.33            RColorBrewer_1.1-3 fontawesome_0.5.2 \n [5] knitr_1.46         glue_1.7.0         ggiraph_0.8.10     scales_1.3.0      \n [9] plotly_4.10.4      reshape2_1.4.4     transformr_0.1.5   showtext_0.9-7    \n[13] showtextdb_3.0     sysfonts_0.8.9     ggnewscale_0.4.10  gganimate_1.0.9   \n[17] ggthemes_5.1.0     ggtext_0.1.2       ggExtra_0.10.1     lubridate_1.9.3   \n[21] forcats_1.0.0      stringr_1.5.1      dplyr_1.1.4        purrr_1.0.2       \n[25] readr_2.1.5        tidyr_1.3.1        tibble_3.2.1       ggplot2_3.5.1     \n[29] tidyverse_2.0.0    gt_0.10.1          stargazer_5.2.3   \n\nloaded via a namespace (and not attached):\n [1] DBI_1.2.2          rlang_1.1.3        magrittr_2.0.3     e1071_1.7-14      \n [5] compiler_4.3.0     systemfonts_1.1.0  vctrs_0.6.5        pkgconfig_2.0.3   \n [9] crayon_1.5.2       fastmap_1.2.0      labeling_0.4.3     utf8_1.2.4        \n[13] promises_1.3.0     rmarkdown_2.27     markdown_1.12      tzdb_0.4.0        \n[17] bit_4.0.5          xfun_0.44          cachem_1.1.0       jsonlite_1.8.8    \n[21] progress_1.2.3     later_1.3.2        uuid_1.2-0         tweenr_2.0.3      \n[25] parallel_4.3.0     prettyunits_1.2.0  R6_2.5.1           bslib_0.7.0       \n[29] stringi_1.8.4      jquerylib_0.1.4    Rcpp_1.0.12        httpuv_1.6.15     \n[33] timechange_0.3.0   tidyselect_1.2.1   rstudioapi_0.16.0  yaml_2.3.8        \n[37] miniUI_0.1.1.1     curl_5.2.1         plyr_1.8.9         shiny_1.8.1.1     \n[41] withr_3.0.0        evaluate_0.23      sf_1.0-16          units_0.8-5       \n[45] proxy_0.4-27       xml2_1.3.6         lpSolve_5.6.20     pillar_1.9.0      \n[49] KernSmooth_2.23-20 generics_0.1.3     vroom_1.6.5        hms_1.1.3         \n[53] commonmark_1.9.1   munsell_0.5.1      xtable_1.8-4       class_7.3-21      \n[57] lazyeval_0.2.2     tools_4.3.0        data.table_1.15.4  crosstalk_1.2.1   \n[61] colorspace_2.1-0   cli_3.6.2          fansi_1.0.6        viridisLite_0.4.2 \n[65] gtable_0.3.5       sass_0.4.9         digest_0.6.35      classInt_0.4-10   \n[69] gifski_1.12.0-2    htmlwidgets_1.6.4  farver_2.1.2       htmltools_0.5.8.1 \n[73] lifecycle_1.0.4    httr_1.4.7         mime_0.12          gridtext_0.1.5    \n[77] bit64_4.0.5"
   },
   {
     "objectID": "posts/time-tracking-2020/index.html#main_plot",
     "href": "posts/time-tracking-2020/index.html#main_plot",
-    "title": "Time Tracking 2020",
+    "title": "Time Tracking: Retrospective Look",
     "section": "2020",
     "text": "2020\n\n\n\n\n\n\n\n\nMesmerizing, isn’t it? The chaos and apparent randomness of all these colors. Upon closer inspection you might notice the some recurring patterns. That sea of blue at the bottom is Sleep, a swarm of golden dots right above is breakfast (Food), and above are other daily activities. You are looking at my 2020.\n2019-2020 was my sophomore year at university, where I (should) have studied entrepreneurial studies. But majority of my time was preoccupied with extracurricular activities, mainly, studying Japanese.\nI’ve found out about time-tracking and decided to give it a try. Some thought were given to the number of categories (what to track) and the frequency of tracking (how to track). With 13 categories that sufficiently capture my life and 72 20-minute intervals I was set up to track some time."
   },
   {
     "objectID": "posts/time-tracking-2020/index.html#lessons",
     "href": "posts/time-tracking-2020/index.html#lessons",
-    "title": "Time Tracking 2020",
+    "title": "Time Tracking: Retrospective Look",
     "section": "Lessons",
-    "text": "Lessons\nYou have only 16 hours in a day\n\nSorry, Arnold, but you don’t have 24 hours to use. While I appreciate the premise of the quote and it’s catchy, motivating nature, it is false and I know just by how much!\nMy younger self was easily swayed by such simple and inspiring quotes, they made me wanna get out there and do great things! When I started time tracking, I set goals on how much hours I wanted to spend per each category. For example, I needed to spend 1000 hours learning Japanese by December 2020, clock at least 5 hours/week of Sports to stay fit, accumulate no less than 10 hours/week of socializing before I go crazy.\nAfter a couple of weeks I was behind on many of my goals. Upon closer inspection I realized that I failed to account for sleep.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYou don’t even have 16 hours in a day\nYes! Not only sleep was taking too much time for my liking, but Miscellaneous—an umbrella category for non-productive, but necessary parts of life. Brushing teeth and taking a shower, doing groceries and laundry, cleaning your room and ironing your shirt, doing a medical check-up, waiting in a queue (!) are some of the activities that happen daily and there are no escaping them. Watching YouTube, reading social media and other such activities were not given a category of their own, they, too, fall under Miscellaneous1.1 Aster Hu’s blog on tracking of spare time has a great descriptions of what comprises this category.\n\n\n\n\n\n\n\n\nThere is no structure to it, it is chaotic and permeates every day. So much of my 2020 was occupied with miscellaneous things it is scary—almost 6 hours of my day went towards this category! I didn’t think I spent too much time on social media and YouTube, but looking back I absolutely did.\nTime is not found, it is made\nIf you considering to learn a new skill, be ready to sacrifice the time needed to learn this skill from some other activity you’ve been doing.\nIn my case, I’ve sacrificed my  university studies to acquire Japanese.\nIn Ukraine lockdown was official starting from March 20, 2020 (source). Interestingly how with it my diligent studying ended—average hours spent studying never came back to pre-pandemic level.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOf course, Covid played a role—suddenly there was no need to commute to and fro university, be present and active during online classes—but I’ve already been steadily increasing my time with the target language. By that time I’ve already obtained N4 and knew that to reach N3 and above, much more hours had to be spent with the language. For Japanese I needed at least 1000 hours to pass N3 in December 2020. To get these 1000 hours I have sacrificed my main studies in the university."
+    "text": "Lessons\nYou have only 16 hours in a day\n\nSorry, Arnold, but you don’t have 24 hours to use. While I appreciate the premise of the quote and it’s catchy, motivating nature, it is false and I know just by how much!\nMy younger self was easily swayed by such simple and inspiring quotes, they made me wanna get out there and do great things! When I started time tracking, I set goals on how much hours I wanted to spend per each category. For example, I needed to spend 1000 hours learning Japanese by December 2020, clock at least 5 hours/week of Sports to stay fit, accumulate no less than 10 hours/week of socializing before I go crazy.\nAfter a couple of weeks I was behind on many of my goals. Upon closer inspection I realized that I failed to account for sleep.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYou don’t even have 16 hours in a day\nYes! Not only sleep was taking too much time, but also miscellaneous—an umbrella category for non-productive, but necessary parts of life. Brushing teeth and taking a shower, doing groceries and laundry, cleaning a room and ironing a shirt, doing a medical check-up, waiting in a queue (!) are some of the activities that happen daily and there are no escaping them. Watching YouTube, reading social media and other such activities were not given a category of their own, they, too, fall under miscellaneous1.1 Aster Hu’s blog on tracking of spare time has a great descriptions of what comprises this category.\n\n\n\n\n\n\n\n\nThere is no structure to it, it is chaotic and permeates every day. So much of my 2020 was occupied with miscellaneous things it is scary—almost 6 hours of my day went towards this category! I didn’t think I spent too much time on social media and YouTube, but looking back I absolutely did!\nTime is not found, it is made\nIf you considering learning a new skill, be ready to sacrifice the time needed to learn this skill from some other activity you’ve been doing.\nIn my case, I’ve sacrificed my  university studies to acquire Japanese.\nIn Ukraine an emergency lockdown was declared on March 20, 2020. Interestingly how with it my diligent studying ended—average hours spent studying never came back to pre-pandemic level.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOf course, Covid played a role—suddenly there was no need to commute to and fro university, be present and active during online classes—but I’ve already been steadily increasing my time with the target language. By that time I’ve already obtained N4 (A2) and knew that to reach N3 and above (B1+), much more hours had to be spent with the language. For Japanese I needed at least 1000 hours to pass N3 in December 2020. To get these 1000 hours I have sacrificed my main studies in the university."
   },
   {
     "objectID": "posts/time-tracking-2020/index.html#hindsight-2020",
     "href": "posts/time-tracking-2020/index.html#hindsight-2020",
-    "title": "Time Tracking 2020",
+    "title": "Time Tracking: Retrospective Look",
     "section": "Hindsight 20/20",
-    "text": "Hindsight 20/20\nCould I have still gotten these 1000 hours without sacrificing arguably important part of life? Absolutely! I could spend every waking hour working/studying, have food brought to me, replace social life with daily meetings—what a wicked though—and never see the light of day! But what a miserable life that would be!\nLooking back, I could have spent less time scrolling feed in the morning and before bed, watching videos after school, and instead spend more time with friends and family, doing sports and studying Japanese."
+    "text": "Hindsight 20/20\nCould I have still gotten these 1000 hours without sacrificing arguably important part of life? Absolutely! I could spend every waking hour working/studying, have food brought to me, replace social life with daily work meetings—what a wicked thought—and never see the light of day! But what a miserable life that would be!\nLooking back, I could have spent less time scrolling feed in the morning and before bed, watching videos after school, and instead spend more time with friends and family, doing sports and studying Japanese."
   },
   {
     "objectID": "posts/time-tracking-2020/index.html#goals",
     "href": "posts/time-tracking-2020/index.html#goals",
-    "title": "Time Tracking 2020",
+    "title": "Time Tracking: Retrospective Look",
     "section": "Goals",
-    "text": "Goals\nBy the end of 2020 reached 1000 hours, but the exam was cancelled due to Covid. I have spent \\(\\approx5.5\\) hours/week doing sports (more than I planned). And most importantly became more conscious of how I spend my time.\nI was happy with the result, but even happier to finally be done with this!"
+    "text": "Goals\nBy the end of 2020 reached 1000 hours, but the exam was cancelled due to Covid. I have spent \\(\\approx5.5\\) hours/week doing  sports (more than I planned). By 2020’s standard my Social Life blossoming! I have set—yes, I was thinking in term of hours here, too—a target of 10 hours/week for Social Life\nAnd most importantly became more conscious of how I spend my time.\nI was happy with the result, but even happier to finally be done with this!"
   },
   {
     "objectID": "posts/time-tracking-2020/index.html#closing-remarks",
     "href": "posts/time-tracking-2020/index.html#closing-remarks",
-    "title": "Time Tracking 2020",
+    "title": "Time Tracking: Retrospective Look",
     "section": "Closing remarks",
-    "text": "Closing remarks\nWe dream in ideas, concepts. To make them real requires putting them in words, and then actions. Actions can be measured. For example, if you dream about running a marathon you have to hit the track and run, and run a lot. Your colleague tells you about this marathon in 5 months and you decide to finally make your dream come true and sign up. So far, you’ve been running sub-5k runs every once in a while and a marathon seems daunting. How do you plan your next runs so that when the day comes you finish the run?\nYou can think in terms of mileage\n\nX km/week and increase this number each week until you reach the marathon week.\n\nor in terms of your best runs, which is a variation of the above.\n\nEach week I’ll be running +X km.\n\nTime tracking showed me that it is possible to set your goals in terms of hours. It takes focus from something far and sometimes unreachable to something you have full control over—your time."
-  },
-  {
-    "objectID": "til/index.html",
-    "href": "til/index.html",
-    "title": "TIL",
-    "section": "",
-    "text": "Order By\n       Default\n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Title\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\nTitle\n\n\nDescription\n\n\nDate\n\n\n\n\n\n\nQALMRI\n\n\nHow to read an article \n\n\nDec 7, 2023\n\n\n\n\n\n\nNo matching items"
+    "text": "Closing remarks\nWe dream in ideas, concepts. To make them real requires putting them in words, and then actions. Actions can be measured. For example, if you dream about running a marathon you have to hit the track and run, and run a lot. Your colleague tells you about this marathon in 5 months and you decide to finally make your dream come true and sign up. So far, you’ve been running sub-5k runs every once in a while and a marathon seems daunting. How do you plan your next runs so that when the day comes you finish the run?\nYou can think in terms of mileage\n\nX km/week and increase this number each week until you reach the marathon week.\n\nor in terms of your best runs, which is a variation of the above.\nOr, you can think in terms of hours! Essentially it is the same, but from different perspective. Tracking hours really puts your goals in direct comparison with other parts of your life and you can easily spot things that prevent you from achieving your goals—if this is the case. Time tracking takes focus from something far and sometimes unreachable to something you have full control over—your time!\n\n\n\n\n\n\nSession info\n\n\n\n\n\n\n\nR version 4.3.0 (2023-04-21 ucrt)\nPlatform: x86_64-w64-mingw32/x64 (64-bit)\nRunning under: Windows 11 x64 (build 22631)\n\nMatrix products: default\n\n\nlocale:\n[1] LC_COLLATE=English_United States.utf8 \n[2] LC_CTYPE=English_United States.utf8   \n[3] LC_MONETARY=English_United States.utf8\n[4] LC_NUMERIC=C                          \n[5] LC_TIME=English_United States.utf8    \n\ntime zone: Europe/Kiev\ntzcode source: internal\n\nattached base packages:\n[1] grid      stats     graphics  grDevices utils     datasets  methods  \n[8] base     \n\nother attached packages:\n [1] patchwork_1.2.0    DT_0.33            RColorBrewer_1.1-3 fontawesome_0.5.2 \n [5] knitr_1.46         glue_1.7.0         ggiraph_0.8.10     scales_1.3.0      \n [9] plotly_4.10.4      reshape2_1.4.4     transformr_0.1.5   showtext_0.9-7    \n[13] showtextdb_3.0     sysfonts_0.8.9     ggthemes_5.1.0     ggtext_0.1.2      \n[17] ggExtra_0.10.1     zoo_1.8-12         lubridate_1.9.3    forcats_1.0.0     \n[21] stringr_1.5.1      dplyr_1.1.4        purrr_1.0.2        readr_2.1.5       \n[25] tidyr_1.3.1        tibble_3.2.1       ggplot2_3.5.1      tidyverse_2.0.0   \n[29] stargazer_5.2.3   \n\nloaded via a namespace (and not attached):\n [1] tidyselect_1.2.1   viridisLite_0.4.2  farver_2.1.2       fastmap_1.2.0     \n [5] lazyeval_0.2.2     tweenr_2.0.3       promises_1.3.0     digest_0.6.35     \n [9] timechange_0.3.0   mime_0.12          lifecycle_1.0.4    sf_1.0-16         \n[13] magrittr_2.0.3     compiler_4.3.0     sass_0.4.9         rlang_1.1.3       \n[17] tools_4.3.0        utf8_1.2.4         yaml_2.3.8         data.table_1.15.4 \n[21] htmlwidgets_1.6.4  classInt_0.4-10    curl_5.2.1         plyr_1.8.9        \n[25] xml2_1.3.6         KernSmooth_2.23-20 miniUI_0.1.1.1     withr_3.0.0       \n[29] fansi_1.0.6        xtable_1.8-4       e1071_1.7-14       colorspace_2.1-0  \n[33] cli_3.6.2          rmarkdown_2.27     generics_0.1.3     rstudioapi_0.16.0 \n[37] httr_1.4.7         tzdb_0.4.0         cachem_1.1.0       DBI_1.2.2         \n[41] proxy_0.4-27       vctrs_0.6.5        jsonlite_1.8.8     hms_1.1.3         \n[45] crosstalk_1.2.1    systemfonts_1.1.0  jquerylib_0.1.4    units_0.8-5       \n[49] stringi_1.8.4      gtable_0.3.5       later_1.3.2        munsell_0.5.1     \n[53] pillar_1.9.0       htmltools_0.5.8.1  R6_2.5.1           lpSolve_5.6.20    \n[57] evaluate_0.23      shiny_1.8.1.1      lattice_0.21-8     gridtext_0.1.5    \n[61] bslib_0.7.0        httpuv_1.6.15      class_7.3-21       Rcpp_1.0.12       \n[65] uuid_1.2-0         xfun_0.44          pkgconfig_2.0.3"
   }
 ]

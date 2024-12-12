@@ -1,0 +1,14 @@
+---
+title: "DataViz"
+page-layout: full
+listing:
+  contents: index.qmd
+  sort: "date desc"
+  type: default
+  categories: true
+  fields: [image, title, description, date, reading-time]
+  feed: true
+---
+
+
+Page under construction

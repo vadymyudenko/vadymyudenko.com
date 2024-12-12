@@ -1,4 +1,5 @@
 ---
+title: "Vadym Yudenko"
 open-graph: true
 about:
   template: jolla
@@ -11,67 +12,14 @@ about:
       text: Github
       href: https://github.com/vyudenko
     - icon: file-pdf
-      text: CV
+      text: CV (old)
       href: https://drive.google.com/file/d/1_m219XQMiiki18tZxKOvl1ICCw9h1jRe/view?usp=sharing
 toc: false
 ---
 
-## Vadym Yudenko
+Hello! I'm a junior researcher at Institute for Behavioral Studies at American University Kyiv.
 
-::: column-body-outset
-## Experience
-
-|                                                       |                                                                                       |                   |                    |
-|----------------|--------------------------|----------------|----------------|
-| ![AUK Logo](auk_logo.svg){alt="AUK Logo" width="150"} | [Institute of Behavioral Studies at American University Kyiv](https://auk.edu.ua/en/) | Junior Researcher | Aug 2023 - present |
-
-::: {.callout-tip title="AUK projects" collapse="true" icon="false" style="text-align: left;"}
--   Evaluating [USAID AGRO](https://www.usaid.gov/ukraine/agriculture-resilience-initiative-agri-ukraine) programmes success from a behavioral perspective *(work in progress)*
--   Measuring the effects of mental health issues on productivity of workers *(work in progress)*
-:::
-
-## Education
-
-|                                                       |                                             |                  |                     |
-|----------------------|-----------------|-----------------|-----------------|
-| ![KSE Logo](kse_logo.jpg){alt="KSE Logo" width="125"} | [Kyiv School of Economics](https://kse.ua/) | MSc of Economics | Sep 2022 - Jan 2024 |
-
-::: {.callout-tip title="KSE" collapse="true" icon="false" style="text-align: left;"}
-
-**Thesis:**
-
-[Turbulent Times: Investigating Temporal Choices In Wartime](https://kse.ua/wp-content/uploads/2024/01/Vadym-Yudenko-Thesis_ammended.pdf)
-
-**Courses:**
-
--   [Statistics & Econometrics:]{.underline}
-
-    -   Hypothesis testing, data cleaning, data visualization with R and Tableau
-
-    -   Panel, cross-sectional data and difference in differences
-
-    -   Time series analysis and forecasting
-
--   [Behavioral Economics:]{.underline}
-
-    -   Researched the effects of framing on the financial decision-making of students
-    -   Studied seminal papers and latest finding of the field (Prospect Theory, Heuristics)
-
--   [Tracking Warzone Economic Activity in Ukraine (with [Duke University](https://duke.edu/)):]{.underline}
-
-    -   Used GoogleTrends & Nightlight data to estimate economic activity in Ukraine
-
-    -   Used machine learning algorithms to predict regional GDP of Ukraine Economics
-:::
+What started as a existential questions in a teenage brain, has since transformed into a career path. Fueled by curiosity, I'm passionate about understanding human behavior and decision-making. Sometimes this curiosity make me do things, you can read about them here! 
 
 
-## Inspiration
 
-This blog would have never been developed if not for the active community of Quarto-website aficionados, whose open-source websites helped me build one myself. If you're looking for inspiration, ideas for your website check out these awesome pages!
-
-::: {.callout-warning title="Blogs" collapse="true" icon="false" style="text-align: left;"}
-::: {style="text-align: center"}
-[Kazuharu Yanagimoto](https://kazuyanagimoto.com/) <br> [Westchester Covid-19 Tracking by Matt Herman](https://westchester-covid.mattherman.info/) <br> [Mickaël CANOUIL](https://mickael.canouil.fr/) <br> [Marvin Schmitt](https://www.marvinschmitt.com/) <br> [Danielle Navarro](https://djnavarro.net/) <br> [Taras Kaduk](https://taraskaduk.com/) <br> [werk.statt.codes](https://werk.statt.codes/) <br> [Gwern Branwen](https://gwern.net/index) <br> [crumplab](https://www.crumplab.com/) <br> [Andrew Heiss](https://www.andrewheiss.com/) <br> [Emil Hvitfeldt](https://www.emilhvitfeldt.com/) <br> [Albert Rapp](https://albert-rapp.de/) <br>
-:::
-:::
-:::
