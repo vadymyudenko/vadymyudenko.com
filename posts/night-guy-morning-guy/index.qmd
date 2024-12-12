@@ -561,7 +561,7 @@ Way back in 2020 one of the goals with time tracking was to get better
 at mornings. I would spent hours on my phone and not get anything done.
 As you can see from the sankey plot, I've been quite successful!
 
-The worst scenario is [<b>Sleep</b>]{style="color:#3B4CC0;"} -> [<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b>Miscellaneous</b>]{style="color:#27AE60;"} ⟶
+The worst scenario is [<b>Sleep</b>]{style="color:#3B4CC0;"} -> [<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b>Miscellaneous</b>]{style="color:#27AE60;"} ->
 [<b>Miscellaneous</b>]{style="color:#27AE60;"} , which is probably me laying in bed, engaging in
 [brain-rot](https://corp.oup.com/news/brain-rot-named-oxford-word-of-the-year-2024/)
 activity. [<b>Sleep</b>]{style="color:#3B4CC0;"} -> [<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b>Food</b>]{style="color:#99CC99;"} is better, and
@@ -939,7 +939,7 @@ There is one person who is to blame for lazy morning, and it is...
 The one messing up morning guy, the one partying (supposedly), the
 carefree one. In 2020 he knew his place, he was tame. Either chilling
 before going to bed ([<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b>Sleep</b>]{style="color:#3B4CC0;"}) or [<b>studying</b>]{style="color:#FFD700;"},
-preparing and going to bed ([<b> Japanese</b>]{style="color:#FF69B4;"} ->  [<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b>Sleep</b>]{style="color:#3B4CC0;"}). Sometimes he'd [<b>waste</b>]{style="color:#333333;"} some time, but only for 20 minutes before realizing it is
+preparing and going to bed ([<b>Japanese</b>]{style="color:#FF69B4;"} ->  [<b>Miscellaneous</b>]{style="color:#27AE60;"} -> [<b>Sleep</b>]{style="color:#3B4CC0;"}). Sometimes he'd [<b>waste</b>]{style="color:#333333;"} some time, but only for 20 minutes before realizing it is
 time to stop.
 
 
@@ -1263,6 +1263,12 @@ ggplot(hist_wake_up, aes(x = percentage, y = time_column, fill = period)) +
     size = 0.5,
     curvature = -0.2
   ) +
+        geom_curve(aes(x = 18, y = "09:40", xend = 10, yend = "09:20"),
+    arrow = arrow(length = unit(0.15, "cm"), type = "closed"),
+    color = "black",
+    size = 0.5,
+    curvature = 0.2
+  ) +
   geom_richtext(
     aes(x = 8, 
         y = "04:40", 
@@ -1294,27 +1300,16 @@ ggplot(hist_wake_up, aes(x = percentage, y = time_column, fill = period)) +
     label.padding = unit(0.1, "lines"),
     size = 4
   ) +
-    geom_richtext(
-    aes(x = 4, 
-        y = "11:20", 
-        label = "Bedtime and mornings in <span style='color:navy'><strong>2020</strong></span> are normal(ish)."),
-    label.color = NA,
-    fill = NA,
-    hjust = 0,
-    vjust = 0.5,
-    label.padding = unit(0.1, "lines"),
-    size = 6
-  ) +
       geom_richtext(
-    aes(x = 4, 
-        y = "11:00", 
-        label = "Stable sleep schedule has left the chat in <span style='color:#FFCC33'><strong>2023</strong></span>"),
+    aes(x = 19, 
+        y = "09:40", 
+        label = "Stable sleep schedule has <br> left the chat in <span style='color:#FFCC33'><strong>2023</strong></span>"),
     label.color = NA,
     fill = NA,
     hjust = 0,
     vjust = 0.5,
     label.padding = unit(0.1, "lines"),
-    size = 6
+    size = 4
   )-> fig_wake_up
 ```
 
@@ -1392,6 +1387,12 @@ ggplot(hist_bedtime, aes(x = -percentage, y = time_column, fill = period)) +
     vjust = 0.5,
     label.padding = unit(0.1, "lines"),
     size = 6
+  ) +
+  geom_curve(aes(x = -23, y = "03:40", xend = -10, yend = "02:20"),
+    arrow = arrow(length = unit(0.15, "cm"), type = "closed"),
+    color = "black",
+    size = 0.5,
+    curvature = 0.1
   ) -> fig_hist_bedtime
 ```
 
