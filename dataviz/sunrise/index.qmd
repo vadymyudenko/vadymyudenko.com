@@ -1,0 +1,199 @@
+---
+title: "Sunrise"
+author: 
+ - name: Vadym Yudenko
+date: 2024-12-01
+draft: true 
+categories:
+  - Timetracking
+  - Dataviz
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.showtext=TRUE)
+```
+
+```{r libraries}
+library(stargazer)
+library(gt)
+library(tidyverse)
+library(ggExtra)
+library(ggtext)
+library(ggthemes)
+library(gganimate)
+library(ggnewscale)
+library(showtext)
+library(grid)
+library(transformr)
+library(lubridate)
+library(reshape2)
+library(plotly)
+library(scales)
+library(ggiraph)
+library(glue)
+library(knitr)
+library(fontawesome)
+library(RColorBrewer)
+library(DT)
+library(patchwork)
+```
+
+```{r theme}
+font_add_google("Fira Sans", "firasans")
+
+#showtext::showtext_auto()
+Sys.setenv(TZ = "GMT+3")
+
+blog_theme <-
+   theme_minimal(18, base_family = "Fira Sans") +
+   theme(
+     plot.background = element_rect(fill = "white", color = NA),
+     plot.title.position = "plot",
+     plot.title = element_text(size = 24, margin = margin(b = 1, unit = "line")),
+     legend.position = c(0, 1),
+     legend.direction = "horizontal",
+     legend.justification = c(0, 1),
+     legend.title.align = 1,
+     axis.title.y = element_text(hjust = 0, size = 10),
+     axis.title.x = element_text(hjust = 0, size = 10),
+     panel.grid.major = element_line(color = "#d3d9db"),
+     panel.grid.minor = element_blank()
+   )
+ 
+theme_set(blog_theme)
+```
+
+```{r data}
+data_long20 <- read.csv("data/data_2020.csv") %>%
+  mutate(
+    datetime = as.POSIXct(datetime, format="%m/%d/%Y %H:%M"),
+    day_of_week = weekdays(datetime),
+    time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
+    hour = hour(datetime),
+    day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
+    month = month(datetime, label = TRUE, abbr = FALSE),
+    activity = case_when(
+     tolower(activity) %in% c("misc", "mic") ~ "Miscellaneous",
+     activity %in% c("Transport", "Transportation") ~ "Going Somewhere",
+     activity == "Communication" ~ "Social Life",
+     activity == "TM" ~ "Toastmasters",
+     TRUE ~ activity))
+
+data23 <- read_delim("data/KSE_life_2.csv", 
+    delim = ";", escape_double = FALSE, col_types = cols(Column1 = col_time(format = "%H:%M")), 
+    trim_ws = TRUE)
+
+data_long2023 <- gather(data23, day, activity, -Column1) %>% 
+  na.omit() %>% 
+  mutate(day = ifelse(day == "9/30/2022", "10/1/2022", day))
+
+
+data_long2023$datetime <- as.POSIXct(paste(data_long2023$day, data_long2023$Column1), format="%m/%d/%Y %H:%M:%S", tz="GMT+3")
+
+data_long2023 <- data_long2023 %>%
+   mutate(
+     day_of_week = weekdays(datetime),
+   time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
+   activity = case_when(
+     tolower(activity) %in% c("misc", "mic") ~ "Miscellaneous",
+     activity %in% c("Transport", "Transportation") ~ "Going Somewhere",
+     activity == "Communication" ~ "Social Life",
+     TRUE ~ activity),
+     hour = hour(datetime),
+     #day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
+     month = month(datetime, label = TRUE, abbr = FALSE)
+   )
+
+data1 <- data_long20 %>%
+  select(datetime, activity) %>%
+  mutate(index = row_number())
+
+# Select relevant columns from the second dataset and add an index
+data2 <- data_long2023 %>%
+  select(datetime, activity) %>%
+  mutate(index = row_number())
+
+# Combine the two datasets
+combined_data <- bind_rows(data1, data2, .id = "source") %>%
+  select(index, datetime, activity) %>% 
+  mutate(
+   time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
+   activity = ifelse(tolower(activity) %in% c("misc", "mic"), "Misc", activity),
+   activity = ifelse(activity == "Transport", "Transportation", activity),
+   hour = hour(datetime),
+   day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
+   period = case_when(
+     year(datetime) %in% 2019:2020 ~ "2019-2020",
+     year(datetime) %in% 2022:2024 ~ "2022-2024",
+     TRUE ~ NA_character_  # Exclude other years
+     ))
+
+activity_colors <- c(
+   "Sleep" = "#3B4CC0",  # Deep Blue (Night)
+   "Social Life" = "#87CEEB",  # SkyBlue
+   "Sport" = "#1D8E3A",  # Forest Green (Active)
+   "Work" = "#C0392B",  # Red (Energy)
+   "Reading" = "#F39C12",  # Golden Orange (Focus)
+   "Japanese" = "#FF69B4",  # HotPink
+   "Study" = "#FFD700",  # Gold
+   "Food" = "#99CC99",  # Soft Green
+   "Waste" = "#333333",  # Dark Charcoal
+   "Piano" = "purple",  # HotPink
+   "Planning" = "#FF6347",  # Tomato
+   "Toastmasters" = "#8E44AD",  # Deep Purple (Creative)
+   "Going Somewhere" = "#95A5A6",  # Urban Gray
+   "Miscellaneous" = "#27AE60"  # Fresh Green
+)
+
+```
+
+
+
+```{r}
+text = glue::glue("Compared to  <span style='color:blue'><strong>2020</strong></span> and,    
+                  I have been waking up much later in <span style='color:yellow'><strong>2023</strong></span>.") 
+
+# ggplot() +
+#   geom_col(data = hist_wake_up %>% filter(period == "2019-2020"),
+#            aes(x = time_column, y = n), 
+#            binwidth = 2, 
+#            color = "blue", 
+#            fill = "blue") +
+#   geom_col(data = hist_wake_up %>% filter(period == "2022-2024"), 
+#            aes(x = time_column, y = -n), 
+#            binwidth = 2, 
+#            color = "yellow", 
+#            fill = "yellow") +
+#   geom_hline(yintercept = 0, color = "black", size = 0.5) +
+#   annotate("text", 
+#          x = hist_wake_up %>% 
+#              filter(period == "2019-2020") %>% 
+#              pull(time_column), 
+#          y = hist_wake_up %>% 
+#              filter(period == "2019-2020") %>% 
+#              pull(n), 
+#          label = hist_wake_up %>% 
+#              filter(period == "2019-2020") %>% 
+#              pull(time_column), 
+#          vjust = -0.5,  # Adjust position slightly above the bars
+#          size = 2, 
+#          color = "black") +
+#  # scale_x_discrete(expand = c(0, 0)) +
+#   labs(title = text,
+#        caption = "Data and Visual: Vadym Yudenko",
+#        x = NULL,
+#        y = NULL) +
+#   theme_minimal() +
+#   theme(
+#     axis.text.x = element_blank(),
+#     axis.text.y = element_blank(),
+#     axis.title.x = element_text(face = "bold"),
+#     plot.title = element_markdown(hjust = 0.5),
+#     panel.grid.major = element_blank(), # Removes vertical grid lines
+#     panel.grid.minor = element_blank()
+#   )
+```
+

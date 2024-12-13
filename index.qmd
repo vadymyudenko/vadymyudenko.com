@@ -5,11 +5,13 @@ listing:
   contents: 
     - posts/index.qmd
     - essays/index.qmd
+    - dataviz/index.qmd
   id: front-list
   sort: "order"
   type: default
   grid-columns: 1
   categories: false
+  feed: true
   image-align: 'right'
   image-height: '100%'
 format:

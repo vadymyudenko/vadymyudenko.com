@@ -1,0 +1,11 @@
+---
+title: "DataViz"
+page-layout: full
+listing:
+  contents: index.qmd
+  sort: "date desc"
+  type: default
+  categories: false
+  feed: true
+---
+

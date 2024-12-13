@@ -1,0 +1,14 @@
+{
+  "hash": "0dce00a9a48c46fbfe5b26b8cfffc356",
+  "result": {
+    "markdown": "---\ntitle: \"DataViz\"\npage-layout: full\nlisting:\n  contents: index.qmd\n  sort: \"date desc\"\n  type: default\n  categories: false\n  feed: true\n---\n\n\n\n::: {.cell layout=\"l-screen-inset\"}\n\n:::",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

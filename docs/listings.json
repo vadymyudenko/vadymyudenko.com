@@ -12,7 +12,8 @@
     "listing": "/index.html",
     "items": [
       "/posts/index.html",
-      "/essays/index.html"
+      "/essays/index.html",
+      "/dataviz/index.html"
     ]
   },
   {
@@ -22,7 +23,7 @@
     ]
   },
   {
-    "listing": "/data-viz/index.html",
+    "listing": "/dataviz/index.html",
     "items": []
   }
 ]

@@ -1,0 +1,234 @@
+---
+title: "Burning the midnight oil"
+author: 
+ - name: Vadym Yudenko
+date: 2024-12-01
+draft: true 
+categories:
+  - Timetracking
+  - Dataviz
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.showtext=TRUE)
+```
+
+```{r libraries}
+library(stargazer)
+library(gt)
+library(tidyverse)
+library(ggExtra)
+library(ggtext)
+library(ggthemes)
+library(gganimate)
+library(ggnewscale)
+library(showtext)
+library(grid)
+library(transformr)
+library(lubridate)
+library(reshape2)
+library(plotly)
+library(scales)
+library(ggiraph)
+library(glue)
+library(knitr)
+library(fontawesome)
+library(RColorBrewer)
+library(DT)
+library(patchwork)
+library(ggimage)
+```
+
+```{r theme}
+font_add_google("Fira Sans", "firasans")
+
+#showtext::showtext_auto()
+Sys.setenv(TZ = "GMT+3")
+
+blog_theme <-
+   theme_minimal(18, base_family = "Fira Sans") +
+   theme(
+     plot.background = element_rect(fill = "white", color = NA),
+     plot.title.position = "plot",
+     plot.title = element_text(size = 24, margin = margin(b = 1, unit = "line")),
+     legend.position = c(0, 1),
+     legend.direction = "horizontal",
+     legend.justification = c(0, 1),
+     legend.title.align = 1,
+     axis.title.y = element_text(hjust = 0, size = 10),
+     axis.title.x = element_text(hjust = 0, size = 10),
+     panel.grid.major = element_line(color = "#d3d9db"),
+     panel.grid.minor = element_blank()
+   )
+ 
+theme_set(blog_theme)
+```
+
+```{r data}
+data_long20 <- read.csv("data/data_2020.csv") %>%
+  mutate(
+    datetime = as.POSIXct(datetime, format="%m/%d/%Y %H:%M"),
+    day_of_week = weekdays(datetime),
+    time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
+    hour = hour(datetime),
+    day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
+    month = month(datetime, label = TRUE, abbr = FALSE),
+    activity = case_when(
+     tolower(activity) %in% c("misc", "mic") ~ "Miscellaneous",
+     activity %in% c("Transport", "Transportation") ~ "Going Somewhere",
+     activity == "Communication" ~ "Social Life",
+     activity == "TM" ~ "Toastmasters",
+     TRUE ~ activity))
+
+data23 <- read_delim("data/KSE_life_2.csv", 
+    delim = ";", escape_double = FALSE, col_types = cols(Column1 = col_time(format = "%H:%M")), 
+    trim_ws = TRUE)
+
+data_long2023 <- gather(data23, day, activity, -Column1) %>% 
+  na.omit() %>% 
+  mutate(day = ifelse(day == "9/30/2022", "10/1/2022", day))
+
+
+data_long2023$datetime <- as.POSIXct(paste(data_long2023$day, data_long2023$Column1), format="%m/%d/%Y %H:%M:%S", tz="GMT+3")
+
+data_long2023 <- data_long2023 %>%
+   mutate(
+     day_of_week = weekdays(datetime),
+   time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
+   activity = case_when(
+     tolower(activity) %in% c("misc", "mic") ~ "Miscellaneous",
+     activity %in% c("Transport", "Transportation") ~ "Going Somewhere",
+     activity == "Communication" ~ "Social Life",
+     TRUE ~ activity),
+     hour = hour(datetime),
+     #day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
+     month = month(datetime, label = TRUE, abbr = FALSE)
+   )
+
+data1 <- data_long20 %>%
+  select(datetime, activity) %>%
+  mutate(index = row_number())
+
+# Select relevant columns from the second dataset and add an index
+data2 <- data_long2023 %>%
+  select(datetime, activity) %>%
+  mutate(index = row_number())
+
+# Combine the two datasets
+combined_data <- bind_rows(data1, data2, .id = "source") %>%
+  select(index, datetime, activity) %>% 
+  mutate(
+   time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
+   activity = ifelse(tolower(activity) %in% c("misc", "mic"), "Misc", activity),
+   activity = ifelse(activity == "Transport", "Transportation", activity),
+   hour = hour(datetime),
+   day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
+   period = case_when(
+     year(datetime) %in% 2019:2020 ~ "2019-2020",
+     year(datetime) %in% 2022:2024 ~ "2022-2024",
+     TRUE ~ NA_character_  # Exclude other years
+     ))
+
+activity_colors <- c(
+   "Sleep" = "#3B4CC0",  # Deep Blue (Night)
+   "Social Life" = "#87CEEB",  # SkyBlue
+   "Sport" = "#1D8E3A",  # Forest Green (Active)
+   "Work" = "#C0392B",  # Red (Energy)
+   "Reading" = "#F39C12",  # Golden Orange (Focus)
+   "Japanese" = "#FF69B4",  # HotPink
+   "Study" = "#FFD700",  # Gold
+   "Food" = "#99CC99",  # Soft Green
+   "Waste" = "#333333",  # Dark Charcoal
+   "Piano" = "purple",  # HotPink
+   "Planning" = "#FF6347",  # Tomato
+   "Toastmasters" = "#8E44AD",  # Deep Purple (Creative)
+   "Going Somewhere" = "#95A5A6",  # Urban Gray
+   "Miscellaneous" = "#27AE60"  # Fresh Green
+)
+
+```
+
+```{r}
+custom_order <- c("21:20", "21:40", "22:00", "22:20", "22:40", "23:00", "23:20", "23:40",
+                  "00:00", "00:20", "00:40", "01:00", "01:20", "01:40", "02:00", "02:20", "02:40", "03:00",
+                  "03:20", "03:40", "04:00", "04:20", "04:40", "05:00", "05:20", "05:40", "06:00", "06:20",
+                  "06:40", "07:00", "07:20", "07:40", "08:00", "08:20", "08:40")
+
+link_to_img <- function(x, width = 30) {
+  glue::glue("<img src='{x}' width='{width}'/>")
+}
+
+
+hist_bedtime <- combined_data %>%
+  mutate(period = case_when(
+    year(datetime) %in% 2019:2020 ~ "2019-2020",
+    year(datetime) %in% 2022:2024 ~ "2022-2024",
+    TRUE ~ NA_character_  # Exclude other years
+    ),
+    bedtime = if_else(activity == "Sleep" & 
+                        lag(activity) != "Sleep",
+                      "Bedtime", NA_character_),
+    lag_1 = if_else(bedtime == "Bedtime", 
+                    lag(activity, 1),
+                    NA_character_),
+    lag_2 = if_else(bedtime == "Bedtime", 
+                    lag(activity, 2), 
+                    NA_character_),
+    lag_3 = if_else(bedtime == "Bedtime",
+                    lag(activity, 3), 
+                    NA_character_)) %>%
+  filter(hour %in% c(0:8, 21:23), !is.na(bedtime)) %>%
+  group_by(time_column, period) %>% 
+  summarise(n = n(), .groups = "drop") #%>% 
+  # mutate(
+  #   img = "data/flame.png" # Set the image path directly
+  # )
+
+text_night <- glue::glue("Burning the midnight oil")
+
+# ggplot() +
+#   geom_col(data = hist_bedtime %>%
+#              filter(period == "2022-2024"),
+#            aes(x = time_column, y = n),
+#            width = 0.65, fill = "#FFCC33", color = "#FFCC33") +
+#   geom_image(data = hist_bedtime %>%
+#                filter(period == "2022-2024"),
+#              aes(x = time_column, y = n + 3, image = img), size = 0.05) +
+#   scale_x_discrete(limits = custom_order) +
+#   annotate("text", x = unique(hist_bedtime$time_column), y = 0, 
+#             label = unique(hist_bedtime$time_column), 
+#             vjust = 1.5, size = 2, fontface = "bold", color = "#FFCC33") +
+#   geom_hline(yintercept = 0, color = "#FFCC33", size = 0.5) +
+#   geom_richtext(
+#     aes(x="04:00", y=100, label = text_night),
+#     width = grid::unit(0.73, "npc"), # 73% of plot panel width
+#     hjust = 0, 
+#     vjust = 1,
+#     size = 14,
+#     color = "#FFCC33",
+#     font = "Fira Sans",
+#     fill = NA, label.color = NA
+#   ) +
+#   labs(title = NULL,
+#        caption = "Data and Visual: Vadym Yudenko",
+#        x = NULL,
+#        y = NULL) +
+#   theme_minimal(base_family = "Fira Sans") +
+#   theme(
+#     aspect.ratio = 9/16,
+#     plot.caption = element_text(),
+#     panel.background = element_rect(fill = "navy"),
+#     legend.position = "none",
+#     plot.margin = margin(0, 0, 0, 0),
+#     axis.text.x = element_blank(),  # Hide default axis labels
+#     axis.text.y = element_blank(),
+#     axis.title.x = element_text(face = "bold"),
+#     plot.title = element_textbox_simple(),
+#     panel.grid.major = element_blank(), # Removes vertical grid lines
+#     panel.grid.minor = element_blank()
+#   )
+```
+
