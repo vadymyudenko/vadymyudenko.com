@@ -123,7 +123,7 @@
     "href": "index.html",
     "title": "Vadym Yudenko",
     "section": "",
-    "text": "Blog\n\n\n\n\n\nMiscellaneous articles on data analysis and visualization.\n\n\n\n\n \n\n\n\n\n  \n\n\n\n\nEssays\n\n\n\n\n\nEssays on life during wartime and personal thoughts…\n\n\n\n\n \n\n\n\n\n  \n\n\n\n\nDataViz\n\n\n\n\n\n\n\n\n\n\n \n\n\n\n\nNo matching items"
+    "text": "Blog\n\n\n\n\n\nMiscellaneous articles on data analysis and visualization.\n\n\n\n\n \n\n\n\n\n  \n\n\n\n\nEssays\n\n\n\n\n\nEssays on life during wartime and personal thoughts…\n\n\n\n\n \n\n\n\n\n  \n\n\n\n\nData Viz\n\n\n\n\n\n\n\n\n\n\n \n\n\n\n\nNo matching items"
   },
   {
     "objectID": "essays/index.html",
@@ -133,9 +133,16 @@
     "text": "Back to normal\n\n\n\n\n\nRemembering Amstor Mall Airstrike\n\n\n\n\n\n\nJul 28, 2022\n\n\n5 min\n\n\n\n\n\n\nNo matching items"
   },
   {
+    "objectID": "dataviz/two_babies_sleep/index.html",
+    "href": "dataviz/two_babies_sleep/index.html",
+    "title": "6-Month-Old Baby vs. 276-Month-Old Baby",
+    "section": "",
+    "text": "While looking for inspiration for a way to visualize my time-tracking data, I was surprised—pleasantly surprised—to see that many others (and I mean many) have attempted similar visualizations. One of the them was a post by Chris Riederer replicating “the most beautiful visualization of all time” by Wesley Elliott, who visualized his daughter’s sleep patterns.\nA visualization represents six months of sleep and wakefulness of a baby and contrasts it with a little over a year worth of sleep and suffering of a much older baby (yours truly). The spiral begins at the interior of the circle, marking the start of life for a baby. For the older baby, the spiral marks the beginning of studying, deadlines, and the slow demise of a healthy sleep schedule The spiral then wraps outward as babies gets older — each full revolution of the circle represents one 24-hour day, meaning that midnight is at the top of the “clock” and noon is at the bottom."
+  },
+  {
     "objectID": "dataviz/index.html",
     "href": "dataviz/index.html",
-    "title": "DataViz",
+    "title": "Data Viz",
     "section": "",
     "text": "No matching items"
   },
@@ -145,13 +152,6 @@
     "title": "Vadym Yudenko",
     "section": "",
     "text": "Hello! I’m a junior researcher at Institute for Behavioral Studies at American University Kyiv.\nWhat started as a existential questions in a teenage brain, has since transformed into a career path. Fueled by curiosity, I’m passionate about understanding human behavior and decision-making. Sometimes this curiosity make me do things, you can read about them here!"
-  },
-  {
-    "objectID": "dataviz/most-beautiful-dataviz/index.html",
-    "href": "dataviz/most-beautiful-dataviz/index.html",
-    "title": "6-Month-Old Baby vs. 276-Month-Old Baby",
-    "section": "",
-    "text": "While looking for inspiration for a way to visualize my time-tracking data, I was surprised—pleasantly surprised—to see that many others (and I mean many) have attempted similar visualizations. One of the them was a post by Chris Riederer replicating “the most beautiful visualization of all time” by Wesley Elliott, who visualized his daughter’s sleep patterns.\nA visualization represents six months of sleep and wakefulness of a baby and contrasts it with a little over a year worth of sleep and suffering of a much older baby (yours truly). The spiral begins at the interior of the circle, marking the start of life for a baby. For the older baby, the spiral marks the beginning of studying, deadlines, and the slow demise of a healthy sleep schedule The spiral then wraps outward as babies gets older — each full revolution of the circle represents one 24-hour day, meaning that midnight is at the top of the “clock” and noon is at the bottom."
   },
   {
     "objectID": "essays/backtonormal/index.html",

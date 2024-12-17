@@ -13,7 +13,7 @@ website:
     right:
       - href: posts/index.qmd
         text: Blog
-      - href: data-viz/index.qmd
+      - href: dataviz/index.qmd
         text: Data Viz
       - href: essays/index.qmd
         text: Essays 

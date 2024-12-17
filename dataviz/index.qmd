@@ -1,5 +1,5 @@
 ---
-title: "DataViz"
+title: "Data Viz"
 page-layout: full
 listing:
   contents: index.qmd
