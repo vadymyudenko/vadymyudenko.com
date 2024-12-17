@@ -24,6 +24,8 @@
   },
   {
     "listing": "/dataviz/index.html",
-    "items": []
+    "items": [
+      "/dataviz/most-beautiful-dataviz/index.html"
+    ]
   }
 ]
