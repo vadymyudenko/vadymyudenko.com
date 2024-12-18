@@ -10,7 +10,7 @@
 <atom:link href="https://vadymyudenko.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>Vadym Yudenko blog about data and research</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Tue, 17 Dec 2024 14:11:13 GMT</lastBuildDate>
+<lastBuildDate>Wed, 18 Dec 2024 15:26:38 GMT</lastBuildDate>
 <item>
   <title>Blog</title>
   <link>https://vadymyudenko.com/posts/index.html</link>
@@ -143,7 +143,7 @@ No matching items
 </div>
 </div> ]]></description>
   <guid>https://vadymyudenko.com/posts/index.html</guid>
-  <pubDate>Tue, 17 Dec 2024 14:11:13 GMT</pubDate>
+  <pubDate>Wed, 18 Dec 2024 15:26:38 GMT</pubDate>
 </item>
 <item>
   <title>Essays</title>
@@ -193,7 +193,7 @@ No matching items
 </div>
 </div> ]]></description>
   <guid>https://vadymyudenko.com/essays/index.html</guid>
-  <pubDate>Tue, 17 Dec 2024 14:11:13 GMT</pubDate>
+  <pubDate>Wed, 18 Dec 2024 15:26:38 GMT</pubDate>
 </item>
 <item>
   <title>Data Viz</title>
@@ -211,10 +211,17 @@ No matching items
 <div class="listing-actions-group">
 </div>
 <div class="list grid quarto-listing-cols-2">
-<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1734442715360" data-listing-reading-time-sort="7">
-<a href="../dataviz/two_babies_sleep/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1734534182102" data-listing-reading-time-sort="12">
+<a href="../dataviz/masters-in-one-picture/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left borderless">
-<!-- img(9CEB782EFEE6)[progressive=false, height=100%]:dataviz/two_babies_sleep/index.html -->
+<!-- img(9CEB782EFEE6)[progressive=false, height=100%]:dataviz/masters-in-one-picture/index.html -->
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1734457419130" data-listing-reading-time-sort="7">
+<a href="../dataviz/two-babies-sleep/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left borderless">
+<!-- img(9CEB782EFEE6)[progressive=false, height=100%]:dataviz/two-babies-sleep/index.html -->
 </div>
 </a>
 </div>
@@ -224,7 +231,7 @@ No matching items
 </div>
 </div> ]]></description>
   <guid>https://vadymyudenko.com/dataviz/index.html</guid>
-  <pubDate>Tue, 17 Dec 2024 14:11:13 GMT</pubDate>
+  <pubDate>Wed, 18 Dec 2024 15:26:38 GMT</pubDate>
 </item>
 </channel>
 </rss>
