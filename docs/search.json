@@ -140,25 +140,11 @@
     "text": "While looking for ideas on how to visualize my time-tracking data, I was surprised—pleasantly surprised—to see that many others (and I mean many) have attempted similar visualizations. One of the them was a post by Chris Riederer replicating “the most beautiful visualization of all time” by Wesley Elliott, who visualized his daughter’s sleep patterns.\nA visualization represents six months of sleep and wakefulness of a baby and contrasts it with a little over a year worth of sleep and suffering of a much older baby (yours truly). The spiral begins at the interior of the circle, marking the start of life for a baby. For the older baby, the spiral marks the beginning of studying, deadlines, and the slow demise of a healthy sleep schedule. The spiral then wraps outward as babies gets older — each full revolution of the circle represents one 24-hour day, meaning that midnight is at the top of the “clock” and noon is at the bottom."
   },
   {
-    "objectID": "dataviz/masters-in-one-picture/index.html#section",
-    "href": "dataviz/masters-in-one-picture/index.html#section",
+    "objectID": "dataviz/masters-in-one-picture/index.html",
+    "href": "dataviz/masters-in-one-picture/index.html",
     "title": "Watch me get masters degree",
-    "section": "123",
-    "text": "123"
-  },
-  {
-    "objectID": "dataviz/masters-in-one-picture/index.html#section-1",
-    "href": "dataviz/masters-in-one-picture/index.html#section-1",
-    "title": "Watch me get masters degree",
-    "section": "231",
-    "text": "231"
-  },
-  {
-    "objectID": "dataviz/masters-in-one-picture/index.html#section-2",
-    "href": "dataviz/masters-in-one-picture/index.html#section-2",
-    "title": "Watch me get masters degree",
-    "section": "321",
-    "text": "321"
+    "section": "",
+    "text": "This is a work in progress visualization, it is grainy and lacks some details."
   },
   {
     "objectID": "about/index.html",
@@ -257,12 +243,5 @@
     "title": "Time Tracking: Retrospective Look",
     "section": "Closing remarks",
     "text": "Closing remarks\nWe dream in ideas, concepts. To make them real requires putting them in words, and then actions. Actions can be measured. For example, if you dream about running a marathon you have to hit the track and run, and run a lot. Your colleague tells you about this marathon in 5 months and you decide to finally make your dream come true and sign up. So far, you’ve been running sub-5k runs every once in a while and a marathon seems daunting. How do you plan your next runs so that when the day comes you finish the run?\nYou can think in terms of mileage\n\nX km/week and increase this number each week until you reach the marathon week\n\nor in terms of your best runs, which is a variation of the above.\nOr, you can think in terms of hours! Essentially it is the same, but from different perspective. Tracking hours really puts your goals in direct comparison with other parts of your life and you can easily spot things that prevent you from achieving your goals—if this is the case. Time tracking takes focus from something far and sometimes unreachable to something you have full control over—your time!\n\n\n\n\n\n\nSession info\n\n\n\n\n\n\n\nR version 4.3.0 (2023-04-21 ucrt)\nPlatform: x86_64-w64-mingw32/x64 (64-bit)\nRunning under: Windows 11 x64 (build 22631)\n\nMatrix products: default\n\n\nlocale:\n[1] LC_COLLATE=English_United States.utf8 \n[2] LC_CTYPE=English_United States.utf8   \n[3] LC_MONETARY=English_United States.utf8\n[4] LC_NUMERIC=C                          \n[5] LC_TIME=English_United States.utf8    \n\ntime zone: Europe/Kiev\ntzcode source: internal\n\nattached base packages:\n[1] grid      stats     graphics  grDevices utils     datasets  methods  \n[8] base     \n\nother attached packages:\n [1] patchwork_1.2.0    DT_0.33            RColorBrewer_1.1-3 fontawesome_0.5.2 \n [5] knitr_1.46         glue_1.7.0         ggiraph_0.8.10     scales_1.3.0      \n [9] plotly_4.10.4      reshape2_1.4.4     transformr_0.1.5   showtext_0.9-7    \n[13] showtextdb_3.0     sysfonts_0.8.9     ggthemes_5.1.0     ggtext_0.1.2      \n[17] ggExtra_0.10.1     zoo_1.8-12         lubridate_1.9.3    forcats_1.0.0     \n[21] stringr_1.5.1      dplyr_1.1.4        purrr_1.0.2        readr_2.1.5       \n[25] tidyr_1.3.1        tibble_3.2.1       ggplot2_3.5.1      tidyverse_2.0.0   \n[29] stargazer_5.2.3   \n\nloaded via a namespace (and not attached):\n [1] tidyselect_1.2.1   viridisLite_0.4.2  farver_2.1.2       fastmap_1.2.0     \n [5] lazyeval_0.2.2     tweenr_2.0.3       promises_1.3.0     digest_0.6.35     \n [9] timechange_0.3.0   mime_0.12          lifecycle_1.0.4    sf_1.0-16         \n[13] magrittr_2.0.3     compiler_4.3.0     sass_0.4.9         rlang_1.1.3       \n[17] tools_4.3.0        utf8_1.2.4         yaml_2.3.8         data.table_1.15.4 \n[21] htmlwidgets_1.6.4  classInt_0.4-10    curl_5.2.1         plyr_1.8.9        \n[25] xml2_1.3.6         KernSmooth_2.23-20 miniUI_0.1.1.1     withr_3.0.0       \n[29] fansi_1.0.6        xtable_1.8-4       e1071_1.7-14       colorspace_2.1-0  \n[33] cli_3.6.2          rmarkdown_2.27     generics_0.1.3     rstudioapi_0.16.0 \n[37] httr_1.4.7         tzdb_0.4.0         cachem_1.1.0       DBI_1.2.2         \n[41] proxy_0.4-27       vctrs_0.6.5        jsonlite_1.8.8     hms_1.1.3         \n[45] crosstalk_1.2.1    systemfonts_1.1.0  jquerylib_0.1.4    units_0.8-5       \n[49] stringi_1.8.4      gtable_0.3.5       later_1.3.2        munsell_0.5.1     \n[53] pillar_1.9.0       htmltools_0.5.8.1  R6_2.5.1           lpSolve_5.6.20    \n[57] evaluate_0.23      shiny_1.8.1.1      lattice_0.21-8     gridtext_0.1.5    \n[61] bslib_0.7.0        httpuv_1.6.15      class_7.3-21       Rcpp_1.0.12       \n[65] uuid_1.2-0         xfun_0.44          pkgconfig_2.0.3"
-  },
-  {
-    "objectID": "dataviz/masters-in-one-picture/index.html",
-    "href": "dataviz/masters-in-one-picture/index.html",
-    "title": "Watch me get masters degree",
-    "section": "",
-    "text": "This is a work in progress visualization, it is grainy and lacks some details."
   }
 ]
