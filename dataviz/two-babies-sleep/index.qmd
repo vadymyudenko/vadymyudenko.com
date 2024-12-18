@@ -4,11 +4,7 @@ description: "Recreating the 'Most Beautiful Data Visualization of All Time'"
 toc: false
 ---
 
-![](sleep_time.svg)
 
-While looking for ideas on how to visualize my time-tracking data, I was surprised—pleasantly surprised—to see that many others ([and](https://www.reddit.com/r/dataisbeautiful/comments/18vvxdk/oc_ive_started_tracking_my_time_in_2023/) [I](https://www.reddit.com/r/dataisbeautiful/comments/rv9pn2/oc_i_tracked_every_hour_of_my_life_for_2021_repost/) [mean](https://www.reddit.com/r/dataisbeautiful/comments/rv01g2/oc_so_i_heard_you_like_hourly_tracking_of_the/) [many](https://www.reddit.com/r/dataisbeautiful/comments/101hvnv/oc_i_tracked_every_hour_of_my_life_for_5_years/)) have attempted similar visualizations. One of the them was a [post](https://www.relevantmisc.com/r/2020/06/01/baby-sleep-radial/) by Chris Riederer replicating "[the most beautiful visualization of all time](https://www.washingtonpost.com/news/wonk/wp/2017/01/05/what-its-like-to-sleep-like-a-baby-visualized-by-a-dad/)" by Wesley Elliott, who [visualized his daughter's sleep patterns](https://www.reddit.com/r/dataisbeautiful/comments/5l39mu/my_daughters_sleeping_patterns_for_the_first_4/).
-
-A visualization represents six months of [<b>sleep</b>]{style="color:#3f597b;"} and [<b>wakefulness</b>]{style="color:#f7cfa3;"} of a baby and contrasts it with a little over a year worth of [<b>sleep</b>]{style="color:#3f597b;"} and [<b>suffering</b>]{style="color:#f7cfa3;"} of a much older baby (yours truly). The spiral begins at the interior of the circle, marking the start of life for a baby. For the older baby, the spiral marks the beginning of *studying, deadlines,* and the slow demise of a healthy sleep schedule. The spiral then wraps outward as babies gets older — each full revolution of the circle represents one 24-hour day, meaning that midnight is at the top of the “clock” and noon is at the bottom.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.showtext=TRUE)
@@ -220,3 +216,16 @@ final_plot <- baby_6 + baby_276 +
 # save as svg
 # ggsave("sleep_time.svg", final_plot, width = 10, height = 5)
 ```
+
+```{r}
+#| fig-width: 10 
+#| fig-height: 5
+
+final_plot
+```
+
+
+While looking for ideas on how to visualize my time-tracking data, I was surprised—pleasantly surprised—to see that many others ([and](https://www.reddit.com/r/dataisbeautiful/comments/18vvxdk/oc_ive_started_tracking_my_time_in_2023/) [I](https://www.reddit.com/r/dataisbeautiful/comments/rv9pn2/oc_i_tracked_every_hour_of_my_life_for_2021_repost/) [mean](https://www.reddit.com/r/dataisbeautiful/comments/rv01g2/oc_so_i_heard_you_like_hourly_tracking_of_the/) [many](https://www.reddit.com/r/dataisbeautiful/comments/101hvnv/oc_i_tracked_every_hour_of_my_life_for_5_years/)) have attempted similar visualizations. One of the them was a [post](https://www.relevantmisc.com/r/2020/06/01/baby-sleep-radial/) by Chris Riederer replicating "[the most beautiful visualization of all time](https://www.washingtonpost.com/news/wonk/wp/2017/01/05/what-its-like-to-sleep-like-a-baby-visualized-by-a-dad/)" by Wesley Elliott, who [visualized his daughter's sleep patterns](https://www.reddit.com/r/dataisbeautiful/comments/5l39mu/my_daughters_sleeping_patterns_for_the_first_4/).
+
+A visualization represents six months of [<b>sleep</b>]{style="color:#3f597b;"} and [<b>wakefulness</b>]{style="color:#f7cfa3;"} of a baby and contrasts it with a little over a year worth of [<b>sleep</b>]{style="color:#3f597b;"} and [<b>suffering</b>]{style="color:#f7cfa3;"} of a much older baby (yours truly). The spiral begins at the interior of the circle, marking the start of life for a baby. For the older baby, the spiral marks the beginning of *studying, deadlines,* and the slow demise of a healthy sleep schedule. The spiral then wraps outward as babies gets older — each full revolution of the circle represents one 24-hour day, meaning that midnight is at the top of the “clock” and noon is at the bottom.
+

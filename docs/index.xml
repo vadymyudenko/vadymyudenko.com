@@ -10,7 +10,7 @@
 <atom:link href="https://vadymyudenko.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>Vadym Yudenko blog about data and research</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Wed, 18 Dec 2024 16:57:13 GMT</lastBuildDate>
+<lastBuildDate>Wed, 18 Dec 2024 17:10:38 GMT</lastBuildDate>
 <item>
   <title>Blog</title>
   <link>https://vadymyudenko.com/posts/index.html</link>
@@ -27,7 +27,7 @@
 <div class="list quarto-listing-default">
 <div class="quarto-post image-right" data-index="0" data-categories="Timetracking,Reflection" data-listing-date-sort="1733954400000" data-listing-file-modified-sort="1734041757790" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="54">
 <div class="thumbnail">
-<p><a href="../posts/night-guy-morning-guy/index.html"> <!-- img(9CEB782EFEE6)[progressive=false, height=]:posts/night-guy-morning-guy/index.html --> </a></p>
+<p><a href="../posts/night-guy-morning-guy/index.html"> </a></p><p class="card-img-top"><a href="../posts/night-guy-morning-guy/index.html"><img src="https://vadymyudenko.com/posts/night-guy-morning-guy/index_files/figure-html/unnamed-chunk-9-1.png" class="thumbnail-image card-img"></a></p><a href="../posts/night-guy-morning-guy/index.html"> </a><p></p>
 </div>
 <div class="body">
 <a href="../posts/night-guy-morning-guy/index.html">
@@ -55,7 +55,7 @@ Dec 12, 2024
 </div>
 <div class="quarto-post image-right" data-index="1" data-categories="Timetracking,Reflection" data-listing-date-sort="1732226400000" data-listing-file-modified-sort="1734019484440" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="53">
 <div class="thumbnail">
-<p><a href="../posts/time-tracking-2020/index.html"> <!-- img(9CEB782EFEE6)[progressive=false, height=]:posts/time-tracking-2020/index.html --> </a></p>
+<p><a href="../posts/time-tracking-2020/index.html"> </a></p><p class="card-img-top"><a href="../posts/time-tracking-2020/index.html"><img src="https://vadymyudenko.com/posts/time-tracking-2020/images/clipboard-699419243.png" class="thumbnail-image card-img"></a></p><a href="../posts/time-tracking-2020/index.html"> </a><p></p>
 </div>
 <div class="body">
 <a href="../posts/time-tracking-2020/index.html">
@@ -83,7 +83,7 @@ Nov 22, 2024
 </div>
 <div class="quarto-post image-right" data-index="2" data-categories="Reading,Research Methods" data-listing-date-sort="1701900000000" data-listing-file-modified-sort="1733518388797" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
 <div class="thumbnail">
-<p><a href="../posts/qalmri/index.html"> <!-- img(9CEB782EFEE6)[progressive=false, height=]:posts/qalmri/index.html --> </a></p>
+<p><a href="../posts/qalmri/index.html"> </a></p><p class="card-img-top"><a href="../posts/qalmri/index.html"><img src="https://vadymyudenko.com/posts/qalmri/winnie_reading.jpg" class="thumbnail-image card-img"></a></p><a href="../posts/qalmri/index.html"> </a><p></p>
 </div>
 <div class="body">
 <a href="../posts/qalmri/index.html">
@@ -111,7 +111,7 @@ Dec 7, 2023
 </div>
 <div class="quarto-post image-right" data-index="3" data-categories="Toastmasters,Time,Public Speaking,Analysis" data-listing-date-sort="1691096400000" data-listing-file-modified-sort="1718745229073" data-listing-date-modified-sort="1699221600000" data-listing-reading-time-sort="42">
 <div class="thumbnail">
-<p><a href="../posts/toastmasters-time/index.html"> <!-- img(9CEB782EFEE6)[progressive=false, height=]:posts/toastmasters-time/index.html --> </a></p>
+<p><a href="../posts/toastmasters-time/index.html"> </a></p><p class="card-img-top"><a href="../posts/toastmasters-time/index.html"><img src="https://vadymyudenko.com/posts/toastmasters-time/index_files/figure-html/unnamed-chunk-7-1.png" class="thumbnail-image card-img"></a></p><a href="../posts/toastmasters-time/index.html"> </a><p></p>
 </div>
 <div class="body">
 <a href="../posts/toastmasters-time/index.html">
@@ -143,7 +143,7 @@ No matching items
 </div>
 </div> ]]></description>
   <guid>https://vadymyudenko.com/posts/index.html</guid>
-  <pubDate>Wed, 18 Dec 2024 16:57:13 GMT</pubDate>
+  <pubDate>Wed, 18 Dec 2024 17:10:38 GMT</pubDate>
 </item>
 <item>
   <title>Essays</title>
@@ -161,7 +161,7 @@ No matching items
 <div class="list quarto-listing-default">
 <div class="quarto-post image-right" data-index="0" data-categories="War,Experiences" data-listing-date-sort="1658955600000" data-listing-file-modified-sort="1712528467784" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
 <div class="thumbnail">
-<p><a href="../essays/backtonormal/index.html"> <!-- img(9CEB782EFEE6)[progressive=false, height=]:essays/backtonormal/index.html --> </a></p>
+<p><a href="../essays/backtonormal/index.html"> </a></p><p class="card-img-top"><a href="../essays/backtonormal/index.html"><img src="https://vadymyudenko.com/essays/backtonormal/images/img1.jpeg" class="thumbnail-image card-img"></a></p><a href="../essays/backtonormal/index.html"> </a><p></p>
 </div>
 <div class="body">
 <a href="../essays/backtonormal/index.html">
@@ -193,7 +193,7 @@ No matching items
 </div>
 </div> ]]></description>
   <guid>https://vadymyudenko.com/essays/index.html</guid>
-  <pubDate>Wed, 18 Dec 2024 16:57:13 GMT</pubDate>
+  <pubDate>Wed, 18 Dec 2024 17:10:38 GMT</pubDate>
 </item>
 <item>
   <title>Data Viz</title>
@@ -211,14 +211,14 @@ No matching items
 <div class="listing-actions-group">
 </div>
 <div class="list grid quarto-listing-cols-2">
-<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1734539701817" data-listing-reading-time-sort="12">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1734541764259" data-listing-reading-time-sort="12">
 <a href="../dataviz/masters-in-one-picture/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left borderless">
 <!-- img(9CEB782EFEE6)[progressive=false, height=100%]:dataviz/masters-in-one-picture/index.html -->
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1734457419130" data-listing-reading-time-sort="7">
+<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1734541762677" data-listing-reading-time-sort="7">
 <a href="../dataviz/two-babies-sleep/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left borderless">
 <!-- img(9CEB782EFEE6)[progressive=false, height=100%]:dataviz/two-babies-sleep/index.html -->
@@ -231,7 +231,7 @@ No matching items
 </div>
 </div> ]]></description>
   <guid>https://vadymyudenko.com/dataviz/index.html</guid>
-  <pubDate>Wed, 18 Dec 2024 16:57:13 GMT</pubDate>
+  <pubDate>Wed, 18 Dec 2024 17:10:38 GMT</pubDate>
 </item>
 </channel>
 </rss>

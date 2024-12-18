@@ -1,5 +1,5 @@
 {
-  "hash": "dbf3d4a06ac453225bcd1f785e88c7b9",
+  "hash": "89b7df196b8d0ec297f8c6852b4eb72f",
   "result": {
     "markdown": "---\ntitle: \"Watch me get masters degree\"\ndescription: \"Visualizing time-tracking data from 2022 to 2024\"\ntoc: false\n---\n\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n\n::: column-screen\n\n::: {.cell layout-align=\"center\"}\n::: {.cell-output-display}\n![](plot.png)\n:::\n:::\n\n:::\n\nThis is a work in progress visualization, it is grainy and lacks some details. \n\n\n",
     "supporting": [

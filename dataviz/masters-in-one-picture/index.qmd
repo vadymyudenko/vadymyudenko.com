@@ -5,7 +5,7 @@ toc: false
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.showtext=TRUE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.showtext=TRUE, eval = FALSE)
 ```
 
 ```{r libraries}
@@ -120,34 +120,34 @@ data_long %>%
    coord_y_datetime(ylim = c(max(data_long$datetime), min(data_long$datetime) - as.difftime(4, units = "days"))) +
    scale_x_discrete() +
    geom_text(
-     data = data_long %>% 
+     data = data_long %>%
        mutate(label = ifelse(grepl(":00$", time_column), time_column, "")),
      aes(label = label,
-         y = min(data_long$datetime) - as.difftime(2, units = "days")), 
+         y = min(data_long$datetime) - as.difftime(2, units = "days")),
      size = 5,
      family = "Fira Sans",
      vjust = 0.5,
-     hjust = -0.05) + 
+     hjust = -0.05) +
   geom_text(
     data = data_long %>%
       mutate(date = as.Date(datetime)) %>%
-      distinct(date, .keep_all = TRUE) %>% 
+      distinct(date, .keep_all = TRUE) %>%
       slice(2:n()),  # Remove first row
     aes(x = 0, y = datetime, label = day_of_month),
     inherit.aes = FALSE,  # Avoid inheriting global aesthetic
-    size = 3, 
+    size = 3,
     vjust = 0.5,
     family = "Fira Sans",
     color = "black") +
-  
+
    geom_text(
-     data = data_long %>% 
-       filter(day(datetime) == 17 & time_column == "12:00"), 
+     data = data_long %>%
+       filter(day(datetime) == 17 & time_column == "12:00"),
      aes(x = -6, y = datetime, label = month),
      inherit.aes = FALSE,
-     size = 6, 
+     size = 6,
      family = "Fira Sans",
-     vjust = -0.5, 
+     vjust = -0.5,
      hjust = 0) +
   geom_vline(xintercept = "06:00", color = "black", size = 0.25) +
   geom_vline(xintercept = "12:00", color = "black", size = 0.25) +
@@ -158,7 +158,7 @@ data_long %>%
      subtitle = glue::glue("Time tracking allows at a cost of a little bit of patience and discipline to analyse and reflect on your daily life as it happens. <br> From October 1st 2022 to January 31st 2024 I have been time tracking my daily life throughout my <span style='color:#FFD700;'><b>study</b></span>. <br> My usual day would start with a <span style='color:#99CC99;'><b>breakfast</b></span> then <span style='color:#95A5A6;'><b>taking a metro</b></span> to university, where for the rest of the day I would <span style='color:#FFD700;'><b>study</b></span> and <span style='color:#77CEEB'><b>socialize</b></span> with other students. <br> In between the breaks or during my <span style='color:#95A5A6;'><b>commute</b></span> I would track what I have been doing for the past couple of hours. <br> And before <span style='color:#3B4CC0;'><b>going to bed</b></span> I would review how my day went—a different kind of self-reflection."),
      caption = glue::glue("Data and visual: <span style='font-family:\"Font Awesome 6 Brands\";'>&#xf09b;</span>
   <span style='color:black'>vadymyudenko</span>"),
-  x = NULL, 
+  x = NULL,
   y = NULL,
   fill = NULL) +
   guides(fill = guide_legend(
@@ -170,7 +170,7 @@ data_long %>%
   theme(
      plot.margin =  unit(c(3, 1, 1, 1), "cm"),  # Increase top margin
      text = element_text('firasans'),
-     #aspect.ratio = 177 / 72,  
+     #aspect.ratio = 177 / 72,
      plot.title = element_markdown(size = 40, hjust = 0.5, vjust = 0.5),
      plot.title.position = "plot",
      plot.subtitle = element_markdown(size = 20, hjust = 0.5, vjust = 0.5),
@@ -294,7 +294,7 @@ data_long %>%
 ```
 
 ::: column-screen
-```{r}
+```{r, eval=TRUE}
 #| fig-align: center
 knitr::asis_output('![](plot.png)')
 ```
