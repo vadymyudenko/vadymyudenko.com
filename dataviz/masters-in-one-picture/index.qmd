@@ -1,15 +1,13 @@
 ---
 title: "Watch me get masters degree"
-description: "Work in progress"
+description: "Visualizing time-tracking data from 2022 to 2024"
 toc: false
 ---
-
-
-
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.showtext=TRUE)
 ```
+
 ```{r libraries}
 library(stargazer)
 library(tidyverse)
@@ -99,8 +97,6 @@ activity_colors <- c(
    "Miscellaneous" = "#27AE60"  # Fresh Green
 )
 ```
-
-
 
 ```{r}
 coord_y_datetime <- function(xlim = NULL, ylim = NULL, expand = FALSE) {
@@ -297,17 +293,13 @@ data_long %>%
 #ggsave("plot.png", plot, width = 20, height = 5, dpi = 2000)
 ```
 
-
-
 ::: column-screen
 ```{r}
-#| fig-format: svg
-#| fig-width: 20
-#| width: 100%
-#| fig-height: 60
-#| height: 100%
-plot
+#| fig-align: center
+knitr::asis_output('![](plot.png)')
 ```
 :::
+
+This is a work in progress visualization, it is grainy and lacks some details. 
 
 
