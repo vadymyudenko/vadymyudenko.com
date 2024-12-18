@@ -1,10 +1,3 @@
-<svg width="196" height="125" viewBox="0 0 196 125" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect y="20" width="102" height="20" fill="#D01822"/>
-<rect y="55" width="102" height="20" fill="#D01822"/>
-<rect y="90" width="102" height="20" fill="#D01822"/>
-<rect x="102" width="54" height="20" fill="#D01822"/>
-<rect x="176" width="20" height="20" fill="#D01822"/>
-<rect x="102" y="35" width="54" height="20" fill="#D01822"/>
-<rect x="102" y="70" width="54" height="20" fill="#D01822"/>
-<rect x="102" y="105" width="94" height="20" fill="#D01822"/>
-</svg>
+version https://git-lfs.github.com/spec/v1
+oid sha256:f9b7119c1a9c9a70d4436b6e164fea79ada4e05481e3b0bc6350a5dd4cb3e101
+size 571

@@ -1,0 +1,313 @@
+---
+title: "Watch me get masters degree"
+description: "Work in progress"
+toc: false
+---
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.showtext=TRUE)
+```
+```{r libraries}
+library(stargazer)
+library(tidyverse)
+library(readr)
+library(patchwork)
+library(ggtext)
+library(showtext)
+library(emojifont)
+library(grid)
+library(transformr)
+library(lubridate)
+library(plotly)
+library(scales)
+library(ggiraph)
+library(glue)
+library(knitr)
+```
+
+```{r theme}
+font_add_google("Fira Sans", "firasans")
+font_add(family = "Font Awesome 6 Brands",
+                   regular = "data/Font Awesome 6 Brands-Regular-400.otf")
+
+# showtext::showtext_auto()
+
+
+# blog_theme <-
+#    theme_minimal(18, base_family = "firasans") +
+#    theme(
+#      plot.background = element_rect(fill = "white", color = NA),
+#      plot.title.position = "plot",
+#      plot.title = element_text(size = 24, margin = margin(b = 1, unit = "line")),
+#      legend.position = c(0, 1),
+#      legend.direction = "horizontal",
+#      legend.justification = c(0, 1),
+#      legend.title.align = 1,
+#      axis.title.y = element_text(hjust = 0, size = 10),
+#      axis.title.x = element_text(hjust = 0, size = 10),
+#      panel.grid.major = element_line(color = "#d3d9db"),
+#      panel.grid.minor = element_blank()
+#    )
+#  
+# theme_set(blog_theme)
+```
+
+```{r}
+data <- read_delim("data/KSE_life_2.csv", 
+    delim = ";", escape_double = FALSE, col_types = cols(time = col_time(format = "%H:%M")), 
+    trim_ws = TRUE)
+
+data_long <- gather(data, day, activity, -time) %>% 
+  na.omit() %>%
+  mutate(day = ifelse(day == "9/30/2022", "10/1/2022", day))
+
+data_long$datetime <- as.POSIXct(paste(data_long$day, data_long$time), format="%m/%d/%Y %H:%M:%S", tz="GMT+3")
+
+data_long <- data_long %>%
+   mutate(
+     date = as.Date(datetime),
+     day_of_month = mday(datetime),
+   time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
+    activity = case_when(
+     tolower(activity) %in% c("misc", "mic") ~ "Miscellaneous",
+     activity %in% c("Transport", "Transportation") ~ "Going Somewhere",
+     activity == "Communication" ~ "Social Life",
+     activity == "TM" ~ "Toastmasters",
+     TRUE ~ activity),
+     hour = hour(datetime),
+     #day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
+     month = month(datetime, label = TRUE, abbr = FALSE)
+   )
+
+activity_colors <- c(
+   "Sleep" = "#3B4CC0",  # Deep Blue (Night)
+   "Social Life" = "#87CEEB",  # SkyBlue
+   "Sport" = "#1D8E3A",  # Forest Green (Active)
+   "Work" = "#C0392B",  # Red (Energy)
+   "Reading" = "#F39C12",  # Golden Orange (Focus)
+   "Japanese" = "#FF69B4",  # HotPink
+   "Study" = "#FFD700",  # Gold
+   "Food" = "#99CC99",  # Soft Green
+   "Waste" = "#333333",  # Dark Charcoal
+   "Piano" = "purple",  # HotPink
+   "Planning" = "#FF6347",  # Tomato
+   "Toastmasters" = "#8E44AD",  # Deep Purple (Creative)
+   "Going Somewhere" = "#95A5A6",  # Urban Gray
+   "Miscellaneous" = "#27AE60"  # Fresh Green
+)
+```
+
+
+
+```{r}
+coord_y_datetime <- function(xlim = NULL, ylim = NULL, expand = FALSE) {
+  # thanks https://stackoverflow.com/a/74436045
+  if (!is.null(ylim)) {
+    ylim <- lubridate::as_datetime(ylim)
+  }
+  ggplot2::coord_cartesian(xlim = xlim,
+                           ylim = ylim,
+                           expand = FALSE,
+                           clip = "on")
+}
+
+data_long %>%
+   mutate(date = as.Date(datetime)) %>%
+   ggplot(aes(time_column, datetime, fill = activity)) +  # Flip x and y
+   geom_bin2d(
+     bins = c(72, 488)
+     ) +
+   scale_fill_manual(values = activity_colors) +
+   coord_y_datetime(ylim = c(max(data_long$datetime), min(data_long$datetime) - as.difftime(4, units = "days"))) +
+   scale_x_discrete() +
+   geom_text(
+     data = data_long %>% 
+       mutate(label = ifelse(grepl(":00$", time_column), time_column, "")),
+     aes(label = label,
+         y = min(data_long$datetime) - as.difftime(2, units = "days")), 
+     size = 5,
+     family = "Fira Sans",
+     vjust = 0.5,
+     hjust = -0.05) + 
+  geom_text(
+    data = data_long %>%
+      mutate(date = as.Date(datetime)) %>%
+      distinct(date, .keep_all = TRUE) %>% 
+      slice(2:n()),  # Remove first row
+    aes(x = 0, y = datetime, label = day_of_month),
+    inherit.aes = FALSE,  # Avoid inheriting global aesthetic
+    size = 3, 
+    vjust = 0.5,
+    family = "Fira Sans",
+    color = "black") +
+  
+   geom_text(
+     data = data_long %>% 
+       filter(day(datetime) == 17 & time_column == "12:00"), 
+     aes(x = -6, y = datetime, label = month),
+     inherit.aes = FALSE,
+     size = 6, 
+     family = "Fira Sans",
+     vjust = -0.5, 
+     hjust = 0) +
+  geom_vline(xintercept = "06:00", color = "black", size = 0.25) +
+  geom_vline(xintercept = "12:00", color = "black", size = 0.25) +
+  geom_vline(xintercept = "18:00", color = "black", size = 0.25) +
+   theme_minimal() +
+   labs(
+     title = "Timeline",
+     subtitle = glue::glue("Time tracking allows at a cost of a little bit of patience and discipline to analyse and reflect on your daily life as it happens. <br> From October 1st 2022 to January 31st 2024 I have been time tracking my daily life throughout my <span style='color:#FFD700;'><b>study</b></span>. <br> My usual day would start with a <span style='color:#99CC99;'><b>breakfast</b></span> then <span style='color:#95A5A6;'><b>taking a metro</b></span> to university, where for the rest of the day I would <span style='color:#FFD700;'><b>study</b></span> and <span style='color:#77CEEB'><b>socialize</b></span> with other students. <br> In between the breaks or during my <span style='color:#95A5A6;'><b>commute</b></span> I would track what I have been doing for the past couple of hours. <br> And before <span style='color:#3B4CC0;'><b>going to bed</b></span> I would review how my day went—a different kind of self-reflection."),
+     caption = glue::glue("Data and visual: <span style='font-family:\"Font Awesome 6 Brands\";'>&#xf09b;</span>
+  <span style='color:black'>vadymyudenko</span>"),
+  x = NULL, 
+  y = NULL,
+  fill = NULL) +
+  guides(fill = guide_legend(
+    nrow = 2,
+    theme = theme(
+      legend.byrow = TRUE,
+      legend.text = element_text(size = 15, vjust = 0.5)),
+    position = "top")) +
+  theme(
+     plot.margin =  unit(c(3, 1, 1, 1), "cm"),  # Increase top margin
+     text = element_text('firasans'),
+     #aspect.ratio = 177 / 72,  
+     plot.title = element_markdown(size = 40, hjust = 0.5, vjust = 0.5),
+     plot.title.position = "plot",
+     plot.subtitle = element_markdown(size = 20, hjust = 0.5, vjust = 0.5),
+     plot.caption.position = "plot",
+     plot.caption = element_markdown(size = 15, hjust = 0.5, vjust = 0.5),
+     panel.grid = element_blank(),
+     axis.title = element_blank(),
+     axis.text = element_blank(),
+     axis.ticks = element_blank()
+   ) +
+  annotate(
+     "text",
+     y = as.POSIXct("2022-12-25"),  # Swapped x -> y
+     x = -7.5,  # Swapped y -> x
+     label = "2022",
+     hjust = 0,
+     vjust = 0.5,
+     color = "black",
+     size = 5,
+     family = "Fira Sans"
+   ) +
+   # Text annotation "2023"
+   annotate(
+     "text",
+     y = as.POSIXct("2023-01-08"),  # Swapped x -> y
+     x = -7.5,  # Swapped y -> x
+     label = "2023",
+     hjust = 0,
+     vjust = 0.5,
+     color = "black",
+     size = 5,
+     family = "Fira Sans"
+   ) +
+   annotate(
+     "segment",
+     y = as.POSIXct("2023-01-10"),  # Swapped x -> y
+     yend = as.POSIXct("2023-01-30"),  # Swapped x -> y
+     x = -6.7,  # Swapped y -> x
+     xend = -6.7,  # Swapped y -> x
+     arrow = arrow(length = unit(0.5, "cm"), ends = "last", type = "open"),
+     color = "black",
+     size = 0.75
+   ) +
+   annotate(
+     "segment",
+     y = as.POSIXct("2022-12-23"),  # Swapped x -> y
+     yend = as.POSIXct("2022-12-03"),  # Swapped x -> y
+     x = -6.7,  # Swapped y -> x
+     xend = -6.7,  # Swapped y -> x
+     arrow = arrow(length = unit(0.5, "cm"), ends = "last", type = "open"),
+     color = "black",
+     size = 0.75
+   ) +
+   # Short vertical line
+   annotate(
+     "segment",
+     y = as.POSIXct("2023-01-01"),  # Swapped x -> y
+     yend = as.POSIXct("2023-01-01"),  # Swapped x -> y
+     x = -1,  # Swapped y -> x
+     xend = -8,  # Swapped y -> x
+     color = "black",
+     size = 0.5,
+     vjust = 1
+   ) +
+     annotate(
+     "text",
+     y = as.POSIXct("2023-12-25"),  # Swapped x -> y
+     x = -7.5,  # Swapped y -> x
+     label = "2023",
+     hjust = 0,
+     vjust = 0.5,
+     color = "black",
+     size = 5,
+     family = "Fira Sans"
+   ) +
+   # Text annotation "2023"
+   annotate(
+     "text",
+     y = as.POSIXct("2024-01-08"),  # Swapped x -> y
+     x = -7.5,  # Swapped y -> x
+     label = "2024",
+     hjust = 0,
+     vjust = 0.5,
+     color = "black",
+     size = 5,
+     family = "Fira Sans"
+   ) +
+   annotate(
+     "segment",
+     y = as.POSIXct("2024-01-10"),  # Swapped x -> y
+     yend = as.POSIXct("2024-01-30"),  # Swapped x -> y
+     x = -6.7,  # Swapped y -> x
+     xend = -6.7,  # Swapped y -> x
+     arrow = arrow(length = unit(0.5, "cm"), ends = "last", type = "open"),
+     color = "black",
+     size = 0.75
+   ) +
+   annotate(
+     "segment",
+     y = as.POSIXct("2023-12-23"),  # Swapped x -> y
+     yend = as.POSIXct("2023-12-03"),  # Swapped x -> y
+     x = -6.75,  # Swapped y -> x
+     xend = -6.75,  # Swapped y -> x
+     arrow = arrow(length = unit(0.5, "cm"), ends = "last", type = "open"),
+     color = "black",
+     size = 0.75
+   ) +
+   # Short vertical line
+   annotate(
+     "segment",
+     y = as.POSIXct("2024-01-01"),  # Swapped x -> y
+     yend = as.POSIXct("2024-01-01"),  # Swapped x -> y
+     x = -1,  # Swapped y -> x
+     xend = -8,  # Swapped y -> x
+     color = "black",
+     size = 0.5,
+     vjust = 1
+   )  -> plot
+
+#ggsave("plot.png", plot, width = 20, height = 5, dpi = 2000)
+```
+
+
+
+::: column-screen
+```{r}
+#| fig-format: svg
+#| fig-width: 20
+#| width: 100%
+#| fig-height: 60
+#| height: 100%
+plot
+```
+:::
+
+

@@ -1,0 +1,16 @@
+{
+  "hash": "179cf51280a6262935ff148bd11fa010",
+  "result": {
+    "markdown": "---\ntitle: \"Watch me get masters degree\"\ndescription: \"Work in progress\"\ntoc: false\n---\n\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n\n\n\n::: column-screen\n\n::: {.cell width='100%' height='100%'}\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-3-1.svg){width=1920}\n:::\n:::\n\n:::\n\n\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
