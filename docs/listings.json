@@ -1,0 +1,32 @@
+[
+  {
+    "listing": "/posts/index.html",
+    "items": [
+      "/posts/night-guy-morning-guy/index.html",
+      "/posts/time-tracking-2020/index.html",
+      "/posts/qalmri/index.html",
+      "/posts/toastmasters-time/index.html"
+    ]
+  },
+  {
+    "listing": "/index.html",
+    "items": [
+      "/posts/index.html",
+      "/essays/index.html",
+      "/dataviz/index.html"
+    ]
+  },
+  {
+    "listing": "/essays/index.html",
+    "items": [
+      "/essays/backtonormal/index.html"
+    ]
+  },
+  {
+    "listing": "/dataviz/index.html",
+    "items": [
+      "/dataviz/masters-in-one-picture/index.html",
+      "/dataviz/two-babies-sleep/index.html"
+    ]
+  }
+]
