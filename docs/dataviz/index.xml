@@ -10,7 +10,7 @@
 <atom:link href="https://vadymyudenko.com/dataviz/index.xml" rel="self" type="application/rss+xml"/>
 <description>Vadym Yudenko blog about data and research</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Wed, 18 Dec 2024 17:27:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 21 Dec 2024 22:04:56 GMT</lastBuildDate>
 <item>
   <title>Watch me get masters degree</title>
   <link>https://vadymyudenko.com/dataviz/masters-in-one-picture/index.html</link>
@@ -39,7 +39,7 @@
 
  ]]></description>
   <guid>https://vadymyudenko.com/dataviz/masters-in-one-picture/index.html</guid>
-  <pubDate>Wed, 18 Dec 2024 17:27:00 GMT</pubDate>
+  <pubDate>Sat, 21 Dec 2024 22:04:56 GMT</pubDate>
 </item>
 <item>
   <title>6 Months and 276 Months Old Babies</title>
@@ -74,7 +74,83 @@
 
  ]]></description>
   <guid>https://vadymyudenko.com/dataviz/two-babies-sleep/index.html</guid>
-  <pubDate>Wed, 18 Dec 2024 17:27:00 GMT</pubDate>
+  <pubDate>Sat, 21 Dec 2024 22:04:56 GMT</pubDate>
+</item>
+<item>
+  <title>Study-Life Balance</title>
+  <link>https://vadymyudenko.com/dataviz/work-life-balance/index.html</link>
+  <description><![CDATA[ <div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="https://vadymyudenko.com/dataviz/work-life-balance/index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Hi! Yes, that student is me! From October 2022 to January 2024, I have been <a href="https://vadymyudenko.com/posts/night-guy-morning-guy/">time tracking my daily life</a>, and this plot is an attempt to measure study-life balance of my student times.</p>
+<div class="page-columns page-full"><p>You’re looking at a <a href="https://en.wikipedia.org/wiki/Ternary_plot">ternary plot</a>. They are used to represent the proportion of 3 variables as positions in a triangle. Here, I use it to show the study-life balance. Points toward the <span style="color:darkred;"><b>BOTTOM LEFT</b></span> of the triangle represent days with more <span style="color:darkred;"><b>study</b></span><sup>1</sup>, those few toward the <span style="color:darkblue;"><b>BOTTOM RIGHT</b></span> have more <span style="color:darkblue;"><b>sleep</b></span>, and those toward the <span style="color:darkgreen;"><b>TOP</b></span> is <span style="color:darkgreen;"><b>life</b></span>—socializing, eating, going to the gym, shopping, watching cat memes and doomscrolling, and the list continues, capturing all the little moments that make up daily life.</p><div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;This category is called Study for simplicity. It comprises of multiple activities: actual <strong>Study</strong>, <strong>Work</strong>, <strong>Reading</strong> and <strong>Planning</strong>.</p></li></div></div>
+<p>Majority of the days are centered around the barycenter (⬤) of the triangle, meaning that most days were mostly balanced. The cloud of point near the top right indicate days when I had little <span style="color:darkred;"><b>study</b></span> and mostly relaxed or socialized. Meanwhile, points to the LEFT are days when I <span style="color:darkred;"><b>studied</b></span> or socialized often at the expense of <span style="color:darkblue;"><b>sleep</b></span></p>
+<div class="cell page-columns page-full">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="https://vadymyudenko.com/dataviz/work-life-balance/index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Study-Life balance in 2019-2020</figcaption></figure>
+</div>
+</div></div></div>
+<hr>
+<p>There is also data from 2019-2020, when I first started time-tracking. Not much has changed since then. Occasionally, there are outliers—days with excessive studying or too much sleep—but overall, I have maintained a good balance between study, life, and sleep.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="https://vadymyudenko.com/dataviz/work-life-balance/index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled" title="How I did it?">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+How I did it?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>I used the data from my time tracking, where I categorized each activity into one of the three categories: <strong>Study</strong>, <strong>Life</strong> and <strong>Sleep</strong>. Then calculated daily total hours and proportions for each of the above and plotted with <a href="https://cran.r-project.org/web/packages/ggtern/ggtern.pdf">library(ggtern)</a></p>
+</div>
+</div>
+</div>
+<section id="inspiration-and-references" class="level2"><h2 class="anchored" data-anchor-id="inspiration-and-references">Inspiration and References</h2>
+<p><a href="https://fivethirtyeight.com/features/the-worst-tweeter-in-politics-isnt-trump/">The Worst Tweeter In Politics Isn’t Trump (FiveThirtyEight)</a></p>
+<p><a href="https://www.economist.com/graphic-detail/2019/02/22/profiles-of-a-divided-country">Profiles of a divided country</a></p>
+<p><a href="https://www.ownkng.dev/thoughts/ternary">Why use a ternary plot?</a></p>
+<p><a href="TernaryPlot.com">TernaryPlot.com</a></p>
+<p><a href="https://rpubs.com/tskam/ternary_plot">Creating Ternary Plot with R</a></p>
+<p><a href="https://datavizproject.com/data-type/ternary-contour-plot/">datavizproject.com</a></p>
+<div class="cell">
+
+</div>
+
+
+</section> ]]></description>
+  <guid>https://vadymyudenko.com/dataviz/work-life-balance/index.html</guid>
+  <pubDate>Sat, 21 Dec 2024 22:04:56 GMT</pubDate>
 </item>
 </channel>
 </rss>

@@ -102,6 +102,7 @@ data_long2023 <- data_long2023 %>%
      tolower(activity) %in% c("misc", "mic") ~ "Miscellaneous",
      activity %in% c("Transport", "Transportation") ~ "Going Somewhere",
      activity == "Communication" ~ "Social Life",
+     activity == "TM" ~ "Toastmasters",
      TRUE ~ activity),
      hour = hour(datetime),
      #day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
@@ -1407,7 +1408,7 @@ Deep inside I expected to see a different picture. To see how better my
 time management skill got, how I've been more active, and more socially
 engaged. I have become more active, socially, too! This came at a cost
 of, among other things, healthy sleeping schedule and a reduced physical
-activity. Sounds like a typical student life. 
+activity. Sounds like a typical student's life. 
 
 ::: {.callout-tip title="Session info" collapse="true" icon="false"}
 ```{r}

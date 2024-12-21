@@ -1,0 +1,667 @@
+---
+title: "Study-Life Balance"
+description: "Exploring study-life balance with ternary plot"
+toc: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.showtext=TRUE)
+```
+
+```{r libraries}
+library(stargazer)
+library(tidyverse)
+library(ggh4x)
+library(ggExtra)
+library(ggtext)
+library(ggthemes)
+library(gganimate)
+library(ggarrow)
+library(arrowheadr)
+library(emojifont)
+library(ggtern)
+library(showtext)
+library(grid)
+library(lubridate)
+library(plotly)
+library(scales)
+library(glue)
+library(knitr)
+library(fontawesome)
+library(RColorBrewer)
+library(patchwork)
+library(crosstalk)
+library(ggiraph)
+library(ggpattern)
+library(zoo) 
+library(cowplot)
+```
+
+```{r theme}
+font_add_google("Fira Sans", "firasans")
+font_add(family = "Font Awesome 6 Brands",
+                   regular = "data/Font Awesome 6 Brands-Regular-400.otf")
+
+font_add(family = "Font Awesome 6 Regular",
+                   regular = "data/Font Awesome 6 Free-Regular-400.otf")
+
+font_add(family = "Font Awesome 6 Solid",
+                   regular = "data/Font Awesome 6 Free-Solid-900.otf")
+
+# showtext::showtext_auto()
+
+
+blog_theme <-
+   theme_minimal(18, base_family = "Fira Sans") +
+   theme(
+     plot.background = element_rect(fill = "white", color = NA),
+     plot.title.position = "plot",
+     plot.title = element_text(size = 24, margin = margin(b = 1, unit = "line")),
+     legend.position = c(0, 1),
+     legend.direction = "horizontal",
+     legend.justification = c(0, 1),
+     legend.title.align = 1,
+     axis.title.y = element_text(hjust = 0, size = 10),
+     axis.title.x = element_text(hjust = 0, size = 10),
+     panel.grid.major = element_line(color = "#d3d9db"),
+     panel.grid.minor = element_blank()
+   )
+ 
+theme_set(blog_theme)
+```
+
+```{r}
+data <- read_delim("data/KSE_life_2.csv", 
+    delim = ";", escape_double = FALSE, col_types = cols(time = col_time(format = "%H:%M")), 
+    trim_ws = TRUE)
+
+data_long <- gather(data, day, activity, -time) %>% 
+  na.omit() %>%
+  mutate(day = ifelse(day == "9/30/2022", "10/1/2022", day))
+
+data_long$datetime <- as.POSIXct(paste(data_long$day, data_long$time), format="%m/%d/%Y %H:%M:%S", tz="GMT+3")
+
+# data_long <- read.csv("data.csv") %>%
+data_long <- data_long %>%
+   mutate(
+     date = as.Date(datetime),
+     day_of_month = mday(datetime),
+     # time_of_day = case_when(
+     #   hour(datetime) < 12 ~ "Morning",
+     #   hour(datetime) < 18 ~ "Day",
+     #   TRUE ~ "Night"),
+   time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
+   activity = case_when(
+     tolower(activity) %in% c("misc", "mic") ~ "Miscellaneous",
+     activity %in% c("Transport", "Transportation") ~ "Going Somewhere",
+     activity == "Communication" ~ "Social Life",
+     activity == "TM" ~ "Toastmasters",
+     TRUE ~ activity),
+     hour = hour(datetime),
+     #day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
+     month = month(datetime, label = TRUE, abbr = FALSE)
+   )
+
+activity_colors <- c(
+   "Sleep" = "#3B4CC0",  # Deep Blue (Night)
+   "Social Life" = "#87CEEB",  # SkyBlue
+   "Sport" = "#1D8E3A",  # Forest Green (Active)
+   "Work" = "#C0392B",  # Red (Energy)
+   "Reading" = "#F39C12",  # Golden Orange (Focus)
+   "Japanese" = "#FF69B4",  # HotPink
+   "Study" = "#FFD700",  # Gold
+   "Food" = "#99CC99",  # Soft Green
+   "Waste" = "#333333",  # Dark Charcoal
+   "Piano" = "purple",  # HotPink
+   "Planning" = "#FF6347",  # Tomato
+   "Toastmasters" = "#8E44AD",  # Deep Purple (Creative)
+   "Going Somewhere" = "#95A5A6",  # Urban Gray
+   "Miscellaneous" = "#27AE60"  # Fresh Green
+)
+```
+
+```{r}
+
+####### 2023 data
+df_activity_hours <- data_long %>%    
+  mutate(date = as.Date(datetime)) %>%    
+  group_by(date, activity) %>%    
+  summarise(hours = round(n() * (20/60),1)) %>%   
+  ungroup()   # Filter the data for "Sleep" activity and remove the first and last rows 
+
+df_tern <- df_activity_hours %>%
+  mutate(category = case_when(
+    activity %in% c("Study", "Work", "Planning", "Reading") ~ "Study",
+    activity %in% c("Piano", "Social Life", "Sport", "Toastmasters", "Waste", "Food", "Going Somewhere", "Miscellaneous") ~ "Life",
+    activity == "Sleep" ~ "Sleep",
+    TRUE ~ NA_character_)) %>%
+  filter(!is.na(category)) %>%
+  group_by(date, category) %>%
+  summarize(total_hours = sum(hours), .groups = "drop") %>%
+  pivot_wider(names_from = category, values_from = total_hours, values_fill = 0) %>%
+  mutate(
+    Study = Study / 24,
+    Life = Life / 24,
+    Sleep = Sleep / 24,
+    dominant_category = case_when(
+      Study >= Life & Study >= Sleep ~ "Study",
+      Life >= Study & Life >= Sleep ~ "Life",
+      Sleep >= Study & Sleep >= Life ~ "Sleep"
+    ),
+    state = row_number()
+  ) %>%
+  select(Study, Life, Sleep, dominant_category, state)
+
+###### 2020 data
+
+data_long20 <- read.csv("data/data_2020.csv") %>%
+  mutate(
+    datetime = as.POSIXct(datetime, format="%m/%d/%Y %H:%M"),
+    day_of_week = weekdays(datetime),
+    time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
+    hour = hour(datetime),
+    day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
+    month = month(datetime, label = TRUE, abbr = FALSE),
+    activity = case_when(
+     tolower(activity) %in% c("misc", "mic") ~ "Miscellaneous",
+     activity %in% c("Transport", "Transportation") ~ "Going Somewhere",
+     activity == "Communication" ~ "Social Life",
+     activity == "TM" ~ "Toastmasters",
+     TRUE ~ activity))
+
+df_activity_hours20 <- data_long %>%    
+  mutate(date = as.Date(datetime)) %>%    
+  group_by(date, activity) %>%    
+  summarise(hours = round(n() * (20/60),1)) %>%   
+  ungroup()   # Filter the data for "Sleep" activity and remove the first and last rows 
+
+df_tern20 <- df_activity_hours20 %>%
+  mutate(category = case_when(
+    activity %in% c("Study", "Japanese", "Planning", "Reading") ~ "Study",
+    activity %in% c("Piano", "Social Life", "Sport", "Waste", "Food", "Going Somewhere", "Miscellaneous") ~ "Life",
+    activity == "Sleep" ~ "Sleep",
+    TRUE ~ NA_character_)) %>%
+  filter(!is.na(category)) %>%
+  group_by(date, category) %>%
+  summarize(total_hours = sum(hours), .groups = "drop") %>%
+  pivot_wider(names_from = category, values_from = total_hours, values_fill = 0) %>%
+  mutate(
+    Study = Study / 24,
+    Life = Life / 24,
+    Sleep = Sleep / 24,
+    dominant_category = case_when(
+      Study >= Life & Study >= Sleep ~ "Study",
+      Life >= Study & Life >= Sleep ~ "Life",
+      Sleep >= Study & Sleep >= Life ~ "Sleep"
+    ),
+    state = row_number()
+  ) %>%
+  select(Study, Life, Sleep, dominant_category, state)
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| fig-align: center
+
+ggplot(data = df_tern, aes(x = Sleep, y = Study, z = Life, color = dominant_category)) +
+  geom_point(size = 3, alpha = 0.7) +
+  coord_tern(expand = TRUE) +
+  scale_color_manual(
+    values = c("Study" = "darkred", "Life" = "darkgreen", "Sleep" = "darkblue")
+  ) +
+  theme_rgbg() +
+  theme_hidegrid() +
+  theme(text = element_text(family = "firasans", size = 16),
+        plot.margin = margin(0, 10, 10, 10),
+        legend.position = "none",
+        tern.axis.title.T = element_text(angle = -60, face = "bold", hjust = 0.1),
+        tern.axis.title.L = element_text(angle = 60, face = "bold", hjust = 0.9),
+        tern.axis.title.R = element_text(face = "bold"),
+        tern.axis.arrow.show = FALSE,
+        tern.axis.text.show =FALSE,
+        tern.grid.minor.show = FALSE,
+        tern.grid.major.show = FALSE,
+        tern.panel.mask.show = FALSE,
+        tern.panel.grid.major.show = FALSE,
+        tern.panel.rotate = 120,
+        plot.caption.position = "plot",
+        tern.axis.ticks.primary.show = FALSE,
+        plot.background = element_rect(fill = "beige"),
+        tern.panel.background = element_rect(fill = "beige"),
+        plot.title = element_markdown(size = 2, hjust = 0.5),
+        plot.subtitle = element_markdown(size = 18, hjust = 0.5),
+        plot.caption = element_markdown(size = 10, hjust = 0.5)) + 
+  annotate(
+    "text",
+    x = -1, y = 10, z = 10,
+    label = "← MORE STUDY   |    MORE LIFE →",
+    angle = 60,
+    color = "black",
+    size = 4,
+    family = "Fira Sans"
+  ) +
+  annotate(
+    "text",
+    x = 10, y = 10, z = -1,
+    label = "← MORE STUDY   |    MORE SLEEP →",
+    angle = 0,
+    color = "black",
+    size = 4,
+    family = "Fira Sans"
+  ) +
+  annotate(
+    "text",
+    x = 10, y = -1, z = 10,
+    label = "← MORE LIFE    |    MORE SLEEP →",
+    angle = -60,
+    color = "black",
+    size = 4,
+    family = "Fira Sans"
+  ) +
+  annotate("point", x = 0, y = 0, z = 0, size = 5) +
+  annotate("segment", x = 0, xend = 0, y = 0, yend = 1, z = 0, zend = 0, size = 0.5, color = "black") +
+  annotate("segment", x = 0, xend = 1, y = 0, yend = 0, z = 0, zend = 0, size = 0.5, color = "black") +
+  annotate("segment", x = 0, xend = 0, y = 0, yend = 0, z = 0, zend = 1, size = 0.5, color = "black") -> plot_tern
+
+plot_tern + 
+    labs(
+    title = "",
+    subtitle = glue::glue("<b>How does the student's day look like?</b>"),
+    color = "Dominant Category",
+    caption = glue::glue("Data and visual: <span style='font-family:\"Font Awesome 6 Brands\";'>&#xf09b;</span>
+  <span style='color:black'>vadymyudenko</span>")
+  )
+ 
+```
+
+Hi! Yes, that student is me! From October 2022 to January 2024, I have been [time tracking my daily life](https://vadymyudenko.com/posts/night-guy-morning-guy/), and this plot is an attempt to measure study-life balance of my student times.
+
+You're looking at a [ternary plot](https://en.wikipedia.org/wiki/Ternary_plot). They are used to represent the proportion of 3 variables as positions in a triangle. Here, I use it to show the study-life balance. Points toward the [<b>BOTTOM LEFT</b>]{style="color:darkred;"} of the triangle represent days with more [<b>study</b>]{style="color:darkred;"}[^1], those few toward the [<b>BOTTOM RIGHT</b>]{style="color:darkblue;"} have more [<b>sleep</b>]{style="color:darkblue;"}, and those toward the [<b>TOP</b>]{style="color:darkgreen;"} is [<b>life</b>]{style="color:darkgreen;"}—socializing, eating, going to the gym, shopping, watching cat memes and doomscrolling, and the list continues, capturing all the little moments that make up daily life.
+
+[^1]: This category is called Study for simplicity. It comprises of multiple activities: actual **Study**, **Work**, **Reading** and **Planning**.
+
+Majority of the days are centered around the barycenter (⬤) of the triangle, meaning that most days were mostly balanced. The cloud of point near the top right indicate days when I had little [<b>study</b>]{style="color:darkred;"} and mostly relaxed or socialized. Meanwhile, points to the LEFT are days when I [<b>studied</b>]{style="color:darkred;"} or socialized often at the expense of [<b>sleep</b>]{style="color:darkblue;"}
+
+```{r}
+#| column: margin
+#| fig-cap: "Study-Life balance in 2019-2020"
+
+ggplot(data = df_tern20, aes(x = Sleep, y = Study, z = Life, color = dominant_category)) +
+  geom_point(size = 3, alpha = 0.7) +
+  coord_tern(expand = TRUE) +
+  labs(color = "Dominant Category") +
+  scale_color_manual(
+    values = c("Study" = "darkred", "Life" = "darkgreen", "Sleep" = "darkblue")
+  ) +
+  theme_rgbg() +
+  theme_hidegrid() +
+  theme(text = element_text(family = "firasans", size = 16),
+        plot.margin = margin(0, 10, 0, 10),
+        legend.position = "none",
+        tern.axis.title.T = element_text(angle = -60, face = "bold", hjust = 0.1),
+        tern.axis.title.L = element_text(angle = 60, face = "bold", hjust = 0.9),
+        tern.axis.title.R = element_text(face = "bold"),
+        tern.axis.arrow.show = FALSE,
+        tern.axis.text.show =FALSE,
+        tern.grid.minor.show = FALSE,
+        tern.grid.major.show = FALSE,
+        tern.panel.mask.show = FALSE,
+        tern.panel.grid.major.show = FALSE,
+        tern.panel.rotate = 120,
+        plot.caption.position = "plot",
+        tern.axis.ticks.primary.show = FALSE,
+        plot.background = element_rect(fill = "beige"),
+        tern.panel.background = element_rect(fill = "beige"),
+        plot.title = element_markdown(size = 20, hjust = 0.5),
+        plot.subtitle = element_markdown(size = 20, hjust = 0.5),
+        plot.caption = element_markdown(size = 10, hjust = 0.5, vjust = 0.5)) + 
+  annotate(
+    "text",
+    x = -1, y = 10, z = 10,
+    label = "← MORE STUDY   |    MORE LIFE →",
+    angle = 60,
+    color = "black",
+    size = 4,
+    family = "Fira Sans"
+  ) +
+  annotate(
+    "text",
+    x = 10, y = 10, z = -1,
+    label = "← MORE STUDY   |    MORE SLEEP →",
+    angle = 0,
+    color = "black",
+    size = 4,
+    family = "Fira Sans"
+  ) +
+  annotate(
+    "text",
+    x = 10, y = -1, z = 10,
+    label = "← MORE LIFE    |    MORE SLEEP →",
+    angle = -60,
+    color = "black",
+    size = 4,
+    family = "Fira Sans"
+  ) +
+  annotate("point", x = 0, y = 0, z = 0, size = 5) +
+  annotate("segment", x = 0, xend = 0, y = 0, yend = 1, z = 0, zend = 0, size = 0.5, color = "black") +
+  annotate("segment", x = 0, xend = 1, y = 0, yend = 0, z = 0, zend = 0, size = 0.5, color = "black") +
+  annotate("segment", x = 0, xend = 0, y = 0, yend = 0, z = 0, zend = 1, size = 0.5, color = "black") -> plot_tern20
+
+plot_tern20
+
+```
+
+------------------------------------------------------------------------
+
+There is also data from 2019-2020, when I first started time-tracking. Not much has changed since then. Occasionally, there are outliers—days with excessive studying or too much sleep—but overall, I have maintained a good balance between study, life, and sleep.
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| fig-align: center
+
+
+(plot_tern20 + 
+  labs(subtitle = "2019-2020") +
+  theme(plot.background = element_rect(fill = "white"),
+    plot.subtitle = element_markdown(size = 20, hjust = 0.5),
+    plot.margin = margin(2.5, 2.5, 2.5, 2.5),
+    axis.title = element_blank(),
+    panel.border = element_rect("white"),
+    panel.background = element_rect("white"))) + 
+  (plot_tern +
+     labs(subtitle = "2022-2024") +
+     theme(plot.background = element_rect(fill = "white"),
+    plot.subtitle = element_markdown(size = 20, hjust = 0.5),
+    plot.margin = margin(2.5, 2.5, 2.5, 2.5),
+    axis.title = element_blank(),
+    panel.border = element_rect("white"),
+    panel.background = element_rect("white"))) +
+  
+    plot_annotation(
+    caption = glue::glue("Data and visual: <span style='font-family:\"Font Awesome 6 Brands\";'>&#xf09b;</span>
+  <span style='color:black'>vadymyudenko</span>"),
+  theme = theme(
+    text = element_text(family = "firasans", size = 16),
+    plot.caption = element_markdown(size = 10, hjust = 0.5, vjust = 0.5),
+    plot.background = element_rect(fill = "white"),
+    axis.title = element_blank(),
+    panel.border = element_rect("white"),
+    panel.background = element_rect("white")
+  )
+  )
+```
+
+::: {.callout-tip title="How I did it?" collapse="true" icon="false"}
+I used the data from my time tracking, where I categorized each activity into one of the three categories: **Study**, **Life** and **Sleep**. Then calculated daily total hours and proportions for each of the above and plotted with [library(ggtern)](https://cran.r-project.org/web/packages/ggtern/ggtern.pdf)
+:::
+
+## Inspiration and References
+
+[The Worst Tweeter In Politics Isn’t Trump (FiveThirtyEight)](https://fivethirtyeight.com/features/the-worst-tweeter-in-politics-isnt-trump/)
+
+[Profiles of a divided country](https://www.economist.com/graphic-detail/2019/02/22/profiles-of-a-divided-country)
+
+[Why use a ternary plot?](https://www.ownkng.dev/thoughts/ternary)
+
+[TernaryPlot.com](TernaryPlot.com)
+
+[Creating Ternary Plot with R](https://rpubs.com/tskam/ternary_plot)
+
+[datavizproject.com](https://datavizproject.com/data-type/ternary-contour-plot/)
+
+```{r archive, eval = FALSE}
+# Function to calculate rolling mean for a specific activity
+# calculate_rolling_mean <- function(data, activity_name, k = 7) {
+#   data %>%
+#     filter(activity == activity_name) %>%
+#     arrange(date) %>%
+#     slice(2:(n()-1)) %>%
+#     mutate(
+#       hours = round(hours, 1),
+#       rolling_mean = round(rollmean(hours, k = k, fill = NA, align = "right"), 1)
+#     ) %>%
+#     mutate(activity_type = activity_name)
+# }
+# 
+# # Apply the function to all activities and bind results
+# activities <- unique(df_activity_hours$activity)
+# 
+# df_combined <- bind_rows(lapply(activities, function(act) {
+#   calculate_rolling_mean(df_activity_hours, act)
+# }))
+# 
+# df_diff <- df_activity_hours %>%
+#   mutate(category = case_when(
+#     activity %in% c("Study", "Work") ~ "StudyWork",
+#     activity %in% c("Reading", "Piano", "Social Life", "Sport", "Toastmasters", "Planning", "Waste", "Food", "Planning", "Going Somewhere") ~ "Life",
+#     activity == "Miscellaneous" ~ "Miscellaneous",
+#     TRUE ~ NA_character_)) %>%
+#   filter(!is.na(category)) %>%
+#   group_by(date, category) %>%
+#   summarize(total_hours = sum(hours), .groups = "drop") %>%
+#   pivot_wider(names_from = category, 
+#               values_from = total_hours, 
+#               values_fill = 0) %>%
+#   mutate(Life = Life + 1/3 * Miscellaneous,
+#          difference = Life - StudyWork,
+#          rolling_mean = round(zoo::rollmean(difference, k = 7, fill = NA, align = "right"), digits = 1))
+# 
+# # if rolling_mean > 0 then color green, if less than 0 then color red
+# ggplot(df_diff, aes(x = date, y = rolling_mean)) +
+#   geom_ribbon(aes(ymin = pmin(rolling_mean, 0), ymax = 0), fill = "red", col = "red", alpha = 0.5) +
+#   geom_ribbon(aes(ymin = 0, ymax = pmax(rolling_mean, 0)), fill = "green", col = "green", alpha = 0.5) +
+#   geom_line(aes(y = rolling_mean), color = "black", size = 0.75) +
+#   labs(title = "Conditional Coloring with geom_ribbon", y = "Work-Life Balance", x = NULL) +
+#   geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
+#   geom_vline(xintercept = as.Date("2023-01-01"), linetype = "dashed", color = "gray") +
+#   geom_vline(xintercept = as.Date("2024-01-01"), linetype = "dashed", color = "gray") +
+#   scale_x_date(date_breaks = "1 month", date_labels = "%b") +
+#   scale_y_continuous(breaks = seq(-7, 10, 1), expand = c(0,0)) +
+#   theme_minimal() +
+#   theme(
+#     text = element_text(family = "firasans", size = 12),
+#     axis.title.y = element_text(vjust = 1),
+#     panel.grid.minor = element_blank(),
+#     panel.grid.major.x = element_blank()
+#   ) +
+#   coord_cartesian(clip = "off") +
+#   annotate(
+#      "text",
+#      x = as.Date("2022-12-01"),  # Swapped y -> x
+#      y = -6.75,  # Swapped x -> y
+#      label = "2022",
+#      hjust = 0,
+#      vjust = 0.5,
+#      color = "gray",
+#      size = 3,
+#      family = "Fira Sans"
+#    ) +
+#    # Text annotation "2023"
+#    annotate(
+#      "text",
+#      x = as.Date("2023-01-15"),  # Swapped y -> x
+#      y = -6.75,  # Swapped x -> y
+#      label = "2023",
+#      hjust = 0,
+#      vjust = 0.5,
+#      color = "gray",
+#      size = 3,
+#      family = "Fira Sans"
+#    ) +
+#    annotate(
+#      "text",
+#      x = as.Date("2023-12-01"),  # Swapped y -> x
+#      y = -6.75,  # Swapped x -> y
+#      label = "2023",
+#      hjust = 0,
+#      vjust = 0.5,
+#      color = "gray",
+#      size = 3,
+#      family = "Fira Sans"
+#    ) +
+#    # Text annotation "2023"
+#    annotate(
+#      "text",
+#      x = as.Date("2024-01-15"),  # Swapped y -> x
+#      y = -6.75,  # Swapped x -> y
+#      label = "2024",
+#      hjust = 0,
+#      vjust = 0.5,
+#      color = "gray",
+#      size = 3,
+#      family = "Fira Sans"
+#    ) -> p1
+# 
+# p1 +
+#   geom_arrow_curve(aes(x = as.Date("2023-09-13"), 
+#                        xend = as.Date("2023-10-30"), 
+#                        y = -6.075, 
+#                        yend = -5),
+#                    arrow_head = arrow_head_deltoid(), 
+#                    curvature = 0.2,
+#                    size = 0.5) +
+#   annotate("text", x = as.Date("2023-07-01"), y = -6, label = "Thesis submitted!", hjust = 0, vjust = 0.5, color = "black", size = 3, family = "Fira Sans")
+# 
+# 
+# # library(geomtextpath)
+# # p1 +
+# #   geom_arrow(data = data.frame(x = c(as.Date("2022-12-01"), as.Date("2023-12-01")), 
+# #                                y = c(-6.5, -6.5)),
+# #              aes(x = x, y = y),
+# #              arrow_head = arrow_head_deltoid(), size = 0.5) +
+# #   annotate("text", x = as.Date("2023-07-01"), y = -4, label = "Thesis submitted!", hjust = 0, vjust = 0.5, color = "gray", size = 3, family = "Fira Sans") +
+# #   coord_curvedpolar()
+# 
+# 
+# ```
+# 
+# ```{r, eval=FALSE}
+# for(i in unique(df_tern$state)) { 
+#   p <- ggtern(df_tern[df_tern$state == i, ], aes(x = Sleep, y = StudyWork, z = Life, color = dominant_category)) +
+#   geom_point(size = 3, alpha = 0.7) +
+#   coord_tern(expand = TRUE) +
+#   labs(
+#     title = glue::glue("<span style='color:darkred'><b>Work</b></span>-<span style='color:darkgreen'><b>Life</b></span>-<span style='color:darkblue'><b>Sleep</b></span> Balance"),
+#     color = "Dominant Category",
+#     caption = glue::glue("Data and visual: <span style='font-family:\"Font Awesome 6 Brands\";'>&#xf09b;</span>
+#   <span style='color:black'>vadymyudenko</span>")
+#   ) +
+#   scale_color_manual(
+#     values = c("StudyWork" = "darkred", "Life" = "darkgreen", "Sleep" = "darkblue")
+#   ) +
+#   theme_rgbg() +
+#   theme(text = element_text(family = "firasans", size = 16),
+#         legend.position = "none",
+#         tern.axis.title.T = element_text(angle = -60, face = "bold"),
+#         tern.axis.title.L = element_text(angle = 60, face = "bold"),
+#         tern.axis.title.R = element_text(face = "bold"),
+#         tern.axis.arrow.show = FALSE,
+#         tern.axis.text.show =FALSE,
+#         tern.panel.mask.show = FALSE,
+#         tern.panel.grid.major.show = FALSE,
+#         tern.panel.rotate = 120,
+#         plot.caption.position = "plot",
+#         tern.plot.background = element_rect(fill = "white"),
+#         tern.panel.background = element_rect(fill = "white"),
+#         plot.title = element_markdown(size = 20, hjust = 0.5, vjust = 0.5),
+#         plot.caption = element_markdown(size = 15, hjust = 0.5, vjust = 0.5)) + 
+#   annotate(
+#     "text",
+#     x = -1.5, y = 10, z = 10,
+#     label = "<-- More Life      More Sleep -->",
+#     angle = 60,
+#     color = "black",
+#     size = 7,
+#     family = "Fira Sans"
+#   ) +
+#   annotate(
+#     "text",
+#     x = 10, y = 10, z = -1.5,
+#     label = "<-- More Work      More Life -->",
+#     angle = 0,
+#     color = "black",
+#     size = 7,
+#     family = "Fira Sans"
+#   ) +
+#   annotate(
+#     "text",
+#     x = 10, y = -1.5, z = 10,
+#     label = "<-- More Work      More Sleep -->",
+#     angle = -60,
+#     color = "black",
+#     size = 7,
+#     family = "Fira Sans"
+#   ) +
+#   annotate("point", x = 0, y = 0, z = 0, size = 5) +
+#   annotate("segment", x = 0, xend = 0, y = 0, yend = 1, z = 0, zend = 0, size = 0.5, color = "black") +
+#   annotate("segment", x = 0, xend = 1, y = 0, yend = 0, z = 0, zend = 0, size = 0.5, color = "black") +
+#   annotate("segment", x = 0, xend = 0, y = 0, yend = 0, z = 0, zend = 1, size = 0.5, color = "black")
+#   
+#   # Save each plot as a PNG
+#   ggsave(filename = paste0('ggtern', i, '.png'), plot = p, width = 8, height = 6)
+# }
+# 
+# # Create a list of images from the saved PNG files
+# list.files(pattern = 'ggtern\\d+\\.png', full.names = TRUE) %>% 
+#   image_read() %>% 
+#   image_join() %>% 
+#   image_animate(fps = 4) %>% 
+#   image_write("ggtern.gif")
+# 
+# label <- function(txt) {
+#   list(
+#     text = txt, 
+#     x = 0.1, y = 1,
+#     ax = 0, ay = 0,
+#     xref = "paper", yref = "paper", 
+#     align = "center",
+#     font = list(family = "serif", size = 15, color = "white"),
+#     bgcolor = "#b3b3b3", bordercolor = "black", borderwidth = 2
+#   )
+# }
+# 
+# # reusable function for axis formatting
+# axis <- function(txt) {
+#   list(
+#     title = txt, tickformat = ".0%", tickfont = list(size = 10)
+#   )
+# }
+# 
+# ternaryAxes <- list(
+#   aaxis = axis("Study"), 
+#   baxis = axis("Life"), 
+#   caxis = axis("Sleep")
+# )
+# 
+# # Initiating a plotly visualization 
+# plot_ly(
+#   df_tern, 
+#   a = ~Study, 
+#   b = ~Life, 
+#   c = ~Sleep, 
+#   color = I("black"), 
+#   type = "scatterternary"
+# ) %>%
+#   layout(
+#     ternary = ternaryAxes,
+#     list(
+#       # Annotation for StudyWork edge
+#       list(
+#         x = 1.1, y = 0.5, text = "Study", showarrow = FALSE,
+#         font = list(size = 12)
+#       ),
+#       # Annotation for Life edge
+#       list(
+#         x = 0.5, y = 1.1, text = "Life", showarrow = FALSE,
+#         font = list(size = 12)
+#       ),
+#       # Annotation for Sleep edge
+#       list(
+#         x = -0.1, y = -0.1, text = "Sleep", showarrow = FALSE,
+#         font = list(size = 12)
+#       )
+#     )
+#   )
+```

@@ -1,0 +1,302 @@
+---
+title: "Forecasting categorical time series"
+description: "Visualizing time-tracking data from 2022 to 2024"
+draft: true
+toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.showtext=TRUE, eval = FALSE)
+```
+
+```{r libraries}
+library(stargazer)
+library(tidyverse)
+library(readr)
+library(patchwork)
+library(ggtext)
+library(showtext)
+library(emojifont)
+library(grid)
+library(transformr)
+library(lubridate)
+library(plotly)
+library(scales)
+library(ggiraph)
+library(glue)
+library(knitr)
+```
+
+```{r theme}
+font_add_google("Fira Sans", "firasans")
+font_add(family = "Font Awesome 6 Brands",
+                   regular = "data/Font Awesome 6 Brands-Regular-400.otf")
+
+# showtext::showtext_auto()
+
+
+# blog_theme <-
+#    theme_minimal(18, base_family = "firasans") +
+#    theme(
+#      plot.background = element_rect(fill = "white", color = NA),
+#      plot.title.position = "plot",
+#      plot.title = element_text(size = 24, margin = margin(b = 1, unit = "line")),
+#      legend.position = c(0, 1),
+#      legend.direction = "horizontal",
+#      legend.justification = c(0, 1),
+#      legend.title.align = 1,
+#      axis.title.y = element_text(hjust = 0, size = 10),
+#      axis.title.x = element_text(hjust = 0, size = 10),
+#      panel.grid.major = element_line(color = "#d3d9db"),
+#      panel.grid.minor = element_blank()
+#    )
+#  
+# theme_set(blog_theme)
+```
+
+```{r}
+data_long20 <- read.csv("data/data_2020.csv") %>%
+  mutate(
+    datetime = as.POSIXct(datetime, format="%m/%d/%Y %H:%M", tz="GMT+3"),
+    day_of_week = weekdays(datetime),
+    time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
+    hour = hour(datetime),
+    day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
+    month = month(datetime, label = TRUE, abbr = FALSE),
+    activity = case_when(
+     tolower(activity) %in% c("misc", "mic") ~ "Miscellaneous",
+     activity %in% c("Transport", "Transportation") ~ "Going Somewhere",
+     activity == "Communication" ~ "Social Life",
+     activity == "TM" ~ "Toastmasters",
+     TRUE ~ activity))
+
+
+data <- read_delim("data/KSE_life_2.csv", 
+    delim = ";", escape_double = FALSE, col_types = cols(time = col_time(format = "%H:%M")), 
+    trim_ws = TRUE)
+
+data_long <- gather(data, day, activity, -time) %>% 
+  na.omit() %>%
+  mutate(day = ifelse(day == "9/30/2022", "10/1/2022", day))
+
+data_long$datetime <- as.POSIXct(paste(data_long$day, data_long$time), format="%m/%d/%Y %H:%M:%S", tz="GMT+3")
+
+data_long <- data_long %>%
+   mutate(
+     date = as.Date(datetime),
+     day_of_month = mday(datetime),
+   time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
+   activity = case_when(
+     tolower(activity) %in% c("misc", "mic") ~ "Miscellaneous",
+     activity %in% c("Transport", "Transportation") ~ "Going Somewhere",
+     activity == "Communication" ~ "Social Life",
+     activity == "TM" ~ "Toastmasters",
+     TRUE ~ activity),
+     hour = hour(datetime),
+     #day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
+     month = month(datetime, label = TRUE, abbr = FALSE)
+   )
+
+activity_colors <- c(
+   "Sleep" = "#3B4CC0",  # Deep Blue (Night)
+   "Social Life" = "#87CEEB",  # SkyBlue
+   "Sport" = "#1D8E3A",  # Forest Green (Active)
+   "Work" = "#C0392B",  # Red (Energy)
+   "Reading" = "#F39C12",  # Golden Orange (Focus)
+   "Japanese" = "#FF69B4",  # HotPink
+   "Study" = "#FFD700",  # Gold
+   "Food" = "#99CC99",  # Soft Green
+   "Waste" = "#333333",  # Dark Charcoal
+   "Piano" = "purple",  # HotPink
+   "Planning" = "#FF6347",  # Tomato
+   "Toastmasters" = "#8E44AD",  # Deep Purple (Creative)
+   "Going Somewhere" = "#95A5A6",  # Urban Gray
+   "Miscellaneous" = "#27AE60"  # Fresh Green
+)
+
+data1 <- data_long20 %>%
+  select(datetime, activity) %>%
+  mutate(index = row_number())
+
+# Select relevant columns from the second dataset and add an index
+data2 <- data_long %>%
+  select(datetime, activity) %>%
+  mutate(index = row_number())
+
+# Combine the two datasets
+combined_data <- bind_rows(data1, data2, .id = "source") %>%
+  select(index, datetime, activity) %>% 
+  mutate(
+    period = case_when(
+     year(datetime) %in% 2019:2020 ~ "2019-2020",
+     year(datetime) %in% 2022:2024 ~ "2022-2024",
+     TRUE ~ NA_character_ ),
+    date = as.Date(datetime),
+    time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16))) %>% 
+  select(-index)
+
+```
+
+## Problem
+
+## Data
+
+```{r}
+combined_data %>%
+  filter(period == "2022-2024") %>%
+  ggplot(aes(date, time_column, fill = activity)) +
+  geom_tile() +
+  scale_fill_manual(values = activity_colors) +
+  scale_x_date() +
+   labs(title = NULL, x = NULL, y = NULL) +
+   theme_minimal() +
+   theme(
+     legend.position = "none",
+     panel.grid = element_blank(),
+     plot.title = element_blank(),
+     axis.text.x = element_text(angle = 0, size = 10, face = "bold"),
+     axis.text.y = element_text(hjust = 0.5, size = 5, face = "bold")
+     )
+```
+
+We can think about different activities as signals. So Sleep could be a signal that is high during the night and low during the day. Social Life could be a signal that is high during the evening and low during the day. Work could be a signal that is high during the day and low during the night.
+
+```{r}
+ts_data <- combined_data %>%
+  mutate(ts = case_when(
+   activity == "Sleep" ~ 0, 
+   activity == "Miscellaneous" ~ 1,
+    activity == "Social Life" ~ 2, 
+    activity == "Study" ~ 3,
+    activity == "Work" ~ 4,
+    activity == "Going Somewhere" ~ 5, 
+    activity == "Toastmasters" ~ 6,
+    activity == "Sport" ~ 7, 
+    activity == "Reading" ~ 8, 
+    activity == "Japanese" ~ 9,
+    activity == "Food" ~ 10,
+    activity == "Waste" ~ 11,
+    activity == "Piano" ~ 12, 
+    activity == "Planning" ~ 13,
+    TRUE ~ NA))
+```
+
+```{r}
+ggplot(ts_data %>% 
+  mutate(month = month(datetime),
+         year = year(datetime)) %>% 
+  filter(year == 2023, month == 1, date == "2023-01-01"), 
+       aes(datetime, ts)) +
+  geom_line() +
+  labs(title = NULL, x = NULL, y = NULL) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    panel.grid = element_blank(),
+    plot.title = element_blank(),
+    axis.text.x = element_text(angle = 0, size = 10, face = "bold"),
+    axis.text.y = element_text(hjust = 0.5, size = 5, face = "bold")
+  )
+
+  
+```
+
+Looks messy! Looks like you've made a mistake. Let's try to assign the
+
+## How similar are days?
+
+One way of approaching this is to treat each day as a vector. In our case that is a 72-item vector (24 hours \* 3 activities). We can then calculate the cosine similarity between two days.
+
+Cosine Similarity
+
+Got the idea from here: https://www.relevantmisc.com/python/munging/2020/06/23/discretizing-timeseries/
+
+## What was I doing in 2021-2022?
+
+```{r}
+ts_complete <- ts_data %>% 
+  complete(datetime = seq(min(datetime), max(datetime), by = "20 mins"), fill = list(activity_code = NA)) 
+
+ts_reg <- ts_data %>% 
+  mutate(year = year(datetime),
+         month = month(datetime, label = TRUE, abbr = FALSE),
+         wday = wday(datetime, label = TRUE, abbr = FALSE),
+         mday = mday(datetime),
+         week = week(datetime),
+         hour = hour(datetime),
+         minute = minute(datetime),
+         lag_1 = lag(ts, 1),
+         lag_2 = lag(ts, 2),
+         lag_3 = lag(ts, 3),
+         lead_1 = lead(ts, 1),
+         lead_2 = lead(ts, 2),
+         lead_3 = lead(ts, 3)) %>% 
+  filter(year %in% 2022:2024) %>%
+  arrange(datetime)
+
+
+glimpse(ts_reg)
+```
+
+```{r}
+# Fit a logistic regression model
+logistic_model <- glm(activity_binary ~ wday + month + hour + lag_1 + lag_2 + lag_3 + lead_1 + lead_2 + lead_3,
+                      data = ts_reg %>% 
+                        mutate(activity_binary = ifelse(ts_reg$activity == "Sleep", 1, 0)),
+                      family = binomial(link = "logit"))
+
+stargazer::stargazer(logistic_model, type = "text")
+```
+
+
+```{r}
+library(depmixS4)
+
+# We’ll assume we have K hidden states. Choose K based on domain knowledge or model selection.
+K <- 13 
+
+# depmix uses a formula interface. For categorical data, we use "multinomial" family.
+# The response is 'activity' and we assume it follows a multinomial distribution.
+# Each hidden state has its own emission probabilities for each activity category.
+
+# If activity is a factor with L levels, multinomial responses can be specified like this:
+model <- depmixS4::depmix(ts ~ 1, data = ts_reg, nstates = K, family = multinomial())
+
+# Fit the model
+set.seed(123) # For reproducibility
+hmm_fit <- fit(model)
+
+# Summary of the fitted model
+summary(hmm_fit)
+```
+
+
+
+
+
+
+
+
+```{r}
+library(broom)
+library(rstanarm)
+library(bayestestR)
+library(bayesplot)
+library(insight)
+
+mod <- lm(ts ~ wday*(lag_1 + lag_2 + lag_3 + lead_1 + lead_2 + lead_3), 
+          data = ts_reg %>% 
+            filter(ts == 10))
+
+stargazer::stargazer(mod, type = "text")
+```
+
+```{r}
+modb <- stan_glm(
+  ts ~ year*(lag_1 + lag_2 + lag_3 + lead_1 + lead_2 + lead_3), 
+  data = ts_reg %>% 
+    filter(ts == ),
+  seed=111
+)
+```
+

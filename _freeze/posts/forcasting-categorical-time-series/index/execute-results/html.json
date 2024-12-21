@@ -1,0 +1,14 @@
+{
+  "hash": "cae29b86c1227a28fc9a77fd77e20dcf",
+  "result": {
+    "markdown": "---\ntitle: \"Forecasting categorical time series\"\ndescription: \"Visualizing time-tracking data from 2022 to 2024\"\ntoc: true\n---\n\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n\n## Problem\n\n## Data\n\n\n::: {.cell}\n\n:::\n\n\nWe can think about different activities as signals. So Sleep could be a signal that is high during the night and low during the day. Social Life could be a signal that is high during the evening and low during the day. Work could be a signal that is high during the day and low during the night.\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n\nLooks messy! Looks like you've made a mistake. Let's try to assign the\n\n## How similar are days?\n\nOne way of approaching this is to treat each day as a vector. In our case that is a 72-item vector (24 hours \\* 3 activities). We can then calculate the cosine similarity between two days.\n\nCosine Similarity\n\nGot the idea from here: https://www.relevantmisc.com/python/munging/2020/06/23/discretizing-timeseries/\n\n## What was I doing in 2021-2022?\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

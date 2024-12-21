@@ -1,0 +1,121 @@
+---
+title: "Calendar"
+draft: true 
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.showtext=TRUE)
+```
+
+```{r libraries}
+library(stargazer)
+library(tidyverse)
+library(ggh4x)
+library(ggExtra)
+library(ggtext)
+library(ggthemes)
+library(gganimate)
+library(ggarrow)
+library(arrowheadr)
+library(showtext)
+library(grid)
+library(lubridate)
+library(plotly)
+library(scales)
+library(glue)
+library(knitr)
+library(fontawesome)
+library(RColorBrewer)
+library(patchwork)
+library(crosstalk)
+library(ggiraph)
+library(ggpattern)
+library(zoo) 
+library(cowplot)
+```
+
+```{r theme}
+font_add_google("Fira Sans", "firasans")
+font_add(family = "Font Awesome 6 Brands",
+                   regular = "data/Font Awesome 6 Brands-Regular-400.otf")
+
+# showtext::showtext_auto()
+
+
+blog_theme <-
+   theme_minimal(18, base_family = "Fira Sans") +
+   theme(
+     plot.background = element_rect(fill = "white", color = NA),
+     plot.title.position = "plot",
+     plot.title = element_text(size = 24, margin = margin(b = 1, unit = "line")),
+     legend.position = c(0, 1),
+     legend.direction = "horizontal",
+     legend.justification = c(0, 1),
+     legend.title.align = 1,
+     axis.title.y = element_text(hjust = 0, size = 10),
+     axis.title.x = element_text(hjust = 0, size = 10),
+     panel.grid.major = element_line(color = "#d3d9db"),
+     panel.grid.minor = element_blank()
+   )
+ 
+theme_set(blog_theme)
+```
+
+```{r}
+data <- read_delim("data/KSE_life_2.csv", 
+    delim = ";", escape_double = FALSE, col_types = cols(time = col_time(format = "%H:%M")), 
+    trim_ws = TRUE)
+
+data_long <- gather(data, day, activity, -time) %>% 
+  na.omit() %>%
+  mutate(day = ifelse(day == "9/30/2022", "10/1/2022", day))
+
+data_long$datetime <- as.POSIXct(paste(data_long$day, data_long$time), format="%m/%d/%Y %H:%M:%S", tz="GMT+3")
+
+# data_long <- read.csv("data.csv") %>%
+data_long <- data_long %>%
+   mutate(
+     date = as.Date(datetime),
+     day_of_month = mday(datetime),
+     # time_of_day = case_when(
+     #   hour(datetime) < 12 ~ "Morning",
+     #   hour(datetime) < 18 ~ "Day",
+     #   TRUE ~ "Night"),
+   time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
+   activity = case_when(
+     tolower(activity) %in% c("misc", "mic") ~ "Miscellaneous",
+     activity %in% c("Transport", "Transportation") ~ "Going Somewhere",
+     activity == "Communication" ~ "Social Life",
+     activity == "TM" ~ "Toastmasters",
+     TRUE ~ activity),
+     hour = hour(datetime),
+     #day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
+     month = month(datetime, label = TRUE, abbr = FALSE)
+   )
+
+activity_colors <- c(
+   "Sleep" = "#3B4CC0",  # Deep Blue (Night)
+   "Social Life" = "#87CEEB",  # SkyBlue
+   "Sport" = "#1D8E3A",  # Forest Green (Active)
+   "Work" = "#C0392B",  # Red (Energy)
+   "Reading" = "#F39C12",  # Golden Orange (Focus)
+   "Japanese" = "#FF69B4",  # HotPink
+   "Study" = "#FFD700",  # Gold
+   "Food" = "#99CC99",  # Soft Green
+   "Waste" = "#333333",  # Dark Charcoal
+   "Piano" = "purple",  # HotPink
+   "Planning" = "#FF6347",  # Tomato
+   "Toastmasters" = "#8E44AD",  # Deep Purple (Creative)
+   "Going Somewhere" = "#95A5A6",  # Urban Gray
+   "Miscellaneous" = "#27AE60"  # Fresh Green
+)
+```
+
+```{r}
+library(calendR)
+
+calendR(year = 2023)
+
+```
+
