@@ -1,0 +1,559 @@
+---
+title: "SIPRI Top 100"
+description: "Replicating SIPRI Top 100 arms-producing and military services table with {gt}"
+author: 
+ - name: Vadym Yudenko
+date: 2025-01-22
+draft: false 
+toc: false
+categories:
+  - replicating
+  - gt
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.showtext=TRUE)
+```
+
+```{r libraries}
+library(gt)
+library(gtExtras)
+library(htmltools)
+library(tidyverse)
+library(ggExtra)
+library(ggtext)
+library(ggthemes)
+library(showtext)
+library(janitor)
+library(grid)
+library(lubridate)
+library(reshape2)
+library(plotly)
+library(scales)
+library(ggiraph)
+library(glue)
+library(knitr)
+library(fontawesome)
+library(readxl)
+library(RColorBrewer)
+library(patchwork)
+```
+
+```{r theme}
+font_add_google("Arimo", "Arimo")
+
+#showtext::showtext_auto()
+
+blog_theme <-
+   theme_minimal(18, base_family = "Arimo") +
+   theme(
+     plot.background = element_rect(fill = "white", color = NA),
+     plot.title.position = "plot",
+     plot.title = element_text(size = 24, margin = margin(b = 1, unit = "line")),
+     legend.position = c(0, 1),
+     legend.direction = "horizontal",
+     legend.justification = c(0, 1),
+     legend.title.align = 1,
+     axis.title.y = element_text(hjust = 0, size = 10),
+     axis.title.x = element_text(hjust = 0, size = 10),
+     panel.grid.major = element_line(color = "#d3d9db"),
+     panel.grid.minor = element_blank()
+   )
+ 
+theme_set(blog_theme)
+```
+
+```{r}
+# Specify the file path
+file_path <- "data/SIPRI-Top-100-2002-2023.xlsx"
+
+# Get the sheet names
+sheet_names <- excel_sheets(file_path)
+
+# Function to load and clean a single sheet
+load_and_clean_sheet <- function(sheet_name, file_path) {
+  # Read the sheet, skipping the first 3 rows
+  data <- read_excel(file_path, sheet = sheet_name, skip = 3, .name_repair = make_clean_names)
+  
+  # Keep rows up to row 104 (adjust indices since skip = 3 removes rows)
+  data <- data %>% slice(1:100) # 101 rows because 104 - 3 = 101
+  
+  return(data)
+}
+
+# Apply the function to all sheets
+all_sheets_data <- lapply(sheet_names, load_and_clean_sheet, file_path = file_path)
+
+# Optionally name each data frame in the list for easier identification
+names(all_sheets_data) <- sheet_names
+```
+
+```{r}
+#| eval: false
+test <- data.frame(Country = c("United States", "United Kingdom", "Canada", "Trans-European"))
+
+# Function to generate HTML for flag and country name
+generate_flag_html <- function(country) {
+  # Standardize country names for flag emoji codes
+  country_code <- tolower(gsub(" ", "-", country))
+  
+  if (country == "Trans-European") {
+    # Use FontAwesome for non-standard names
+    html_content <- sprintf('<i class="fas fa-earth-europe"></i> %s', country)
+  } else {
+    # For standard countries, create flag emoji
+    html_content <- sprintf('<span>&#x1F1%s; %s</span>', country_code, country)
+  }
+  
+  return(HTML(html_content))
+}
+
+# Create a new column with flag and country name
+test <- test %>%
+  mutate(Flag_Country = sapply(Country, generate_flag_html))
+
+test %>%
+  gt() %>%
+  fmt_markdown(
+    columns = Flag_Country
+  ) %>%
+  cols_label(
+    Country = "Country",
+    Flag_Country = "Flag + Country"
+  )
+```
+
+
+```{r}
+#| column: screen
+#| eval: false
+
+y2023 <- all_sheets_data$`2023` %>% 
+  mutate(
+    arms_revenues_as_a_percent_of_total_revenues_2023 = as.numeric(arms_revenues_as_a_percent_of_total_revenues_2023),
+    arms_revenues_as_a_percent_of_total_revenues_2023 = ifelse(
+      is.na(arms_revenues_as_a_percent_of_total_revenues_2023), 
+      0, 
+      arms_revenues_as_a_percent_of_total_revenues_2023
+    ),
+    arms_revenues_2022 = as.numeric(arms_revenues_2022),
+    arms_revenues_2023 = as.numeric(arms_revenues_2023),
+    total_revenues_2023 = as.numeric(total_revenues_2023),
+    change_arms_rev = 1-(arms_revenues_2022/arms_revenues_2023),
+    arms_revenues_target = 1,
+    country_code_3 = case_when(
+      country_d == "United States" ~ "USA",
+      country_d == "United Kingdom" ~ "GBR",
+      country_d == "Russia" ~ "RUS",
+      country_d == "China" ~ "CHN",
+      country_d == "Italy" ~ "ITA",
+      country_d == "France" ~ "FRA",
+      country_d == "South Korea" ~ "KOR",
+      country_d == "Germany" ~ "DEU",
+      country_d == "Israel" ~ "ISR",
+      country_d == "Sweden" ~ "SWE",
+      country_d == "Japan" ~ "JPN",
+      country_d == "India" ~ "IND",
+      country_d == "Taiwan" ~ "TWN",
+      country_d == "Türkiye" ~ "TUR",
+      country_d == "Singapore" ~ "SGP",
+      country_d == "Ukraine" ~ "UKR",
+      country_d == "Poland" ~ "POL",
+      country_d == "Norway" ~ "NOR",
+      country_d == "Canada" ~ "CAN",
+      country_d == "Spain" ~ "ESP",
+      country_d == "Czechia" ~ "CZE",
+      country_d == "Trans-European" ~ NA_character_, # Optional if you want to exclude this
+      TRUE ~ NA_character_ # Default to NA if no match
+  ),
+  country_code_2 = case_when(
+      country_d == "United States" ~ "US",
+      country_d == "United Kingdom" ~ "GB",
+      country_d == "Russia" ~ "RU",
+      country_d == "China" ~ "CN",
+      country_d == "Italy" ~ "IT",
+      country_d == "France" ~ "FR",
+      country_d == "South Korea" ~ "KR",
+      country_d == "Germany" ~ "DE",
+      country_d == "Israel" ~ "IL",
+      country_d == "Sweden" ~ "SE",
+      country_d == "Japan" ~ "JP",
+      country_d == "India" ~ "IN",
+      country_d == "Taiwan" ~ "TW",
+      country_d == "Türkiye" ~ "TR",
+      country_d == "Singapore" ~ "SG",
+      country_d == "Ukraine" ~ "UA",
+      country_d == "Poland" ~ "PL",
+      country_d == "Norway" ~ "NO",
+      country_d == "Canada" ~ "CA",
+      country_d == "Spain" ~ "ES",
+      country_d == "Czechia" ~ "CZ",
+      country_d == "Trans-European" ~ NA_character_,
+      TRUE ~ NA_character_
+    )) %>% 
+  select(rank_2023_note_b,	
+         rank_2022,
+         company_c,
+         country_code_2,
+         country_code_3, 
+         arms_revenues_2023,
+         arms_revenues_2022,
+         change_arms_rev,
+         total_revenues_2023,
+         arms_revenues_as_a_percent_of_total_revenues_2023)
+
+gt(y2023) |>
+  fmt_percent(columns = c(change_arms_rev)) |>
+  fmt_currency(columns = c(arms_revenues_2023, arms_revenues_2022, total_revenues_2023)) |>
+  cols_add(arrow = case_when(
+    arms_revenues_2023 > arms_revenues_2022 ~ "arrow-up",
+    arms_revenues_2023 < arms_revenues_2022 ~ "arrow-down",
+    TRUE ~ "minus")) |>
+  fmt_icon(
+    columns = arrow,
+    fill_color = c("arrow-up" = "darkgreen", "arrow-down" = "darkred", "minus" = "black")
+  ) |>
+  fmt_flag(columns = country_code_2) |>
+  fmt_country(columns = country_code_3) |>
+  tab_spanner(
+    label = md('---**Rank**---'),
+    columns = c(rank_2023_note_b, rank_2022)
+  ) |> 
+  tab_spanner(
+    label = md('**Company**'),
+    columns = c(company_c)
+  ) |>
+  tab_spanner(
+    label = md('**Country**'),
+    columns = c(country_code_2, country_code_3)
+  ) |>
+  tab_spanner(
+    label = md('---**Arms revenues ($ m.)**---'),
+    columns = c(arms_revenues_2023, arms_revenues_2022)
+  ) |>
+  tab_spanner(
+    label = md('**Change in arms revenues, 2022–23 (%)**'),
+    columns = c(change_arms_rev, arrow)
+  ) |>
+  tab_spanner(
+    label = md('**Total revenues ($ m.)**'),
+    columns = c(total_revenues_2023)
+  ) |>
+  tab_spanner(
+    label = md('**Arms revenues as a % of total revenues**'),
+    columns = c(arms_revenues_as_a_percent_of_total_revenues_2023)
+  ) |>
+  gt_plt_bar_pct(
+    column = arms_revenues_as_a_percent_of_total_revenues_2023,
+    scaled = FALSE,
+    labels = TRUE,
+    label_cutoff = 0.5,
+    height = 18,
+    fill = "#a0a0a0",
+    background = "#e7e7e7",
+    font_size = "13px"
+  ) |>
+  cols_label(
+    rank_2023_note_b = "2023",
+    rank_2022 = "2022",
+    company_c = "",
+    country_code_2 = '',
+    country_code_3 = "",
+    arms_revenues_2023 = "2023",
+    arms_revenues_2022 = "2022",
+    change_arms_rev = '',
+    arrow = "",
+    total_revenues_2023 = "2023",
+    arms_revenues_as_a_percent_of_total_revenues_2023 = "2023"
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(color = "lightgray")
+    ),
+    locations = cells_body(columns = arms_revenues_2023)
+  ) |>
+  tab_style(
+    style = list(
+      cell_text(weight = "bold",
+                size = 22)
+    ),
+    locations = cells_body(columns = rank_2023_note_b)
+  ) |>
+  opt_stylize(style = 6, color = "gray") |>
+  tab_options(
+    # ihtml.active = TRUE,
+    # ihtml.use_search = TRUE,
+    # ihtml.use_sorting = TRUE,
+    # ihtml.use_resizers = FALSE,
+    # ihtml.use_highlight = TRUE,
+    # ihtml.use_page_size_select = FALSE,
+    # ihtml.page_size_default = 100,
+    table.font.names = "Arimo",
+    table.font.size = px(16),
+    table.border.top.style = "none",
+    table.border.top.width = 2,
+    table.border.bottom.style = 'solid',
+    table.border.bottom.width = 2,
+    heading.align = "left",
+    column_labels.font.size = px(20),
+    column_labels.background.color = 'white',
+    column_labels.border.top.style = "none",
+    column_labels.border.top.color = "black",
+    column_labels.border.top.width = 2,
+    column_labels.border.bottom.style = "none",
+    column_labels.border.bottom.width = 2,
+    column_labels.border.bottom.color = "black"
+  ) |>
+  tab_source_note(source_note = html("<strong>Source:</strong> <a href='https://www.sipri.org/databases/armsindustry' target='_blank'>SIPRI Arms Industry Database</a>, Dec. 2024.")) |>
+  cols_width(
+    rank_2023_note_b ~ px(50),             # Narrow width for rank column
+    rank_2022 ~ px(50),
+    company_c ~ px(300),                   # Wider column for company names
+    country_code_2 ~ px(30),
+    country_code_3 ~ px(175),
+    arms_revenues_2023 ~ px(125),
+    arms_revenues_2022 ~ px(125),
+    change_arms_rev ~ px(80),
+    arrow ~ px(40),
+    total_revenues_2023 ~ px(120),
+    arms_revenues_as_a_percent_of_total_revenues_2023 ~ px(110)
+  )
+```
+
+
+```{r}
+generate_year_table <- function(year, all_sheets_data) {
+  # Extract the dataframe for the given year
+  year_data <- all_sheets_data[[as.character(year)]] %>%
+    rename(
+      rank_current_year = paste0("rank_", year, "_note_b"),
+      rank_prev_year = paste0("rank_", year - 1),
+      company = "company_c",
+      country = "country_d", # Or "country_d" if required
+      arms_revenue_current_year = paste0("arms_revenues_", year),
+      arms_revenue_prev_year = paste0("arms_revenues_", year - 1),
+      total_revenues_current_year = paste0("total_revenues_", year),
+      arms_revenues_as_a_percent_of_total_revenues_current_year = paste0(
+        "arms_revenues_as_a_percent_of_total_revenues_", year
+      )
+    )
+  
+  # Perform operations on the dataframe
+  year_data <- year_data %>%
+    mutate(
+      arms_revenues_as_a_percent_of_total_revenues_current_year = as.numeric(arms_revenues_as_a_percent_of_total_revenues_current_year),
+      arms_revenues_as_a_percent_of_total_revenues_current_year = ifelse(
+        is.na(arms_revenues_as_a_percent_of_total_revenues_current_year), 
+        0, 
+        arms_revenues_as_a_percent_of_total_revenues_current_year
+      ),
+      arms_revenue_prev_year = as.numeric(arms_revenue_prev_year),
+      arms_revenue_current_year = as.numeric(arms_revenue_current_year),
+      total_revenues_current_year = as.numeric(total_revenues_current_year),
+      change_arms_rev = 1 - (arms_revenue_prev_year / arms_revenue_current_year),
+      country_code_3 = case_when(
+      country == "United States" ~ "USA",
+      country == "United Kingdom" ~ "GBR",
+      country == "Russia" ~ "RUS",
+      country == "China" ~ "CHN",
+      country == "Italy" ~ "ITA",
+      country == "France" ~ "FRA",
+      country == "South Korea" ~ "KOR",
+      country == "Germany" ~ "DEU",
+      country == "Israel" ~ "ISR",
+      country == "Sweden" ~ "SWE",
+      country == "Japan" ~ "JPN",
+      country == "India" ~ "IND",
+      country == "Taiwan" ~ "TWN",
+      country == "Türkiye" ~ "TUR",
+      country == "Singapore" ~ "SGP",
+      country == "Ukraine" ~ "UKR",
+      country == "Poland" ~ "POL",
+      country == "Norway" ~ "NOR",
+      country == "Canada" ~ "CAN",
+      country == "Spain" ~ "ESP",
+      country == "Czechia" ~ "CZE",
+      country == "Trans-European" ~ NA_character_, # Optional if you want to exclude this
+      TRUE ~ NA_character_ # Default to NA if no match
+  ),
+  country_code_2 = case_when(
+      country == "United States" ~ "US",
+      country == "United Kingdom" ~ "GB",
+      country == "Russia" ~ "RU",
+      country == "China" ~ "CN",
+      country == "Italy" ~ "IT",
+      country == "France" ~ "FR",
+      country == "South Korea" ~ "KR",
+      country == "Germany" ~ "DE",
+      country == "Israel" ~ "IL",
+      country == "Sweden" ~ "SE",
+      country == "Japan" ~ "JP",
+      country == "India" ~ "IN",
+      country == "Taiwan" ~ "TW",
+      country == "Türkiye" ~ "TR",
+      country == "Singapore" ~ "SG",
+      country == "Ukraine" ~ "UA",
+      country == "Poland" ~ "PL",
+      country == "Norway" ~ "NO",
+      country == "Canada" ~ "CA",
+      country == "Spain" ~ "ES",
+      country == "Czechia" ~ "CZ",
+      country == "Trans-European" ~ NA_character_,
+      TRUE ~ NA_character_
+    )
+    ) %>%
+    select(
+      rank_current_year,
+      rank_prev_year,
+      company,
+      country_code_3,
+      country_code_2,
+      arms_revenue_current_year,
+      arms_revenue_prev_year,
+      change_arms_rev,
+      total_revenues_current_year,
+      arms_revenues_as_a_percent_of_total_revenues_current_year
+    )
+  
+  # Generate the table using gt
+  year_table <- gt(year_data) |>
+    fmt_percent(columns = c(change_arms_rev)) |>
+    fmt_currency(columns = c(
+      arms_revenue_current_year, 
+      arms_revenue_prev_year, 
+      total_revenues_current_year
+    )) |>
+    fmt_flag(columns = country_code_2) |>
+    fmt_country(columns = country_code_3) |>
+    cols_add(arrow = case_when(
+      arms_revenue_current_year > arms_revenue_prev_year ~ "arrow-up",
+      arms_revenue_current_year < arms_revenue_prev_year ~ "arrow-down",
+      TRUE ~ "minus")) |>
+    fmt_icon(
+      columns = arrow,
+      fill_color = c("arrow-up" = "darkgreen", "arrow-down" = "darkred", "minus" = "black")
+    ) |>
+    tab_spanner(
+      label = md('---**Rank**---'),
+      columns = c(rank_current_year, rank_prev_year)
+    ) |> 
+    tab_spanner(
+      label = md('**Company**'),
+      columns = c(company)
+    ) |>
+    tab_spanner(
+      label = md('**Country**'),
+      columns = c(country_code_2, country_code_3)
+    ) |>
+    tab_spanner(
+      label = md('---**Arms revenues ($ m.)**---'),
+      columns = c(arms_revenue_current_year, arms_revenue_prev_year)
+    ) |>
+    tab_spanner(
+      label = md(paste0('**Change in arms revenues, ', year - 1, '–', year, ' (%)**')),
+      columns = c(change_arms_rev, arrow)
+    ) |>
+    tab_spanner(
+      label = md('**Total revenues ($ m.)**'),
+      columns = c(total_revenues_current_year)
+    ) |>
+    tab_spanner(
+      label = md('**Arms revenues as a % of total revenues**'),
+      columns = c(arms_revenues_as_a_percent_of_total_revenues_current_year)
+    ) |>
+    sub_missing(
+      columns = everything(),
+      rows = everything(),
+      missing_text = "..."
+  ) |>
+    gt_plt_bar_pct(
+      column = arms_revenues_as_a_percent_of_total_revenues_current_year,
+      scaled = FALSE,
+      labels = TRUE,
+      label_cutoff = 0.5,
+      height = 18,
+      fill = "#a0a0a0",
+      background = "#e7e7e7",
+      font_size = "13px"
+    ) |>
+    cols_label(
+      rank_current_year = as.character(year),
+      rank_prev_year = as.character(year - 1),
+      company = "",
+      country_code_2 = "",
+      country_code_3 = "",
+      arms_revenue_current_year = as.character(year),
+      arms_revenue_prev_year = as.character(year - 1),
+      change_arms_rev = '',
+      arrow = "",
+      total_revenues_current_year = as.character(year),
+      arms_revenues_as_a_percent_of_total_revenues_current_year = as.character(year)
+    ) |>
+    opt_stylize(style = 6, color = "gray")
+  
+  
+  year_table_style <- year_table |>
+    tab_options(
+    # ihtml.active = TRUE,
+    # ihtml.use_search = TRUE,
+    # ihtml.use_sorting = TRUE,
+    # ihtml.use_resizers = FALSE,
+    # ihtml.use_highlight = TRUE,
+    # ihtml.use_page_size_select = FALSE,
+    # ihtml.page_size_default = 100,
+    table.font.names = "Arimo",
+    table.font.size = px(16),
+    table.border.top.style = "none",
+    table.border.top.width = 2,
+    table.border.bottom.style = 'solid',
+    table.border.bottom.width = 2,
+    heading.align = "left",
+    column_labels.font.size = px(20),
+    column_labels.background.color = 'white',
+    column_labels.border.top.style = "none",
+    column_labels.border.top.color = "black",
+    column_labels.border.top.width = 2,
+    column_labels.border.bottom.style = "none",
+    column_labels.border.bottom.width = 2,
+    column_labels.border.bottom.color = "black"
+  ) |>
+  tab_source_note(source_note = html("<strong>Source:</strong> <a href='https://www.sipri.org/databases/armsindustry' target='_blank'>SIPRI Arms Industry Database</a>, Dec. 2024.")) |>
+  cols_width(
+    rank_current_year ~ px(50),             # Narrow width for rank column
+    rank_prev_year ~ px(50),
+    company ~ px(300),                   # Wider column for company names
+    country_code_2 ~ px(30),
+    country_code_3 ~ px(175),
+    arms_revenue_current_year ~ px(125),
+    arms_revenue_prev_year ~ px(125),
+    change_arms_rev ~ px(80),
+    arrow ~ px(40),
+    total_revenues_current_year ~ px(120),
+    arms_revenues_as_a_percent_of_total_revenues_current_year ~ px(110)
+  )
+  
+  return(year_table_style)
+}
+
+```
+
+
+```{r}
+#| column: screen
+table_2023 <- generate_year_table(2023, all_sheets_data)
+table_2023
+```
+
+To do:
+- [] allow sorting by arms_revenue_current_year
+- [] add search
+- [] add year choice
+- [] add region filter
+- [] fix NA instances
+- [] add country info manually with fontawesome
+
+

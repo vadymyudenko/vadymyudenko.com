@@ -277,11 +277,11 @@ plot_tern +
 
 Hi! Yes, that student is me! From October 2022 to January 2024, I have been [time tracking my daily life](https://vadymyudenko.com/posts/night-guy-morning-guy/), and this plot is an attempt to measure study-life balance of my student times.
 
-You're looking at a [ternary plot](https://en.wikipedia.org/wiki/Ternary_plot). They are used to represent the proportion of 3 variables as positions in a triangle. Here, I use it to show the study-life balance. Points toward the [<b>BOTTOM LEFT</b>]{style="color:darkred;"} of the triangle represent days with more [<b>study</b>]{style="color:darkred;"}[^1], those few toward the [<b>BOTTOM RIGHT</b>]{style="color:darkblue;"} have more [<b>sleep</b>]{style="color:darkblue;"}, and those toward the [<b>TOP</b>]{style="color:darkgreen;"} is [<b>life</b>]{style="color:darkgreen;"}—socializing, eating, going to the gym, shopping, watching cat memes and doomscrolling, and the list continues, capturing all the little moments that make up daily life.
+You're looking at a [ternary plot](https://en.wikipedia.org/wiki/Ternary_plot). They are used to represent the proportion of 3 variables as positions in a triangle. Here, I use it to show the study-life balance. Points toward the [<b>BOTTOM LEFT</b>]{style="color:darkred;"} of the triangle represent days with more [<b>study</b>]{style="color:darkred;"}[^1], those few toward the [<b>BOTTOM RIGHT</b>]{style="color:darkblue;"} have more [<b>sleep</b>]{style="color:darkblue;"}, and those toward the [<b>TOP</b>]{style="color:darkgreen;"} is [<b>life</b>]{style="color:darkgreen;"}—socializing, eating, going to the gym, shopping, watching cat memes and doomscrolling, all the other small moments that make up daily life.
 
 [^1]: This category is called Study for simplicity. It comprises of multiple activities: actual **Study**, **Work**, **Reading** and **Planning**.
 
-Majority of the days are centered around the barycenter (⬤) of the triangle, meaning that most days were mostly balanced. The cloud of point near the top right indicate days when I had little [<b>study</b>]{style="color:darkred;"} and mostly relaxed or socialized. Meanwhile, points to the LEFT are days when I [<b>studied</b>]{style="color:darkred;"} or socialized often at the expense of [<b>sleep</b>]{style="color:darkblue;"}
+Majority of the days are centered around the barycenter (⬤) of the triangle, meaning that most days were mostly balanced. The cloud of point near the TOP RIGHT indicate days when I relaxed or socialized more and [<b>studied</b>]{style="color:darkred;"} less.  Meanwhile, points to the LEFT are days when I [<b>studied</b>]{style="color:darkred;"} or socialized, often at the expense of [<b>sleep</b>]{style="color:darkblue;"}
 
 ```{r}
 #| column: margin

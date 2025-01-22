@@ -11,6 +11,7 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.showte
 ```{r libraries}
 library(stargazer)
 library(tidyverse)
+library(ggarrow)
 library(readr)
 library(patchwork)
 library(ggtext)
@@ -69,15 +70,14 @@ data_long <- data_long %>%
      date = as.Date(datetime),
      day_of_month = mday(datetime),
    time_column = if_else(substr(as.character(datetime), 12, 16) == "", "00:00", substr(as.character(datetime), 12, 16)),
-    activity = case_when(
+   activity = case_when(
      tolower(activity) %in% c("misc", "mic") ~ "Miscellaneous",
      activity %in% c("Transport", "Transportation") ~ "Going Somewhere",
      activity == "Communication" ~ "Social Life",
      activity == "TM" ~ "Toastmasters",
      TRUE ~ activity),
-     hour = hour(datetime),
-     #day = wday(datetime, label = TRUE, abbr = TRUE, week_start = 1),
-     month = month(datetime, label = TRUE, abbr = FALSE)
+   month = month(datetime, label = TRUE, abbr = FALSE),
+   tooltip = paste0("<b>", activity, "</b><br>", format(date, "%B %d"))
    )
 
 activity_colors <- c(
@@ -99,198 +99,168 @@ activity_colors <- c(
 ```
 
 ```{r}
+#| fig-width: 20
+#| fig-height: 80
+#| fig-align: center
+#| column: screen
+
 coord_y_datetime <- function(xlim = NULL, ylim = NULL, expand = FALSE) {
-  # thanks https://stackoverflow.com/a/74436045
-  if (!is.null(ylim)) {
-    ylim <- lubridate::as_datetime(ylim)
-  }
-  ggplot2::coord_cartesian(xlim = xlim,
-                           ylim = ylim,
-                           expand = FALSE,
-                           clip = "on")
-}
+   # thanks https://stackoverflow.com/a/74436045
+   if (!is.null(ylim)) {
+      ylim <- lubridate::as_datetime(ylim)
+      }
+   ggplot2::coord_cartesian(xlim = xlim,
+                            ylim = ylim,
+                            expand = expand, 
+                            clip = "off")
+   }
+  
 
-data_long %>%
-   mutate(date = as.Date(datetime)) %>%
-   ggplot(aes(time_column, datetime, fill = activity)) +  # Flip x and y
-   geom_bin2d(
-     bins = c(72, 488)
-     ) +
-   scale_fill_manual(values = activity_colors) +
-   coord_y_datetime(ylim = c(max(data_long$datetime), min(data_long$datetime) - as.difftime(4, units = "days"))) +
-   scale_x_discrete() +
-   geom_text(
-     data = data_long %>%
-       mutate(label = ifelse(grepl(":00$", time_column), time_column, "")),
-     aes(label = label,
-         y = min(data_long$datetime) - as.difftime(2, units = "days")),
-     size = 5,
-     family = "Fira Sans",
-     vjust = 0.5,
-     hjust = -0.05) +
-  geom_text(
-    data = data_long %>%
-      mutate(date = as.Date(datetime)) %>%
-      distinct(date, .keep_all = TRUE) %>%
-      slice(2:n()),  # Remove first row
-    aes(x = 0, y = datetime, label = day_of_month),
-    inherit.aes = FALSE,  # Avoid inheriting global aesthetic
-    size = 3,
-    vjust = 0.5,
-    family = "Fira Sans",
-    color = "black") +
+p_long <- data_long %>%
+    ggplot(aes(time_column, datetime, fill = activity)) +
+    geom_bin2d(
+      bins = c(72, 488),
+      aes(text = tooltip)) +
+    scale_fill_manual(values = activity_colors) +
+    coord_y_datetime(ylim = c(max(data_long$datetime) + as.difftime(10, units = "days"), min(data_long$datetime) - as.difftime(4, units = "days"))) +
+    scale_x_discrete() +
+    geom_text(
+      data = data_long %>%
+        mutate(label = ifelse(grepl(":00$", time_column), time_column, "")),
+      aes(label = label,
+          y = min(data_long$datetime) - as.difftime(2, units = "days")),
+      size = 3,
+      family = "Fira Sans",
+      vjust = 'center',
+      hjust = 'center') +
+    
+    geom_text(
+      data = data_long %>%
+        filter(day(datetime) == 17 & time_column == "12:00"),
+      aes(x = -3, y = datetime, label = month),
+      inherit.aes = FALSE,
+      size = 3,
+      family = "Fira Sans",
+      vjust = -0.5) +
+    
+    geom_text(
+      data = data_long %>%
+        filter(day(datetime) == 17 & time_column == "12:00") %>% 
+        mutate(label = ""),
+      aes(x = -5.5, y = datetime, label = label),
+      inherit.aes = FALSE,
+      size = 3,
+      family = "Fira Sans",
+      vjust = -0.5) +
+    
+    geom_text(
+      data = data_long %>%
+        mutate(date = as.Date(datetime)) %>%
+        distinct(date, .keep_all = TRUE) %>%
+        slice(2:n()),  # Remove first row
+      aes(x = 0, y = datetime, label = day_of_month),
+      inherit.aes = FALSE,  # Avoid inheriting global aesthetic
+      size = 1.5,
+      vjust = 0.5,
+      family = "Fira Sans",
+      color = "black") +
+    #theme_minimal() +
+    labs(
+      x = NULL,
+      y = NULL,
+      fill = NULL) +
+    guides(fill = guide_legend(
+      nrow = 2,
+      theme = theme(
+        legend.byrow = TRUE,
+        legend.text = element_text(size = 15, vjust = 0.5)),
+      position = "top")) +
+    theme(
+      plot.margin =  unit(c(0, 0, 0, 0), "cm"),  # Increase top margin
+      text = element_text('firasans'),
+      panel.background = element_rect("white"),
+      legend.position = "top",
+      #aspect.ratio = 177 / 72,
+      plot.title = element_blank(),
+      plot.subtitle = element_blank(),
+      panel.grid.major = element_blank(),
+      plot.caption = element_blank(),
+      panel.grid = element_blank(),
+      axis.title = element_blank(),
+      axis.text = element_blank(),
+      axis.ticks = element_blank()
+    )
 
-   geom_text(
-     data = data_long %>%
-       filter(day(datetime) == 17 & time_column == "12:00"),
-     aes(x = -6, y = datetime, label = month),
-     inherit.aes = FALSE,
-     size = 6,
-     family = "Fira Sans",
-     vjust = -0.5,
-     hjust = 0) +
-  geom_vline(xintercept = "06:00", color = "black", size = 0.25) +
-  geom_vline(xintercept = "12:00", color = "black", size = 0.25) +
-  geom_vline(xintercept = "18:00", color = "black", size = 0.25) +
-   theme_minimal() +
-   labs(
-     title = "Timeline",
-     subtitle = glue::glue("Time tracking allows at a cost of a little bit of patience and discipline to analyse and reflect on your daily life as it happens. <br> From October 1st 2022 to January 31st 2024 I have been time tracking my daily life throughout my <span style='color:#FFD700;'><b>study</b></span>. <br> My usual day would start with a <span style='color:#99CC99;'><b>breakfast</b></span> then <span style='color:#95A5A6;'><b>taking a metro</b></span> to university, where for the rest of the day I would <span style='color:#FFD700;'><b>study</b></span> and <span style='color:#77CEEB'><b>socialize</b></span> with other students. <br> In between the breaks or during my <span style='color:#95A5A6;'><b>commute</b></span> I would track what I have been doing for the past couple of hours. <br> And before <span style='color:#3B4CC0;'><b>going to bed</b></span> I would review how my day went—a different kind of self-reflection."),
-     caption = glue::glue("Data and visual: <span style='font-family:\"Font Awesome 6 Brands\";'>&#xf09b;</span>
-  <span style='color:black'>vadymyudenko</span>"),
-  x = NULL,
-  y = NULL,
-  fill = NULL) +
-  guides(fill = guide_legend(
-    nrow = 2,
-    theme = theme(
-      legend.byrow = TRUE,
-      legend.text = element_text(size = 15, vjust = 0.5)),
-    position = "top")) +
-  theme(
-     plot.margin =  unit(c(3, 1, 1, 1), "cm"),  # Increase top margin
-     text = element_text('firasans'),
-     #aspect.ratio = 177 / 72,
-     plot.title = element_markdown(size = 40, hjust = 0.5, vjust = 0.5),
-     plot.title.position = "plot",
-     plot.subtitle = element_markdown(size = 20, hjust = 0.5, vjust = 0.5),
-     plot.caption.position = "plot",
-     plot.caption = element_markdown(size = 15, hjust = 0.5, vjust = 0.5),
-     panel.grid = element_blank(),
-     axis.title = element_blank(),
-     axis.text = element_blank(),
-     axis.ticks = element_blank()
-   ) +
-  annotate(
-     "text",
-     y = as.POSIXct("2022-12-25"),  # Swapped x -> y
-     x = -7.5,  # Swapped y -> x
-     label = "2022",
-     hjust = 0,
-     vjust = 0.5,
-     color = "black",
-     size = 5,
-     family = "Fira Sans"
-   ) +
-   # Text annotation "2023"
-   annotate(
-     "text",
-     y = as.POSIXct("2023-01-08"),  # Swapped x -> y
-     x = -7.5,  # Swapped y -> x
-     label = "2023",
-     hjust = 0,
-     vjust = 0.5,
-     color = "black",
-     size = 5,
-     family = "Fira Sans"
-   ) +
-   annotate(
-     "segment",
-     y = as.POSIXct("2023-01-10"),  # Swapped x -> y
-     yend = as.POSIXct("2023-01-30"),  # Swapped x -> y
-     x = -6.7,  # Swapped y -> x
-     xend = -6.7,  # Swapped y -> x
-     arrow = arrow(length = unit(0.5, "cm"), ends = "last", type = "open"),
-     color = "black",
-     size = 0.75
-   ) +
-   annotate(
-     "segment",
-     y = as.POSIXct("2022-12-23"),  # Swapped x -> y
-     yend = as.POSIXct("2022-12-03"),  # Swapped x -> y
-     x = -6.7,  # Swapped y -> x
-     xend = -6.7,  # Swapped y -> x
-     arrow = arrow(length = unit(0.5, "cm"), ends = "last", type = "open"),
-     color = "black",
-     size = 0.75
-   ) +
-   # Short vertical line
-   annotate(
-     "segment",
-     y = as.POSIXct("2023-01-01"),  # Swapped x -> y
-     yend = as.POSIXct("2023-01-01"),  # Swapped x -> y
-     x = -1,  # Swapped y -> x
-     xend = -8,  # Swapped y -> x
-     color = "black",
-     size = 0.5,
-     vjust = 1
-   ) +
-     annotate(
-     "text",
-     y = as.POSIXct("2023-12-25"),  # Swapped x -> y
-     x = -7.5,  # Swapped y -> x
-     label = "2023",
-     hjust = 0,
-     vjust = 0.5,
-     color = "black",
-     size = 5,
-     family = "Fira Sans"
-   ) +
-   # Text annotation "2023"
-   annotate(
-     "text",
-     y = as.POSIXct("2024-01-08"),  # Swapped x -> y
-     x = -7.5,  # Swapped y -> x
-     label = "2024",
-     hjust = 0,
-     vjust = 0.5,
-     color = "black",
-     size = 5,
-     family = "Fira Sans"
-   ) +
-   annotate(
-     "segment",
-     y = as.POSIXct("2024-01-10"),  # Swapped x -> y
-     yend = as.POSIXct("2024-01-30"),  # Swapped x -> y
-     x = -6.7,  # Swapped y -> x
-     xend = -6.7,  # Swapped y -> x
-     arrow = arrow(length = unit(0.5, "cm"), ends = "last", type = "open"),
-     color = "black",
-     size = 0.75
-   ) +
-   annotate(
-     "segment",
-     y = as.POSIXct("2023-12-23"),  # Swapped x -> y
-     yend = as.POSIXct("2023-12-03"),  # Swapped x -> y
-     x = -6.75,  # Swapped y -> x
-     xend = -6.75,  # Swapped y -> x
-     arrow = arrow(length = unit(0.5, "cm"), ends = "last", type = "open"),
-     color = "black",
-     size = 0.75
-   ) +
-   # Short vertical line
-   annotate(
-     "segment",
-     y = as.POSIXct("2024-01-01"),  # Swapped x -> y
-     yend = as.POSIXct("2024-01-01"),  # Swapped x -> y
-     x = -1,  # Swapped y -> x
-     xend = -8,  # Swapped y -> x
-     color = "black",
-     size = 0.5,
-     vjust = 1
-   )  -> plot
 
-#ggsave("plot.png", plot, width = 20, height = 5, dpi = 2000)
+  
+viz <- ggplotly(p_long, tooltip = "text") %>%
+    layout(
+      xaxis = list(fixedrange = TRUE),
+      yaxis = list(fixedrange = TRUE),
+      
+      margin = list(l = 10, r = 10, t = 200, b = 10),
+      legend = list(
+        orientation = "h",  # Horizontal legend
+        y = 1,           # Position above the plot
+        x = 0.5,
+        xanchor = "center", # Center the legend horizontally
+        yanchor = "bottom", # Align legend bottom
+        font = list(size = 14),  # Adjust font size
+        itemwidth = 60       # Control item spacing
+      ),
+      annotations = list(
+        list(
+          text = "<b>Timeline</b>",
+          x = 0.5,  # Center the title
+          y = 1.075,  # Adjust the y-position to place it above the plot
+          xref = "paper",
+          yref = "paper",
+          showarrow = FALSE,
+          font = list(size = 20, family = "Fira Sans")
+        ),
+        list(
+          text = glue::glue(
+            "<span style='font-size: 16px; line-height: 0.75;'>{subtitle}</span>",
+            subtitle = glue::glue(
+              "Time tracking allows at a cost of a little bit of patience and discipline to analyse and reflect on your daily life as it happens. <br> From October 1st 2022 to January 31st 2024 I have been time tracking my daily life throughout my <span style='color:#FFD700;'><b>study</b></span>. <br> My usual day would start with a <span style='color:#99CC99;'><b>breakfast</b></span> then <span style='color:#95A5A6;'><b>taking a metro</b></span> to university, where for the rest of the day I would <span style='color:#FFD700;'><b>study</b></span> and <span style='color:#77CEEB'><b>socialize</b></span> with other students. <br> In between the breaks or during my <span style='color:#95A5A6;'><b>commute</b></span> I would track what I have been doing for the past couple of hours. <br> And before <span style='color:#3B4CC0;'><b>going to bed</b></span> I would review how my day went—a different kind of self-reflection."
+            )
+          ),
+          x = 0.5,  # Center the subtitle
+          y = 1.065,  # Adjust the y-position to place it slightly below the title
+          xref = "paper",
+          yref = "paper",
+          showarrow = FALSE,
+          align = "center",
+          font = list(size = 12, family = "Fira Sans")
+        ),
+        list(x = -2.5, y = as.numeric(as.POSIXct("2022-12-25")), text = "2022", showarrow = FALSE, font = list(size = 12, family = "Fira Sans")),
+        list(x = -2.5, y = as.numeric(as.POSIXct("2023-01-08")), text = "2023", showarrow = FALSE, font = list(size = 12, family = "Fira Sans")),
+        list(x = -2.5, y = as.numeric(as.POSIXct("2023-12-25")), text = "2023", showarrow = FALSE, font = list(size = 12, family = "Fira Sans")),
+        list(x = -2.5, y = as.numeric(as.POSIXct("2024-01-08")), text = "2024", showarrow = FALSE, font = list(size = 12, family = "Fira Sans")),
+        list(
+          x = 36,
+          y = as.numeric(as.POSIXct("2024-02-05")),
+          text = glue::glue(
+            "Data and visual: <a href='https://www.linkedin.com/in/vadym-yudenko' style='color:navy; text-decoration:none;'><b>Vadym Yudenko (Linkedin)</b></a>"
+          ),
+          showarrow = FALSE,
+          font = list(size = 15, color = "black", family = "Fira Sans")
+        )),
+      font = list(family = "Fira Sans"),
+      hoverlabel = list(font = list(family = "Fira Sans"), align = "left")
+    ) %>%
+    plotly::config(
+      displayModeBar = TRUE,
+      displaylogo = FALSE,
+      toImageButtonOptions = list(format= 'png',
+                                  filename= 'timeline',
+                                  height= NULL,
+                                  width= NULL),
+      modeBarButtonsToRemove = c("zoom2d", "pan2d", "zoomIn2d", "zoomOut2d",
+                                 "autoScale2d", "toggleSpikelines", "hoverClosestCartesian",
+                                 "hoverCompareCartesian", "select2d", "lasso2d"),
+      staticPlot = TRUE)
+
 ```
 
 ::: column-screen
@@ -300,6 +270,8 @@ knitr::asis_output('![](plot.png)')
 ```
 :::
 
-This is a work in progress visualization, it is grainy and lacks some details. 
+This is a work in progress visualization, it is grainy and lacks some details.
+
+
 
 

@@ -1,10 +1,8 @@
 {
-  "hash": "89b7df196b8d0ec297f8c6852b4eb72f",
+  "hash": "7fb684d86c2e3c8a0145ffa0387bfee0",
   "result": {
-    "markdown": "---\ntitle: \"Watch me get masters degree\"\ndescription: \"Visualizing time-tracking data from 2022 to 2024\"\ntoc: false\n---\n\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n\n::: column-screen\n\n::: {.cell layout-align=\"center\"}\n::: {.cell-output-display}\n![](plot.png)\n:::\n:::\n\n:::\n\nThis is a work in progress visualization, it is grainy and lacks some details. \n\n\n",
-    "supporting": [
-      "index_files"
-    ],
+    "markdown": "---\ntitle: \"Watch me get masters degree\"\ndescription: \"Visualizing time-tracking data from 2022 to 2024\"\ntoc: false\n---\n\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell .column-screen layout-align=\"center\"}\n\n:::\n\n\n::: column-screen\n\n::: {.cell layout-align=\"center\"}\n::: {.cell-output-display}\n![](plot.png)\n:::\n:::\n\n:::\n\nThis is a work in progress visualization, it is grainy and lacks some details.\n\n\n\n\n",
+    "supporting": [],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],
