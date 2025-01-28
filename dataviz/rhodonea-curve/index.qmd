@@ -1,0 +1,175 @@
+---
+title: "Rhodonea curve"
+toc: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.showtext=TRUE)
+```
+
+```{r libraries}
+library(tidyverse)
+library(gganimate)
+library(readr)
+library(patchwork)
+library(ggtext)
+library(showtext)
+library(grid)
+library(transformr)
+library(lubridate)
+library(plotly)
+library(scales)
+library(ggiraph)
+library(glue)
+library(knitr)
+library(latex2exp)
+```
+
+```{r theme}
+font_add_google("Fira Sans", "firasans")
+
+font_add(family = "Font Awesome 6 Brands",
+                   regular = "data/Font Awesome 6 Brands-Regular-400.otf")
+
+# showtext::showtext_auto()
+# showtext::showtext_opts(dpi = 1000)
+
+blog_theme <-
+   theme_minimal(18, base_family = "Fira Sans") +
+   theme(
+     plot.background = element_rect(fill = "white", color = NA),
+     plot.title.position = "plot",
+     plot.title = element_text(size = 24, margin = margin(b = 1, unit = "line")),
+     legend.position = c(0, 1),
+     legend.direction = "horizontal",
+     legend.justification = c(0, 1),
+     legend.title.align = 1,
+     axis.title.y = element_text(hjust = 0, size = 10),
+     axis.title.x = element_text(hjust = 0, size = 10),
+     panel.grid.major = element_line(color = "#d3d9db"),
+     panel.grid.minor = element_blank()
+   )
+ 
+theme_set(blog_theme)
+```
+
+```{r}
+#| code-fold: true
+data <- expand.grid(
+  n = seq(1, 7, by = 1), 
+  d = seq(1, 7, by = 1)) %>%
+  
+  mutate(
+    k = n / d
+  ) %>%
+  rowwise() %>%
+  mutate(
+    theta = list(seq(from = 0, to = 2 * pi * max(n, d), length.out = 360))
+  ) %>%
+  unnest(cols = c(theta)) %>%
+  mutate(
+    index = rep(1:360, times = n() / 360), # Add a smooth index for animation
+    x = (cos(k * theta)) * cos(theta),
+    y = (cos(k * theta)) * sin(theta)
+  )
+
+```
+
+```{r}
+#| fig-width: 10
+#| fig-height: 10
+#| fig-dpi: 500
+#| fig-align: center
+#| code-fold: true
+
+p <- data %>% 
+  filter(n != d) %>% 
+  ggplot(., aes(x = x, y = y, color = factor(n))) + # Use factor(n) for consistent colors
+  geom_path(size = 1) +
+  coord_equal() +
+  labs(
+    title = "Rhodonea Curve",
+    x = NULL,
+    y = NULL,
+    color = NULL,
+    subtitle = glue::glue("k = n/d | x = cos(kθ) × cos(θ) | y = cos(kθ) × sin(θ)"),
+    caption = glue::glue("Visual: <span style='font-family:\"Font Awesome 6 Brands\";'>&#xf09b;</span>
+  <span style='color:black'>vadymyudenko</span>")
+  ) + 
+  facet_grid(n ~ d, labeller = labeller(.cols = label_value, .rows = label_value), switch = "y") + # Facet by combinations of n and d, with n-labels on the left
+  theme(
+    text = element_text(family = "Fira Sans"), 
+    axis.text = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.background = element_rect("white"),
+    plot.title = element_text(size = 24, hjust = 0.5),
+    plot.subtitle = element_markdown(size = 16, hjust = 0.5),
+    plot.caption = element_markdown(hjust = 0.5),
+    strip.text.y.left = element_text(angle = 0, size = 18, face = "bold"), # Larger and bold n-labels
+    strip.text.x = element_text(size = 18, face = "bold"),
+    strip.placement = "outside",                # Move n-labels to the left
+    legend.position = "none"                    # Remove the legend
+  ) +
+  scale_color_manual(
+    values = c("1" = "red", "2" = "orange", "3" = "yellow", "4" = "green", "5" = "blue", "6" = "#4b369d", "7" = "#70369d"))
+  
+grid::grid.draw(ggplotGrob(p)) # Draw the base plot
+
+# Add annotation to the top-left corner of the overall plot
+grid::grid.text(
+  label = "n | d", 
+  x = unit(0.06, "npc"), # Near the left edge
+  y = unit(0.895, "npc"), # Near the top edge
+  just = c("left", "top"), # Align to top-left
+  gp = gpar(fontsize = 18, fontface = "bold")
+)
+```
+
+Have recently came across a beautiful simulation of [roses](https://en.wikipedia.org/wiki/Rose_(mathematics))! And wanted to replicate it in ggplot. Luckily there was already a package developed by Emil Hvitfeldt, whose [solution](https://github.com/EmilHvitfeldt/ggshapes/blob/master/R/rose.R) I have adapted to my plot.
+
+## Animated version
+
+```{r}
+#| eval: false
+animated_plot <- data %>%
+  filter(n != d) %>%
+  ggplot(aes(x = x, y = y, color = factor(n))) + # Group by index for smooth animation
+  geom_path(size = 1) +
+  geom_point(size = 1.25) +
+  coord_equal() +
+  labs(
+    title = "Rhodonea Curve",
+    x = NULL,
+    y = NULL,
+    color = NULL,
+    subtitle = glue::glue("k = n/d | x = cos(kθ) × cos(θ) | y = cos(kθ) × sin(θ)"),
+    caption = glue::glue("Visual: <span style='font-family:\"Font Awesome 6 Brands\";'>&#xf09b;</span>
+  <span style='color:black'>vadymyudenko</span>")
+  ) +
+  facet_grid(n ~ d, labeller = labeller(.cols = label_value, .rows = label_value), switch = "y") +
+  theme_minimal() +
+  theme(
+    text = element_text(family = "Fira Sans"), 
+    axis.text = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.background = element_rect("white"),
+    plot.title = element_text(size = 24, hjust = 0.5),
+    plot.subtitle = element_blank(),
+    plot.caption = element_blank(),
+    strip.text.y.left = element_text(angle = 0, size = 18, face = "bold"),
+    strip.text.x = element_text(size = 18, face = "bold"),
+    strip.placement = "outside",
+    legend.position = "none"
+  ) +
+  scale_color_manual(
+    values = c("1" = "red", "2" = "orange", "3" = "yellow", "4" = "green", "5" = "blue", "6" = "#4b369d", "7" = "#70369d")
+  ) +
+  transition_reveal(index)
+
+# Save or render animation
+anim <- animate(animated_plot, start_pause = 15, end_pause = 15, width = 800, height = 800, fps = 30, duration = 10, renderer = gifski_renderer("rhodonea_animation.gif"))
+```
+
+![](rhodonea_animation.gif){fig-align="center"}

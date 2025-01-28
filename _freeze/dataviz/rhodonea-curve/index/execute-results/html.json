@@ -1,0 +1,16 @@
+{
+  "hash": "3f24ba1f194716a91f366781026c0e7c",
+  "result": {
+    "markdown": "---\ntitle: \"Rhodonea curve\"\ntoc: false\n---\n\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell layout-align=\"center\"}\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-2-1.png){fig-align='center' width=5000}\n:::\n:::\n\n\nHave recently came across a beautiful simulation of [roses](https://en.wikipedia.org/wiki/Rose_(mathematics))! And wanted to replicate it in ggplot. Luckily there was already a package developed by Emil Hvitfeldt, whose [solution](https://github.com/EmilHvitfeldt/ggshapes/blob/master/R/rose.R) I have adapted to my plot.\n\n## Animated version\n\n\n::: {.cell}\n\n:::\n\n\n![](rhodonea_animation.gif){fig-align=\"center\"}\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

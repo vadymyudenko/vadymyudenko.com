@@ -10,7 +10,7 @@
 <atom:link href="https://vadymyudenko.com/dataviz/index.xml" rel="self" type="application/rss+xml"/>
 <description>Vadym Yudenko blog about data and research</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Thu, 26 Dec 2024 21:16:56 GMT</lastBuildDate>
+<lastBuildDate>Tue, 28 Jan 2025 19:35:37 GMT</lastBuildDate>
 <item>
   <title>Watch me get masters degree</title>
   <link>https://vadymyudenko.com/dataviz/masters-in-one-picture/index.html</link>
@@ -39,7 +39,52 @@
 
  ]]></description>
   <guid>https://vadymyudenko.com/dataviz/masters-in-one-picture/index.html</guid>
-  <pubDate>Thu, 26 Dec 2024 21:16:56 GMT</pubDate>
+  <pubDate>Tue, 28 Jan 2025 19:35:37 GMT</pubDate>
+</item>
+<item>
+  <title>Rhodonea curve</title>
+  <link>https://vadymyudenko.com/dataviz/rhodonea-curve/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://vadymyudenko.com/dataviz/rhodonea-curve/index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="5000"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Have recently came across a beautiful simulation of <a href="https://en.wikipedia.org/wiki/Rose_(mathematics)">roses</a>! And wanted to replicate it in ggplot. Luckily there was already a package developed by Emil Hvitfeldt, whose <a href="https://github.com/EmilHvitfeldt/ggshapes/blob/master/R/rose.R">solution</a> I have adapted to my plot.</p>
+<section id="animated-version" class="level2">
+<h2 class="anchored" data-anchor-id="animated-version">Animated version</h2>
+<div class="cell">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://vadymyudenko.com/dataviz/rhodonea-curve/rhodonea_animation.gif" class="img-fluid figure-img"></p>
+</figure>
+</div>
+
+
+</section>
+
+ ]]></description>
+  <guid>https://vadymyudenko.com/dataviz/rhodonea-curve/index.html</guid>
+  <pubDate>Tue, 28 Jan 2025 19:35:37 GMT</pubDate>
 </item>
 <item>
   <title>6 Months and 276 Months Old Babies</title>
@@ -74,7 +119,7 @@
 
  ]]></description>
   <guid>https://vadymyudenko.com/dataviz/two-babies-sleep/index.html</guid>
-  <pubDate>Thu, 26 Dec 2024 21:16:56 GMT</pubDate>
+  <pubDate>Tue, 28 Jan 2025 19:35:37 GMT</pubDate>
 </item>
 <item>
   <title>Study-Life Balance</title>
@@ -150,7 +195,7 @@ How I did it?
 
 </section> ]]></description>
   <guid>https://vadymyudenko.com/dataviz/work-life-balance/index.html</guid>
-  <pubDate>Thu, 26 Dec 2024 21:16:56 GMT</pubDate>
+  <pubDate>Tue, 28 Jan 2025 19:35:37 GMT</pubDate>
 </item>
 </channel>
 </rss>
