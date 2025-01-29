@@ -2,6 +2,9 @@ project:
   type: website
   output-dir: docs
 
+comments:
+  hypothesis: true
+
 website:
   title: "Vadym Yudenko"
   site-url: https://vadymyudenko.com

@@ -1,0 +1,111 @@
+---
+title: "index"
+format: html
+draft: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.showtext=TRUE)
+```
+
+```{r libraries}
+library(gt)
+library(gtExtras)
+library(htmltools)
+library(tidyverse)
+library(ggExtra)
+library(ggtext)
+library(ggthemes)
+library(showtext)
+library(janitor)
+library(grid)
+library(lubridate)
+library(reshape2)
+library(plotly)
+library(scales)
+library(ggiraph)
+library(glue)
+library(knitr)
+library(fontawesome)
+library(readxl)
+library(RColorBrewer)
+library(patchwork)
+library(jsonlite)
+```
+
+```{r theme}
+font_add_google("Merriweather", "Merriweather")
+
+#showtext::showtext_auto()
+
+blog_theme <-
+   theme_minimal(18, base_family = "Merriweather") +
+   theme(
+     plot.background = element_rect(fill = "white", color = NA),
+     plot.title.position = "plot",
+     plot.title = element_text(size = 24, margin = margin(b = 1, unit = "line")),
+     legend.position = c(0, 1),
+     legend.direction = "horizontal",
+     legend.justification = c(0, 1),
+     legend.title.align = 1,
+     axis.title.y = element_text(hjust = 0, size = 10),
+     axis.title.x = element_text(hjust = 0, size = 10),
+     panel.grid.major = element_blank(),
+     panel.grid.minor = element_blank()
+   )
+ 
+theme_set(blog_theme)
+
+
+palette <-  c("#a89b7e", "#d4cdba", "#e7b6b2", "#0c3cec")
+```
+
+
+```{r}
+data <- read_excel("data/data.xlsx") %>% 
+   select(-height_km, -speed_kmh, -country, -price_source, -price) %>% 
+   filter(!purpose == "UGV", !developed == "2010")
+```
+
+```{r}
+scale = 1
+
+ggplot(data, aes(x = developed, y = log(dist_max_km), size = price_dol, color = purpose)) +
+  geom_jitter(alpha = 0.8) +
+  scale_x_discrete(
+    name = NULL,
+    limits = 2014:2024
+  ) +
+  scale_y_continuous(
+    name = "Distance (km)",
+    breaks = log(c(1, 10, 100, 1000, 3000)),
+    labels = c("1 km", "10 km", "100 km", "1000 km", "3000 km")
+  ) +
+  scale_color_manual(
+    values = c("#0c3cec", "#a89b7e", "#e7b6b2", "black")
+  ) +
+  theme_minimal(base_size = rel(scale * 3)) +
+  theme(
+    panel.grid.major = element_line(color = "grey80"),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(color = "black"),
+    axis.ticks = element_line(color = "black", size = 0.5),
+    axis.ticks.length = unit(0.25, "cm"),
+    axis.text.x = element_text(color = "black", size = rel(scale * 3)),
+    axis.text.y = element_text(color = "black", size = rel(scale * 3)),
+    legend.position = "bottom",
+    legend.text = element_text(size = rel(scale * 3)),
+    text = element_text(size = rel(scale * 3))
+  ) +
+  guides(
+    size = guide_legend(override.aes = list(size = 5)),
+    color = guide_legend(reverse = FALSE)
+  ) +
+   labs(title = "",
+        subtitle = "")
+
+
+
+   
+```
+

@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.433">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
 <meta name="description" content="Visualizing time-tracking data from 2022 to 2024">
+
 <title>Vadym Yudenko - Forecasting categorical time series</title>
 <style>
 code{white-space: pre-wrap;}
@@ -19,6 +22,7 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 </style>
+
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
@@ -36,7 +40,8 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -55,13 +60,13 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><style>html{ scroll-behavior: smooth; }</style>
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script async="" src="https://hypothes.is/embed.js"></script>
 <meta property="og:title" content="Vadym Yudenko - Forecasting categorical time series">
 <meta property="og:description" content="Visualizing time-tracking data from 2022 to 2024">
 <meta property="og:site-name" content="Vadym Yudenko">
-</head>
-<body class="nav-fixed">
-<div id="progress-bar" style="width: 9%; height:2px; background-color: rgb(89 127 235);; position: fixed; top: 0px; z-index: 2000;"></div>
+</head><body class="nav-fixed"><div id="progress-bar" style="width: 9%; height:2px; background-color: rgb(89 127 235);; position: fixed; top: 0px; z-index: 2000;"></div>
 
 <script id="progressbar" type="text/javascript">
 
@@ -77,7 +82,8 @@ document.addEventListener("DOMContentLoaded", function() {
         bar.style.width = (html.scrollTop / (height- html.clientHeight)) * 100 + '%';
     });
 });
-</script><button type="button" class="btn btn-primary btn-lg bi bi-arrow-up" id="btn-back-to-top"></button>
+</script>
+<button type="button" class="btn btn-primary btn-lg bi bi-arrow-up" id="btn-back-to-top"></button>
 
 <style>
 #btn-back-to-top {
@@ -87,6 +93,7 @@ document.addEventListener("DOMContentLoaded", function() {
   display: none;
 }
 </style>
+
 <script id="backtotop" type="application/javascript">
 let backToTopButton = document.getElementById("btn-back-to-top");
 
@@ -102,9 +109,18 @@ backToTopButton.addEventListener("click", function () {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 });
-</script><link rel="stylesheet" href="../../styles.css">
+</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+
+
+
+
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Vadym Yudenko</span>
@@ -116,7 +132,7 @@ backToTopButton.addEventListener("click", function () {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item">
+  <li class="nav-item">
     <a class="nav-link" href="../../posts/index.html" rel="" target="">
  <span class="menu-text">Blog</span></a>
   </li>  
@@ -143,11 +159,15 @@ backToTopButton.addEventListener("click", function () {
  <span class="menu-text"></span></a>
   </li>  
 </ul>
-<div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
 </div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
-    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">Forecasting categorical time series</h1>
                   <div>
@@ -171,27 +191,37 @@ backToTopButton.addEventListener("click", function () {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
    
   <ul>
-<li><a href="#problem" id="toc-problem" class="nav-link active" data-scroll-target="#problem">Problem</a></li>
+  <li><a href="#problem" id="toc-problem" class="nav-link active" data-scroll-target="#problem">Problem</a></li>
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
   <li><a href="#how-similar-are-days" id="toc-how-similar-are-days" class="nav-link" data-scroll-target="#how-similar-are-days">How similar are days?</a></li>
   <li><a href="#what-was-i-doing-in-2021-2022" id="toc-what-was-i-doing-in-2021-2022" class="nav-link" data-scroll-target="#what-was-i-doing-in-2021-2022">What was I doing in 2021-2022?</a></li>
-  </ul></nav>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content"><div class="cell">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
-</div>
+
+
+
 <div class="cell">
 
 </div>
 <div class="cell">
 
 </div>
-<section id="problem" class="level2"><h2 class="anchored" data-anchor-id="problem">Problem</h2>
-</section><section id="data" class="level2"><h2 class="anchored" data-anchor-id="data">Data</h2>
+<div class="cell">
+
+</div>
+<section id="problem" class="level2">
+<h2 class="anchored" data-anchor-id="problem">Problem</h2>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
 <div class="cell">
 
 </div>
@@ -203,11 +233,15 @@ backToTopButton.addEventListener("click", function () {
 
 </div>
 <p>Looks messy! Looks like you’ve made a mistake. Let’s try to assign the</p>
-</section><section id="how-similar-are-days" class="level2"><h2 class="anchored" data-anchor-id="how-similar-are-days">How similar are days?</h2>
+</section>
+<section id="how-similar-are-days" class="level2">
+<h2 class="anchored" data-anchor-id="how-similar-are-days">How similar are days?</h2>
 <p>One way of approaching this is to treat each day as a vector. In our case that is a 72-item vector (24 hours * 3 activities). We can then calculate the cosine similarity between two days.</p>
 <p>Cosine Similarity</p>
 <p>Got the idea from here: https://www.relevantmisc.com/python/munging/2020/06/23/discretizing-timeseries/</p>
-</section><section id="what-was-i-doing-in-2021-2022" class="level2"><h2 class="anchored" data-anchor-id="what-was-i-doing-in-2021-2022">What was I doing in 2021-2022?</h2>
+</section>
+<section id="what-was-i-doing-in-2021-2022" class="level2">
+<h2 class="anchored" data-anchor-id="what-was-i-doing-in-2021-2022">What was I doing in 2021-2022?</h2>
 <div class="cell">
 
 </div>
@@ -225,7 +259,10 @@ backToTopButton.addEventListener("click", function () {
 </div>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -459,7 +496,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
+<footer class="footer">
+  <div class="nav-footer">
     <div class="nav-footer-left">Powered by <a href="https://quarto.org">Quarto</a>. <br> © 2024 Vadym Yudenko. <br> Opinions are my own.</div>   
     <div class="nav-footer-center">
       &nbsp;
@@ -467,6 +505,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">License: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY NC SA 4.0</a>.</div>
   </div>
 </footer>
+
 
 
 <script src="../../site_libs/quarto-html/zenscroll-min.js"></script>

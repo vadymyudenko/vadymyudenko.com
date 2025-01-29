@@ -1,8 +1,10 @@
 {
-  "hash": "d7e1c470e722bd741eebd8a113189eb3",
+  "hash": "6cb95e0f31d4b33a44076f1942ae86a3",
   "result": {
-    "markdown": "---\ntitle: \"Burning the midnight oil\"\nauthor: \n - name: Vadym Yudenko\ndate: 2024-12-01\ndraft: true \ncategories:\n  - Timetracking\n  - Dataviz\neditor: \n  markdown: \n    wrap: 72\n---\n\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n",
-    "supporting": [],
+    "markdown": "---\ntitle: \"Burning the midnight oil\"\ndate: 2025-01-29\ncategories:\n  - Timetracking\n  - Dataviz\neditor: \n  markdown: \n    wrap: 72\n---\n\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell .column-page layout-align=\"center\"}\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-2-1.png){fig-align='center' width=8000}\n:::\n:::\n\nWhile revisiting [my past timetracking experience](https://vadymyudenko.com/posts/night-guy-morning-guy/), I was stunned how often I went to bed way past the midnight. As the plot title suggests, I was mostly burning the midnight oil studying. \n",
+    "supporting": [
+      "index_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],

@@ -1,9 +1,6 @@
 ---
 title: "Burning the midnight oil"
-author: 
- - name: Vadym Yudenko
-date: 2024-12-01
-draft: true 
+date: 2025-01-29
 categories:
   - Timetracking
   - Dataviz
@@ -17,14 +14,13 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.showte
 ```
 
 ```{r libraries}
-library(stargazer)
-library(gt)
 library(tidyverse)
-library(ggExtra)
+library(gganimate)
+library(readr)
+library(patchwork)
 library(ggtext)
 library(ggthemes)
 library(gganimate)
-library(ggnewscale)
 library(showtext)
 library(grid)
 library(transformr)
@@ -43,13 +39,16 @@ library(ggimage)
 ```
 
 ```{r theme}
-font_add_google("Fira Sans", "firasans")
+font_add_google("New Rocker", "New Rocker")
 
-#showtext::showtext_auto()
-Sys.setenv(TZ = "GMT+3")
+font_add(family = "Font Awesome 6 Brands",
+                   regular = "data/Font Awesome 6 Brands-Regular-400.otf")
+
+# showtext::showtext_auto()
+# showtext::showtext_opts(dpi = 1000)
 
 blog_theme <-
-   theme_minimal(18, base_family = "Fira Sans") +
+   theme_minimal(18, base_family = "New Rocker") +
    theme(
      plot.background = element_rect(fill = "white", color = NA),
      plot.title.position = "plot",
@@ -132,27 +131,10 @@ combined_data <- bind_rows(data1, data2, .id = "source") %>%
      TRUE ~ NA_character_  # Exclude other years
      ))
 
-activity_colors <- c(
-   "Sleep" = "#3B4CC0",  # Deep Blue (Night)
-   "Social Life" = "#87CEEB",  # SkyBlue
-   "Sport" = "#1D8E3A",  # Forest Green (Active)
-   "Work" = "#C0392B",  # Red (Energy)
-   "Reading" = "#F39C12",  # Golden Orange (Focus)
-   "Japanese" = "#FF69B4",  # HotPink
-   "Study" = "#FFD700",  # Gold
-   "Food" = "#99CC99",  # Soft Green
-   "Waste" = "#333333",  # Dark Charcoal
-   "Piano" = "purple",  # HotPink
-   "Planning" = "#FF6347",  # Tomato
-   "Toastmasters" = "#8E44AD",  # Deep Purple (Creative)
-   "Going Somewhere" = "#95A5A6",  # Urban Gray
-   "Miscellaneous" = "#27AE60"  # Fresh Green
-)
-
 ```
 
 ```{r}
-custom_order <- c("21:20", "21:40", "22:00", "22:20", "22:40", "23:00", "23:20", "23:40",
+custom_order <- c("22:20", "22:40", "23:00", "23:20", "23:40",
                   "00:00", "00:20", "00:40", "01:00", "01:20", "01:40", "02:00", "02:20", "02:40", "03:00",
                   "03:20", "03:40", "04:00", "04:20", "04:40", "05:00", "05:20", "05:40", "06:00", "06:20",
                   "06:40", "07:00", "07:20", "07:40", "08:00", "08:20", "08:40")
@@ -180,55 +162,70 @@ hist_bedtime <- combined_data %>%
     lag_3 = if_else(bedtime == "Bedtime",
                     lag(activity, 3), 
                     NA_character_)) %>%
-  filter(hour %in% c(0:8, 21:23), !is.na(bedtime)) %>%
+  filter(hour %in% c(0:8, 22:23), !is.na(bedtime)) %>%
   group_by(time_column, period) %>% 
-  summarise(n = n(), .groups = "drop") #%>% 
-  # mutate(
-  #   img = "data/flame.png" # Set the image path directly
-  # )
+  summarise(n = n(), .groups = "drop") %>% 
+  mutate(
+    img = "data/flame.png" # Set the image path directly
+  )
 
 text_night <- glue::glue("Burning the midnight oil")
-
-# ggplot() +
-#   geom_col(data = hist_bedtime %>%
-#              filter(period == "2022-2024"),
-#            aes(x = time_column, y = n),
-#            width = 0.65, fill = "#FFCC33", color = "#FFCC33") +
-#   geom_image(data = hist_bedtime %>%
-#                filter(period == "2022-2024"),
-#              aes(x = time_column, y = n + 3, image = img), size = 0.05) +
-#   scale_x_discrete(limits = custom_order) +
-#   annotate("text", x = unique(hist_bedtime$time_column), y = 0, 
-#             label = unique(hist_bedtime$time_column), 
-#             vjust = 1.5, size = 2, fontface = "bold", color = "#FFCC33") +
-#   geom_hline(yintercept = 0, color = "#FFCC33", size = 0.5) +
-#   geom_richtext(
-#     aes(x="04:00", y=100, label = text_night),
-#     width = grid::unit(0.73, "npc"), # 73% of plot panel width
-#     hjust = 0, 
-#     vjust = 1,
-#     size = 14,
-#     color = "#FFCC33",
-#     font = "Fira Sans",
-#     fill = NA, label.color = NA
-#   ) +
-#   labs(title = NULL,
-#        caption = "Data and Visual: Vadym Yudenko",
-#        x = NULL,
-#        y = NULL) +
-#   theme_minimal(base_family = "Fira Sans") +
-#   theme(
-#     aspect.ratio = 9/16,
-#     plot.caption = element_text(),
-#     panel.background = element_rect(fill = "navy"),
-#     legend.position = "none",
-#     plot.margin = margin(0, 0, 0, 0),
-#     axis.text.x = element_blank(),  # Hide default axis labels
-#     axis.text.y = element_blank(),
-#     axis.title.x = element_text(face = "bold"),
-#     plot.title = element_textbox_simple(),
-#     panel.grid.major = element_blank(), # Removes vertical grid lines
-#     panel.grid.minor = element_blank()
-#   )
 ```
 
+
+```{r}
+#| fig-width: 20
+#| fig-height: 10
+#| fig-dpi: 400
+#| fig-align: center
+#| column: page
+
+
+ggplot() +
+  geom_col(data = hist_bedtime %>%
+             filter(period == "2022-2024"),
+           aes(x = time_column, y = n),
+           width = 0.65, fill = "#FFCC33", color = "#FFCC33") +
+  geom_image(data = hist_bedtime %>%
+               filter(period == "2022-2024"),
+             aes(x = time_column, y = n + 2, image = img), size = 0.05) +
+  scale_x_discrete(limits = custom_order) +
+  annotate("text", x = unique(hist_bedtime$time_column), y = 0,
+            label = unique(hist_bedtime$time_column),
+            vjust = 1.5, size = 4.5, fontface = "bold", color = "#FFCC33", family = "New Rocker") +
+  geom_hline(yintercept = 0, color = "#FFCC33", size = 0.5) +
+  geom_text(
+    aes(x="02:40", y=75, label = text_night),
+    hjust = 0,
+    vjust = 1,
+    size = 22,
+    family = "New Rocker",
+    color = "#FFCC33"
+  ) +
+  geom_text(aes(x="03:20", y=65, label = glue::glue("The distribution of bedtimes \n throughout my masters study.")),
+    hjust = 0,
+    vjust = 1,
+    size = 14,
+    family = "New Rocker",
+    color = "#FFCC33") +
+  labs(title = NULL,
+       caption = glue::glue("Data & Visual: <span style='font-family:\"Font Awesome 6 Brands\";'>&#xf09b;</span>
+  <span style='color:black'>vadymyudenko</span>"),
+       x = NULL,
+       y = NULL) +
+  theme_minimal() +
+  theme(
+    text = element_text(family = "New Rocker", face = "bold"),
+    aspect.ratio = 9/16,
+    panel.background = element_rect(fill = "navy"),
+    legend.position = "none",
+    plot.margin = margin(0, 0, 0, 0),
+    axis.text.x = element_blank(),  # Hide default axis labels
+    axis.text.y = element_blank(),
+    axis.title.x = element_text(face = "bold"),
+    plot.caption = element_markdown(hjust = 0.5, size = 18),
+    panel.grid.major = element_blank(), # Removes vertical grid lines
+    panel.grid.minor = element_blank()
+  )
+```
+While revisiting [my past timetracking experience](https://vadymyudenko.com/posts/night-guy-morning-guy/), I was stunned how often I went to bed way past the midnight. As the plot title suggests, I was mostly burning the midnight oil studying. 

@@ -1,0 +1,14 @@
+{
+  "hash": "06aeb0a52a71b260dd7042445899a30f",
+  "result": {
+    "markdown": "---\ntitle: \"\"\ndescription: \"Practicing writing functions\"\nauthor: \n - name: Vadym Yudenko\ndate: 2025-01-22\ndraft: true \ntoc: true\ncategories:\n  - TidtTuesday\neditor: \n  markdown: \n    wrap: 72\n---\n\n::: {.cell file='code.R'}\n::: {.cell-output .cell-output-stdout}\n```\n [1]  1  4 12  5  7 14  0  9  8  2  6 11 10\n```\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

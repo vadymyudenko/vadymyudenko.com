@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.433">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
 <meta name="author" content="Vadym Yudenko">
 <meta name="dcterms.date" content="2023-08-04">
 <meta name="description" content="Measuring the effect time has on delivering a great speech using data from Toastmasters">
+
 <title>Vadym Yudenko - All the time in the world…</title>
 <style>
 code{white-space: pre-wrap;}
@@ -21,6 +24,7 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 </style>
+
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
@@ -38,7 +42,8 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -57,16 +62,16 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><style>html{ scroll-behavior: smooth; }</style>
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script async="" src="https://hypothes.is/embed.js"></script>
 <meta property="og:title" content="Vadym Yudenko - All the time in the world…">
 <meta property="og:description" content="Measuring the effect time has on delivering a great speech using data from Toastmasters">
 <meta property="og:image" content="https://vadymyudenko.com/posts/toastmasters-time/index_files/figure-html/unnamed-chunk-7-1.png">
 <meta property="og:site-name" content="Vadym Yudenko">
 <meta property="og:image:height" content="960">
 <meta property="og:image:width" content="1344">
-</head>
-<body class="nav-fixed">
-<div id="progress-bar" style="width: 9%; height:2px; background-color: rgb(89 127 235);; position: fixed; top: 0px; z-index: 2000;"></div>
+</head><body class="nav-fixed"><div id="progress-bar" style="width: 9%; height:2px; background-color: rgb(89 127 235);; position: fixed; top: 0px; z-index: 2000;"></div>
 
 <script id="progressbar" type="text/javascript">
 
@@ -82,7 +87,8 @@ document.addEventListener("DOMContentLoaded", function() {
         bar.style.width = (html.scrollTop / (height- html.clientHeight)) * 100 + '%';
     });
 });
-</script><button type="button" class="btn btn-primary btn-lg bi bi-arrow-up" id="btn-back-to-top"></button>
+</script>
+<button type="button" class="btn btn-primary btn-lg bi bi-arrow-up" id="btn-back-to-top"></button>
 
 <style>
 #btn-back-to-top {
@@ -92,6 +98,7 @@ document.addEventListener("DOMContentLoaded", function() {
   display: none;
 }
 </style>
+
 <script id="backtotop" type="application/javascript">
 let backToTopButton = document.getElementById("btn-back-to-top");
 
@@ -107,16 +114,36 @@ backToTopButton.addEventListener("click", function () {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 });
-</script><link href="../../site_libs/panelset-0.2.6/panelset.css" rel="stylesheet">
-<script src="../../site_libs/panelset-0.2.6/panelset.js"></script><script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script><link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-<script src="../../site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script><script src="../../site_libs/plotly-binding-4.10.1/plotly.js"></script><script src="../../site_libs/typedarray-0.1/typedarray.min.js"></script><script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><link href="../../site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
-<script src="../../site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script><link href="../../site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
-<script src="../../site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script><link href="../../site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
-<script src="../../site_libs/datatables-binding-0.27/datatables.js"></script><link href="../../site_libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet">
+</script>
+
+<link href="../../site_libs/panelset-0.2.6/panelset.css" rel="stylesheet">
+<script src="../../site_libs/panelset-0.2.6/panelset.js"></script>
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<script src="../../site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="../../site_libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="../../site_libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="../../site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
+<script src="../../site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="../../site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="../../site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<link href="../../site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+<script src="../../site_libs/datatables-binding-0.27/datatables.js"></script>
+<link href="../../site_libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="../../site_libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet">
-<script src="../../site_libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script><link rel="stylesheet" href="../../styles.css">
+<script src="../../site_libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+
+
+
+
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Vadym Yudenko</span>
@@ -128,7 +155,7 @@ backToTopButton.addEventListener("click", function () {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item">
+  <li class="nav-item">
     <a class="nav-link" href="../../posts/index.html" rel="" target="">
  <span class="menu-text">Blog</span></a>
   </li>  
@@ -155,11 +182,15 @@ backToTopButton.addEventListener("click", function () {
  <span class="menu-text"></span></a>
   </li>  
 </ul>
-<div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
 </div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
-    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">All the time in the world…</h1>
                   <div>
@@ -216,51 +247,54 @@ backToTopButton.addEventListener("click", function () {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
    
   <ul>
-<li>
-<a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
   <ul class="collapse">
-<li><a href="#toastmasters-in-a-nutshell" id="toc-toastmasters-in-a-nutshell" class="nav-link" data-scroll-target="#toastmasters-in-a-nutshell">Toastmasters in a Nutshell</a></li>
-  </ul>
-</li>
+  <li><a href="#toastmasters-in-a-nutshell" id="toc-toastmasters-in-a-nutshell" class="nav-link" data-scroll-target="#toastmasters-in-a-nutshell">Toastmasters in a Nutshell</a></li>
+  </ul></li>
   <li><a href="#note-on-timer-reports" id="toc-note-on-timer-reports" class="nav-link" data-scroll-target="#note-on-timer-reports">Note on Timer reports</a></li>
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
-  <li>
-<a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a>
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a>
   <ul class="collapse">
-<li><a href="#who-likes-to-talk-more-women-or-men" id="toc-who-likes-to-talk-more-women-or-men" class="nav-link" data-scroll-target="#who-likes-to-talk-more-women-or-men">Who likes to talk more, women or men?</a></li>
+  <li><a href="#who-likes-to-talk-more-women-or-men" id="toc-who-likes-to-talk-more-women-or-men" class="nav-link" data-scroll-target="#who-likes-to-talk-more-women-or-men">Who likes to talk more, women or men?</a></li>
   <li><a href="#do-we-speak-longer-online" id="toc-do-we-speak-longer-online" class="nav-link" data-scroll-target="#do-we-speak-longer-online">Do we speak longer online?</a></li>
   <li><a href="#are-there-differences-on-the-club-level" id="toc-are-there-differences-on-the-club-level" class="nav-link" data-scroll-target="#are-there-differences-on-the-club-level">Are there differences on the club level?</a></li>
-  </ul>
-</li>
-  <li>
-<a href="#how-to-win-table-topics-session" id="toc-how-to-win-table-topics-session" class="nav-link" data-scroll-target="#how-to-win-table-topics-session">How to win Table Topics session?</a>
+  </ul></li>
+  <li><a href="#how-to-win-table-topics-session" id="toc-how-to-win-table-topics-session" class="nav-link" data-scroll-target="#how-to-win-table-topics-session">How to win Table Topics session?</a>
   <ul class="collapse">
-<li><a href="#heading1" id="toc-heading1" class="nav-link" data-scroll-target="#heading1">Hypothesis 1:</a></li>
+  <li><a href="#heading1" id="toc-heading1" class="nav-link" data-scroll-target="#heading1">Hypothesis 1:</a></li>
   <li><a href="#heading2" id="toc-heading2" class="nav-link" data-scroll-target="#heading2">Hypothesis 2:</a></li>
   <li><a href="#heading3" id="toc-heading3" class="nav-link" data-scroll-target="#heading3">Hypothesis 3:</a></li>
   <li><a href="#heading4" id="toc-heading4" class="nav-link" data-scroll-target="#heading4">Bonus:</a></li>
-  </ul>
-</li>
+  </ul></li>
   <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
   <li><a href="#before-you-go" id="toc-before-you-go" class="nav-link" data-scroll-target="#before-you-go">Before you go…</a></li>
-  </ul></nav>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><div class="cell">
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+<div class="cell">
 
 </div>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-2_b95066fc3fd14e84fb5d4556f13a5c6f">
 
 </div>
-<section id="introduction" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="introduction" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>Consider time as the invisible thread weaving through the fabric of every conversation, the silent drumbeat to which all effective communication must sync. It’s not just about being on time — though punctuality certainly speaks volumes — it’s also about respecting the rhythm of discourse, whether it’s a brief exchange or a lengthy dialogue.</p>
 <p>Imagine the different scenarios: a toast at a family gathering, where brevity is laced with warmth; a debate, where each second is a battle for conviction; an elevator pitch, where within a minute, careers could be made or opportunities lost. While these situations differ wildly in content and context, one rule remains universally unchallenged: overrun your allotted time, and your message may fall on deaf ears — or worse, you might find yourself ‘toasted’!</p>
 <p>Moving beyond anecdotal evidence, we dive into the realm of data. To understand the practical implications of time (being in time, on time, overtime ) in communication, we’ve turned to a domain where time isn’t just a factor — it’s a contestant: the Toastmasters International meetings, specifically Table Topics session!</p>
 <p>If you’re familiar with Toastmasters International, then jump straight to the <a href="#analysis"><strong>results</strong></a>. If not - keep reading.</p>
-<section id="toastmasters-in-a-nutshell" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="toastmasters-in-a-nutshell">Toastmasters in a Nutshell</h3>
+<section id="toastmasters-in-a-nutshell" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="toastmasters-in-a-nutshell">Toastmasters in a Nutshell</h3>
 <p>Toastmasters is a place to practice your public speaking skills. Each meeting, which typically lasts for 90 minutes, has a structure:</p>
 <ol type="1">
 <li><p><strong>Prepared speeches session:</strong> usually 5-7 minutes long speeches on various topics, these speeches are for members of the organization;</p></li>
@@ -269,7 +303,10 @@ backToTopButton.addEventListener("click", function () {
 </ol>
 <p>Most Toastmasters members are working professionals from different fields who want to network, be confident presenting, make new connections, and have a great time. Delivering prepared speeches allows members to structure their thoughts and practice their delivery. The Table Topics session, on the other hand, challenges members to speak impromptu. In this session, you can either volunteer to answer a question or be selected by the Table Topics Master. The essence of this activity is to encourage speaking “on your feet” rather than from the comfort of your seat.</p>
 <div class="page-columns page-full"><p>During the Evaluation session a Timer of the meeting - a person specifically assigned to the timetracking task - presents their report, sine qua non<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> of this article. Timer’s responsibility is to keep track of time and indicate to the speakers how much time they have left before they have to wrap up. Without going into much detail, <span style="color:green"><em>green</em></span> is an early warning, <span style="color:yellow"><em>yellow</em></span> - soon the time will be up, <span style="color:red"><em>red</em></span> - time is up, finish your speech. At the end of the meeting a time has a report of speakers and their timings</p><div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;A necessary condition without which something is not possible [from Latin]</p></li></div></div>
-</section></section><section id="note-on-timer-reports" class="level2"><h2 class="anchored" data-anchor-id="note-on-timer-reports">Note on Timer reports</h2>
+</section>
+</section>
+<section id="note-on-timer-reports" class="level2">
+<h2 class="anchored" data-anchor-id="note-on-timer-reports">Note on Timer reports</h2>
 <p>Timer tracks time of each speaker, as can be seen on the reports. Reports usually have the following information useful for our analysis:</p>
 <ol type="1">
 <li>Speaker Name</li>
@@ -279,21 +316,7 @@ backToTopButton.addEventListener("click", function () {
 <li>TT winner</li>
 </ol>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">1</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">2</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">3</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">4</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">5</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false">6</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-7" role="tab" aria-controls="tabset-1-7" aria-selected="false">7</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-8-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-8" role="tab" aria-controls="tabset-1-8" aria-selected="false">8</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-9-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-9" role="tab" aria-controls="tabset-1-9" aria-selected="false">9</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-10-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-10" role="tab" aria-controls="tabset-1-10" aria-selected="false">10</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-11-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-11" role="tab" aria-controls="tabset-1-11" aria-selected="false">11</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-12-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-12" role="tab" aria-controls="tabset-1-12" aria-selected="false">12</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-13-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-13" role="tab" aria-controls="tabset-1-13" aria-selected="false">13</a></li>
-</ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">1</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">2</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">3</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">4</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">5</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false">6</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-7" role="tab" aria-controls="tabset-1-7" aria-selected="false">7</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-8-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-8" role="tab" aria-controls="tabset-1-8" aria-selected="false">8</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-9-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-9" role="tab" aria-controls="tabset-1-9" aria-selected="false">9</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-10-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-10" role="tab" aria-controls="tabset-1-10" aria-selected="false">10</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-11-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-11" role="tab" aria-controls="tabset-1-11" aria-selected="false">11</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-12-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-12" role="tab" aria-controls="tabset-1-12" aria-selected="false">12</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-13-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-13" role="tab" aria-controls="tabset-1-13" aria-selected="false">13</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p><img src="images/1.jpg" class="img-fluid" width="720"></p>
@@ -337,23 +360,25 @@ backToTopButton.addEventListener("click", function () {
 </div>
 </div>
 <p><br></p>
-</section><section id="data" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="data">Data</h2>
+</section>
+<section id="data" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
 <p>Like a famished mouse looking for breadcrumbs under the baker’s table, the author was open-sourcing these reports from Telegram <svg aria-hidden="true" role="img" viewbox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:steelblue;overflow:visible;position:relative;"><path d="M248,8C111.033,8,0,119.033,0,256S111.033,504,248,504,496,392.967,496,256,384.967,8,248,8ZM362.952,176.66c-3.732,39.215-19.881,134.378-28.1,178.3-3.476,18.584-10.322,24.816-16.948,25.425-14.4,1.326-25.338-9.517-39.287-18.661-21.827-14.308-34.158-23.215-55.346-37.177-24.485-16.135-8.612-25,5.342-39.5,3.652-3.793,67.107-61.51,68.335-66.746.153-.655.3-3.1-1.154-4.384s-3.59-.849-5.135-.5q-3.283.746-104.608,69.142-14.845,10.194-26.894,9.934c-8.855-.191-25.888-5.006-38.551-9.123-15.531-5.048-27.875-7.717-26.8-16.291q.84-6.7,18.45-13.7,108.446-47.248,144.628-62.3c68.872-28.647,83.183-33.623,92.511-33.789,2.052-.034,6.639.474,9.61,2.885a10.452,10.452,0,0,1,3.53,6.716A43.765,43.765,0,0,1,362.952,176.66Z"></path></svg>, Facebook <svg aria-hidden="true" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:steelblue;overflow:visible;position:relative;"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"></path></svg>, some were written by author himself and other were transcribed from videos of the meetings.</p>
 <div class="page-columns page-full"><p>Most of the data was collected from Ukrainian TMCs: Chamber<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, Arttalkers, Changemakers, Dniprohills, KOMA (UA-speaking) and Svoya Sorochka (UA-speaking). There are some reports from Japanese and Polish TMCs, but we will not be focusing on them.</p><div class="no-row-height column-margin column-container"><li id="fn2"><p><sup>2</sup>&nbsp;Special thanks goes to Chamber and their Timer reports, without them this project would’ve taken much-much longer.</p></li></div></div>
 <p><img src="images/ua_clubs.png" class="img-fluid" width="720"></p>
 <p><br></p>
-<div class="page-columns page-full"><p>In total there are 180 unique meetings in the dataset from 2018 till 2022. Some of the meetings were dropped due to NAs in at least one of the columns. Speaking of gender discrimination, there was none present, as the number of men and women<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> is equal.</p><div class="no-row-height column-margin column-container"><li id="fn3">
-<p>The gender of the speaker was assigned post hoc, based on the reports/photos of the meeting, common sense and a little bit of prejudice :)</p>
-<p>In cases where it was impossible to establish the gender of a speaker - the whole meeting was excluded.</p>
-</li></div></div>
+<div class="page-columns page-full"><p>In total there are 180 unique meetings in the dataset from 2018 till 2022. Some of the meetings were dropped due to NAs in at least one of the columns. Speaking of gender discrimination, there was none present, as the number of men and women<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> is equal.</p><div class="no-row-height column-margin column-container"><li id="fn3"><p><sup>3</sup>&nbsp;The gender of the speaker was assigned post hoc, based on the reports/photos of the meeting, common sense and a little bit of prejudice :)</p>
+<p>In cases where it was impossible to establish the gender of a speaker - the whole meeting was excluded.</p></li></div></div>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-striped table-sm small" data-quarto-postprocess="true">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th style="text-align: center;" data-quarto-table-cell-role="th">Gender</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th"># of TT paticipants</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">Proportion, %</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">Female</td>
@@ -372,12 +397,12 @@ backToTopButton.addEventListener("click", function () {
 </tr>
 </tbody>
 </table>
+
+
 </div>
 </div>
-<div class="page-columns page-full"><p>With regards to TT participant’s names there are a total of 312 unique names <a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn4">
-<p>In reports the same people were reported under slightly different names. For example: Alexey/Aleksey/Alex/Oleksiy/Oleksey…. and their counterpart Cyrillic versions. To deal with this issue, all versions were renamed to Alex. Similar approach was taken with other names.</p>
-<p>All Ukrainian names were translated to English.</p>
-</li></div></div>
+<div class="page-columns page-full"><p>With regards to TT participant’s names there are a total of 312 unique names <a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn4"><p><sup>4</sup>&nbsp;In reports the same people were reported under slightly different names. For example: Alexey/Aleksey/Alex/Oleksiy/Oleksey…. and their counterpart Cyrillic versions. To deal with this issue, all versions were renamed to Alex. Similar approach was taken with other names.</p>
+<p>All Ukrainian names were translated to English.</p></li></div></div>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
@@ -426,9 +451,12 @@ Answer
 </div>
 </div>
 <p>Surprising? Either way, it is peculiar how these times fall into one of nature’s patterns!</p>
-</section><section id="analysis" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
+</section>
+<section id="analysis" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
 <p>In this part we get to know more about our dataset, whilst answering some of the hardest philosophical questions! Starting with…</p>
-<section id="who-likes-to-talk-more-women-or-men" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="who-likes-to-talk-more-women-or-men">Who likes to talk more, women or men?</h3>
+<section id="who-likes-to-talk-more-women-or-men" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="who-likes-to-talk-more-women-or-men">Who likes to talk more, women or men?</h3>
 <div class="cell preview-image">
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
@@ -473,7 +501,9 @@ Notes:               ***Significant at the 1 percent level.
 <p>The answer? The difference is not significant! The distributions closely resemble each other. <em>Women don’t speak longer than men!</em></p>
 <div class="page-columns page-full"><p>Women actually speak a little less than men. However, we cannot say that women ACTUALLY talk less! In the current study we only observe time taken, but within these 2 minutes on stage, they might say more (on average) than men. There seem to be reports that women communicate ideas differently and <a href="https://www.imd.org/research-knowledge/leadership/articles/women-talk-too-much-simply-isnt-true-data-show/">use more words</a> like ah/uh/m-m-m/you know/so/like<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn5"><p><sup>5</sup>&nbsp;Foreshadowing a future ah-counter perspective on winning TT?!</p></li></div></div>
 <p>Strangely enough, if the proportion of men in TT session increases - then TT session will be be shorter. Also, having more men speak during TT session is associated with lower TT times.</p>
-</section><section id="do-we-speak-longer-online" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="do-we-speak-longer-online">Do we speak longer online?</h3>
+</section>
+<section id="do-we-speak-longer-online" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="do-we-speak-longer-online">Do we speak longer online?</h3>
 <p>In-person conversations and presentations require you to engage with people directly; you see, hear, feel, and even smell them throughout your speech. There are countless non-verbal signals that are communicated without us even noticing. During face-to-face meetings, if you take too long to finish, people may start fidgeting, yawning, or looking away. This indicates discomfort, prompting you to wrap up your speech quickly. In contrast, when interacting online, you are dealing with avatars, and the only means of gauging your audience’s reactions is by observing their responses. This may lead to a tendency to go overtime more often than if you were delivering the same speech in person. We will explore this further below.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -578,14 +608,12 @@ Notes:       ***Significant at the 1 percent level.
 </div>
 </div>
 </div>
-</section><section id="are-there-differences-on-the-club-level" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="are-there-differences-on-the-club-level">Are there differences on the club level?</h3>
+</section>
+<section id="are-there-differences-on-the-club-level" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="are-there-differences-on-the-club-level">Are there differences on the club level?</h3>
 <p>Further exploring the data, we look at whether some of the differences can be explained by looking at distributions at the club level.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Individual Time</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">TT Session Time</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Men/Women Club</a></li>
-</ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Individual Time</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">TT Session Time</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Men/Women Club</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <div class="cell">
@@ -611,9 +639,9 @@ Notes:       ***Significant at the 1 percent level.
 </div>
 </div>
 <p>Individual times don’t seem to vary that much across clubs, however KOMA (Ukrainian-speaking club) is an exception. As for distribution of gender of participants one can see the clubs that have more women or men participating.</p>
-<p><br><br></p>
+<p><br> <br></p>
 <hr>
-<p><br><br></p>
+<p><br> <br></p>
 <div class="cell column-screen-inset quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
@@ -624,7 +652,7 @@ Notes:       ***Significant at the 1 percent level.
 </div>
 </div>
 </div>
-<p><br><br></p>
+<p><br> <br></p>
 <div class="column-screen">
 <div class="cell">
 <div class="cell-output-display">
@@ -634,7 +662,10 @@ Notes:       ***Significant at the 1 percent level.
 </div>
 </div>
 </div>
-</section></section><section id="how-to-win-table-topics-session" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="how-to-win-table-topics-session">How to win Table Topics session?</h2>
+</section>
+</section>
+<section id="how-to-win-table-topics-session" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="how-to-win-table-topics-session">How to win Table Topics session?</h2>
 <p>In this last section we will find out what it takes to win TT session!</p>
 <p>First of all, what doesn’t it mean “to win”? Winning means - majority voted for you and not someone else. Win can be attributed to 2 types of factors: internal and external. Internal factors can be broken down into articulation and story. Articulation is how well you communicate your idea/story: your vocal variety, vocal clarity, hand gestures, eye contact, stage movement, being timely, overall appearance, among other. Story has to do with your message to the audience. How clear is it, does it evoke emotion or make one think? Is there a flow to the speech, is it easy to follow?</p>
 <p>External factors can also be broken down into 2 categories: perception and environment. Perception is how your message is understood by the audience. This has to do with who those people are, what they find funny, what have they eaten before the meetings etc. Environment is the place where you give a speech. Zoom, in person, microphone quality, distance to the audience, acoustics…</p>
@@ -669,7 +700,8 @@ What plays the biggest role in winning TT?
 <li><p><a href="#heading3">Time of other speakers has no effect on probability of winning</a></p></li>
 <li><p><a href="#heading4">Bonus: how to name your baby so it wins TT</a></p></li>
 </ul>
-<section id="heading1" class="level3"><h3 class="anchored" data-anchor-id="heading1">Hypothesis 1:</h3>
+<section id="heading1" class="level3">
+<h3 class="anchored" data-anchor-id="heading1">Hypothesis 1:</h3>
 <p><strong>The last speaker has a higher probability of winning TT</strong></p>
 <div class="cell">
 <div class="cell-output-display">
@@ -713,7 +745,9 @@ Notes:            ***Significant at the 1 percent level.
 </div>
 <p>Waiting and speaking later during TT session does indeed increases the probability of winning by a whopping 0.9%!</p>
 <p>This is a great news, because you can’t expect to win by just waiting and giving a speech at the end of TT session. There a lot that goes into giving a great speech and a lot more into winning, but speaker order doesn’t seem to be it. But one thing is clear here - <u><strong>the only people who don’t win are those that don’t try!</strong></u></p>
-</section><section id="heading2" class="level3"><h3 class="anchored" data-anchor-id="heading2">Hypothesis 2:</h3>
+</section>
+<section id="heading2" class="level3">
+<h3 class="anchored" data-anchor-id="heading2">Hypothesis 2:</h3>
 <p><strong>The likelihood of winning decreases as the length of the speech increases</strong></p>
 <div class="cell">
 <div class="cell-output-display">
@@ -766,7 +800,9 @@ Notes:            ***Significant at the 1 percent level.
 <p>Interestingly that <u>probability of winning TT is increasing with every second!</u> Even removing outliers (150 seconds or higher) doesn’t change the significance. You still better speak for as long as and not a second more! Otherwise you’ll be disqualified!</p>
 <p>Think about how this finding plays out in your life.</p>
 <p>When you have someone’s attention, you have to be mindful of time. You are not given their attention indefinitely, you have to use this opportunity exhaustively, making every second count. Speak fast and blurt out your thought and they will not understand it fully. Speak too slow and they might switch off and think that you can’t properly articulate your thoughts. Place yourself in between these 2 extremes and finish by the time they lose focus!</p>
-</section><section id="heading3" class="level3"><h3 class="anchored" data-anchor-id="heading3">Hypothesis 3:</h3>
+</section>
+<section id="heading3" class="level3">
+<h3 class="anchored" data-anchor-id="heading3">Hypothesis 3:</h3>
 <p><strong>Time of other speakers has no effect on probability of winning</strong></p>
 <div class="cell">
 <div class="cell-output-display">
@@ -815,7 +851,9 @@ Notes:                   ***Significant at the 1 percent level.
 </div>
 </div>
 <p>We can’t always give our best speeches, especially impromptu. Sometimes what beats a competition is competition itself. You can never underestimate your opponents, even when it fails miserably. Restricting our analysis to length of impromptu speech, the failure would be not using enough time (<a href="#heading2">see H2</a>). And our foes failing miserably would mean them not using enough time, which we don’t find to be significant in predicting winning TT.</p>
-</section><section id="heading4" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="heading4">Bonus:</h3>
+</section>
+<section id="heading4" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="heading4">Bonus:</h3>
 <p><strong>How to name your baby so that it has a higher chances of winning TT?</strong></p>
 <div class="cell">
 
@@ -877,18 +915,26 @@ Notes:            ***Significant at the 1 percent level.
 </div>
 <p>It is true that not everyone can win and one must use every trick to their advantage. And if your name is Alex or Andrew you should use it to your advantage.</p>
 <div class="page-columns page-full"><p>If your name is not Alex or Andrew, than maybe it is not for you. Go apply yourself in some other domain, for you are against the odds when it comes to winning TT session.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p><div class="no-row-height column-margin column-container"><li id="fn6"><p><sup>6</sup>&nbsp;FYI, this is a joke and not meant to be taken seriously.</p></li></div></div>
-</section></section><section id="conclusions" class="level2"><h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+</section>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
 <ul>
 <li><p>Time does affect whether your speech is successful or not. In situations where you have limited time, you better take as much time as possible, but not a second more!</p></li>
 <li><p>You can’t cheat the system by choosing to speak in any specific order. On average, you’re just as likely to win speaking first as you are speaking last.</p></li>
 <li><p>There are no differences in speaking patterns between men and women - they speak on average the same amount.</p></li>
 </ul>
 <p>I do hope that you, the keen reader, have found this piece entertaining and useful. Be mindful of time, and learn to use it to its fullest extent—and not a second more. Good things will come your way!</p>
-</section><section id="before-you-go" class="level2"><h2 class="anchored" data-anchor-id="before-you-go">Before you go…</h2>
+</section>
+<section id="before-you-go" class="level2">
+<h2 class="anchored" data-anchor-id="before-you-go">Before you go…</h2>
 <p>If you like this project and feel like you can contribute with data and/or advise, please send me an <a href="mailto:vyudenko@kse.org.ua"><strong>EMAIL</strong></a> 😊</p>
 
 
-</section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{yudenko2023,
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{yudenko2023,
   author = {Yudenko, Vadym},
   title = {All the Time in the World...},
   date = {2023-08-04},
@@ -898,7 +944,8 @@ Notes:            ***Significant at the 1 percent level.
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-yudenko2023" class="csl-entry quarto-appendix-citeas" role="listitem">
 Yudenko, Vadym. 2023. <span>“All the Time in the World...”</span> August
 4, 2023. <a href="https://vadymyudenko.com/posts/toastmasters-time">https://vadymyudenko.com/posts/toastmasters-time</a>.
-</div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1132,7 +1179,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
+<footer class="footer">
+  <div class="nav-footer">
     <div class="nav-footer-left">Powered by <a href="https://quarto.org">Quarto</a>. <br> © 2024 Vadym Yudenko. <br> Opinions are my own.</div>   
     <div class="nav-footer-center">
       &nbsp;
@@ -1140,6 +1188,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">License: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY NC SA 4.0</a>.</div>
   </div>
 </footer>
+
 
 
 <script src="../../site_libs/quarto-html/zenscroll-min.js"></script>

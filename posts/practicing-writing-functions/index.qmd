@@ -1,0 +1,151 @@
+---
+title: ""
+description: "Practicing writing functions"
+author: 
+ - name: Vadym Yudenko
+date: 2025-01-22
+draft: true 
+toc: true
+categories:
+  - functions
+  - automation
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+Okay, I'm finally at the point of my data science journey, when simple Ctrl+C and Ctrl-V from one chunk to another, from one project to another, don't cut it anymore. ChatGPT and GitHub Copilot that autocomplete much of your code, while helping, they have hindered my development as a specialist. I never coded before ChatGPT, who was a Jennie that fulfilled all my wishes. It is about time I do.
+
+To make this not only a learning experience, but practical, we'll try to solve common bottlenecks I stumble upon every project. To aid me I'm using the following resources:
+1. https://r4ds.hadley.nz/functions.html
+
+List of bottlenecks:
+1. Loading packages
+2. MVP ggplots 
+3. Complex data transformation
+
+
+## What are functions
+
+Functions 
+
+```{r}
+#| eval: false
+
+name <- function(arguments) {
+  body
+}
+```
+
+
+## Loading packages
+
+
+::: panel-tabset
+
+### Issue
+
+```{r}
+#| eval: false
+
+library(tidyverse)
+library(dplyr)
+library(knitr)
+library(ggplot)
+library(ggiraph)
+```
+
+### Solution (#1)
+
+```{r}
+load_packages <- function(libraries) {
+  
+  # library(package) and require(package) both load the namespace 
+  # of the package with name package and attach it on the search list. 
+  # require is designed for use inside other functions; it returns FALSE 
+  # and gives a warning (rather than an error as library() does by default) 
+  # if the package does not exist. Both functions check and update 
+  # the list of currently attached packages and do not reload a namespace 
+  # which is already loaded.
+  
+  
+  message("Loading packages...")
+  
+  # load standard packages regardless
+  require(tidyverse, warn.conflicts = F, quietly = T)
+  require(dplyr, warn.conflicts = F, quietly = T)
+  require(knitr, warn.conflicts = F, quietly = T)
+  
+  for (package in libraries) {
+    require(package, warn.conflicts = F, quietly = T)
+    }
+  
+  message("Packages loaded!")
+  
+}
+
+load_packages(c(
+  "ggplot",
+  "ggiraph"
+))
+```
+
+:::
+
+
+::: {.callout-tip title="Updates" collapse="true" icon="false"}
+**2025.01.22: (#1)** 
+- leaned about including custom messages w/ `message()` and reminded myself of a for loop syntax
+
+:::
+
+## MVP ggplots
+
+Sometimes a simple ggplot can turn a good day to bad day, because of many customization options it offers. There are many helpful packages that already simplify the workflow. For example `library(esquisse)`, `library(tidyplots)` and `library(ggcharts)` to name a few.
+
+::: panel-tabset
+
+### Issue
+
+```{r}
+
+```
+
+### Solution (#1)
+
+```{r}
+
+```
+
+:::
+
+::: {.callout-tip title="Updates" collapse="true" icon="false"}
+
+:::
+
+## Complext data transformation
+
+::: panel-tabset
+
+### Issue
+
+```{r}
+
+```
+
+### Solution (#1)
+
+```{r}
+
+```
+
+:::
+
+
+
+
+::: {.callout-tip title="Session info" collapse="true" icon="false"}
+```{r}
+sessionInfo()
+```
+:::

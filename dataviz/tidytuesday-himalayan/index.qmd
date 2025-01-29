@@ -1,0 +1,26 @@
+---
+title: ""
+description: "Practicing writing functions"
+author: 
+ - name: Vadym Yudenko
+date: 2025-01-22
+draft: true 
+toc: true
+categories:
+  - TidtTuesday
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+
+
+```{r}
+#| label: load-functions
+#| file: code.R
+#| echo: false
+#| message: false
+#| warning: false
+#| eval: true
+```
+

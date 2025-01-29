@@ -1,6 +1,14 @@
 ---
-title: "Rhodonea curve"
+title: "Rhodonea curves"
+date: 2025-01-28
 toc: false
+categories:
+  - Rhodonea curve
+  - Dataviz
+  - Replication
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
@@ -35,7 +43,7 @@ font_add(family = "Font Awesome 6 Brands",
 # showtext::showtext_opts(dpi = 1000)
 
 blog_theme <-
-   theme_minimal(18, base_family = "Fira Sans") +
+   theme_minimal(18, base_family = "firasans") +
    theme(
      plot.background = element_rect(fill = "white", color = NA),
      plot.title.position = "plot",
@@ -88,7 +96,7 @@ p <- data %>%
   geom_path(size = 1) +
   coord_equal() +
   labs(
-    title = "Rhodonea Curve",
+    title = "Rhodonea Curves",
     x = NULL,
     y = NULL,
     color = NULL,
@@ -98,7 +106,7 @@ p <- data %>%
   ) + 
   facet_grid(n ~ d, labeller = labeller(.cols = label_value, .rows = label_value), switch = "y") + # Facet by combinations of n and d, with n-labels on the left
   theme(
-    text = element_text(family = "Fira Sans"), 
+    text = element_text(family = "firasans"), 
     axis.text = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
@@ -139,7 +147,7 @@ animated_plot <- data %>%
   geom_point(size = 1.25) +
   coord_equal() +
   labs(
-    title = "Rhodonea Curve",
+    title = "Rhodonea Curves",
     x = NULL,
     y = NULL,
     color = NULL,

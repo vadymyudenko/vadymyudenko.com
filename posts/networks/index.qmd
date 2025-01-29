@@ -1,0 +1,101 @@
+---
+title: "Network"
+description: "Working with network data"
+author: 
+ - name: Vadym Yudenko
+date: 2025-01-22
+draft: true 
+toc: false
+categories:
+  - network
+  - facebook
+  - instagram
+  - linkedin
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, eval = FALSE, fig.showtext=TRUE)
+```
+
+```{r libraries}
+library(gt)
+library(gtExtras)
+library(htmltools)
+library(tidyverse)
+library(ggExtra)
+library(ggtext)
+library(ggthemes)
+library(showtext)
+library(janitor)
+library(grid)
+library(lubridate)
+library(reshape2)
+library(plotly)
+library(scales)
+library(ggiraph)
+library(glue)
+library(knitr)
+library(fontawesome)
+library(readxl)
+library(RColorBrewer)
+library(patchwork)
+library(jsonlite)
+```
+
+```{r theme}
+font_add_google("Merriweather", "Merriweather")
+
+#showtext::showtext_auto()
+
+blog_theme <-
+   theme_minimal(18, base_family = "Arimo") +
+   theme(
+     plot.background = element_rect(fill = "white", color = NA),
+     plot.title.position = "plot",
+     plot.title = element_text(size = 24, margin = margin(b = 1, unit = "line")),
+     legend.position = c(0, 1),
+     legend.direction = "horizontal",
+     legend.justification = c(0, 1),
+     legend.title.align = 1,
+     axis.title.y = element_text(hjust = 0, size = 10),
+     axis.title.x = element_text(hjust = 0, size = 10),
+     panel.grid.major = element_blank(),
+     panel.grid.minor = element_blank()
+   )
+ 
+theme_set(blog_theme)
+```
+
+
+```{r}
+data <- read_excel("posts/ua-drones/data/data.xlsx")
+```
+
+
+```{r}
+data_clean <- data_clean %>% 
+  mutate(month = month(date, label = T),
+         year = year(date),
+         myear = paste0(month, " ", year)) %>% 
+  group_by(date) %>% 
+  mutate(n = n()) %>% 
+  ungroup()
+  
+
+ggplot(data_clean, aes(x = date, y = n, fill = source)) +
+  geom_bar(stat = "identity") +
+  labs(
+    title = "Distribution of Counts (n) Across Dates",
+    x = "Date",
+    y = "Count (n)"
+  ) +
+  scale_x_date(date_labels = "%b %Y", date_breaks = "6 month") +
+  scale_y_continuous(limits = c(0,80)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+

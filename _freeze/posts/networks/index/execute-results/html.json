@@ -1,0 +1,14 @@
+{
+  "hash": "7f0c22585b0a3e6e9a65285f45e772d4",
+  "result": {
+    "markdown": "---\ntitle: \"Network\"\ndescription: \"Working with network data\"\nauthor: \n - name: Vadym Yudenko\ndate: 2025-01-22\ndraft: true \ntoc: false\nlightbox: true\ncategories:\n  - network\n  - facebook\n  - instagram\n  - linkedin\neditor: \n  markdown: \n    wrap: 72\n---\n\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
